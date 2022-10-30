@@ -25,12 +25,12 @@ describe('downdoc()', () => {
       = Title
       Doc Writer <doc@example.org>
 
-      Body
+      Body written by {author}.
     `
     const expected = outdent`
       # Title
 
-      Body
+      Body written by Doc Writer.
     `
     expect(downdoc(input)).to.equal(expected)
   })
@@ -40,12 +40,12 @@ describe('downdoc()', () => {
       = Title
       Doc Writer <doc@example.org>; Junior Écrivain <jr@example.org>
 
-      Body
+      Body written by {authors}.
     `
     const expected = outdent`
       # Title
 
-      Body
+      Body written by Doc Writer, Junior Écrivain.
     `
     expect(downdoc(input)).to.equal(expected)
   })

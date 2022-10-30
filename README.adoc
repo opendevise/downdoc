@@ -29,8 +29,8 @@ It's intended to be used with simple README files.
 Here's a rough list of the syntax it current handles:
 
 * document title
-* author line in document header
-* document attribute entries in document header
+* author line in document header, directly below document title
+* document attribute entries in document header (single-line only)
 * document attribute references
 * section titles
 * block titles
