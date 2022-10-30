@@ -1,0 +1,94 @@
+= downdoc: Down-convert AsciiDoc to Markdown
+ifdef::env-github[]
+:toc: preamble
+:toc-title: Contents
+:toclevels: 1
+endif::[]
+
+> Quickly converts AsciiDoc to Markdown
+
+== What is downdoc?
+
+npm package repositories such as https://npmjs.com and https://yarnpkg.com assume the README for a package is in Markdown.
+But you're a sensible developer who wants to maintain your README in AsciiDoc.
+Enter downdoc.
+
+The downdoc package provides a function and CLI to down-convert AsciiDoc to Markdown.
+The purpose of this tool is to prepare an AsciiDoc README for npm packaging.
+
+Typically, you convert the README from Markdown to AsciiDoc during the _prepublishOnly_ life cycle event.
+Then you restore the original README during the _postpublish_ life cycle event.
+That way, then npm package ends up with a Markdown README, but the README in your repository remains in AsciiDoc.
+
+== How does it work?
+
+downdoc employs a rather crude approach to map the AsciiDoc syntax to Markdown that does not use an AsciiDoc processor.
+Therefore, it does not support the full AsciiDoc syntax.
+It's intended to be used with simple README files.
+
+Here's a rough list of the syntax it current handles:
+
+* document title
+* author line in document header
+* document attribute entries in document header
+* document attribute references
+* section titles
+* block titles
+* text formatting (bold, italic, monospace)
+* ordered, unordered, and callout lists
+* link and URL macros
+* image macros
+* listing and source blocks
+* attribute subs in verbatim blocks
+* literal paragraphs
+* admonition paragraphs
+* ifdef and ifndef preprocessor conditionals
+* comment lines and blocks
+* tables (dropped)
+
+== Prerequisites
+
+In order to use this extension, you must be using at least Node.js 16.
+
+== Install
+
+Use the following command to install the downdoc package into your project:
+
+[,console]
+----
+$ npm i downdoc
+----
+
+Alternately, you can defer installation and invoke the CLI via npx.
+
+== Usage
+
+=== CLI
+
+[,console]
+----
+$ npx downdoc README.adoc
+----
+
+The `downdoc` command automatically generates a Markdown file.
+The Markdown file has the same name as the AsciiDoc file with the file extension changed to `.md`.
+
+=== API
+
+[,js]
+----
+const downdoc = require('downdoc')
+const { promises: fsp } = require('fs')
+
+;(async () => {
+  await fsp
+    .readFile('README.adoc', 'utf8')
+    .then((asciidoc) => fsp.writeFile('README.md', downdoc(asciidoc)))
+})()
+----
+
+== Copyright and License
+
+Copyright (C) 2022-present Dan Allen (OpenDevise Inc.) and the individual contributors to this project.
+
+Use of this software is granted under the terms of the MIT License.

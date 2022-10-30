@@ -1,0 +1,65 @@
+{
+  "name": "downdoc",
+  "version": "1.0.0-alpha.0",
+  "description": "Crudely converts AsciiDoc to Markdown. Intended to be used on a README to prepare it for npm packaging.",
+  "license": "MIT",
+  "author": "Dan Allen",
+  "contributors": [
+    "Dan Allen <dan@opendevise.com>"
+  ],
+  "repository": "https://github.com/mojavelinux/downdoc",
+  "bugs": {
+    "url": "https://github.com/mojavelinux/downdoc/issues"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "scripts": {
+    "coverage": "nyc _mocha",
+    "format": "node npm/format.js lib,test,npm",
+    "lint": "eslint \"{lib,test,npm}/**/*.js\"",
+    "prepublishOnly": "node npm/prepublishOnly.js",
+    "postpublish": "node npm/postpublish.js",
+    "test": "_mocha",
+    "version": "node npm/version.js"
+  },
+  "main": "lib/index.js",
+  "bin": {
+    "downdoc": "bin/downdoc"
+  },
+  "exports": {
+    ".": "./lib/index.js"
+  },
+  "files": [
+    "lib"
+  ],
+  "keywords": [
+    "asciidoc",
+    "markdown",
+    "converter"
+  ],
+  "devDependencies": {
+    "chai": "~4.3",
+    "chai-fs": "~2.0",
+    "dirty-chai": "~2.0",
+    "eslint": "~8.26",
+    "eslint-config-standard": "~17.0",
+    "mocha": "~10.1",
+    "nyc": "~15.1",
+    "outdent": "0.8.0",
+    "prettier-eslint": "~15.0"
+  },
+  "nyc": {
+    "cache": true,
+    "cacheDir": "node_modules/.cache/nyc",
+    "include": [
+      "lib/*.js"
+    ],
+    "reporter": [
+      "cobertura",
+      "lcov",
+      "text"
+    ],
+    "reportDir": "reports"
+  }
+}
