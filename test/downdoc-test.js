@@ -749,7 +749,7 @@ describe('downdoc()', () => {
 
       // ignore this line
       More summary
-      // fin
+      //fin
     `
     const expected = outdent`
       # Title
