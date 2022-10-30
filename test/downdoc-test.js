@@ -786,12 +786,13 @@ describe('downdoc()', () => {
     expect(downdoc(input)).to.equal(expected)
   })
 
-  it('should skip ifdef directive block and collapse empty lines', () => {
+  it('should keep contents of ifdef directive block if attribute is set', () => {
     const input = outdent`
       = Title
+      :badges:
 
       ifdef::badges[]
-      image:https://img.shields.io/npm/v/downdoc[link="https://www.npmjs.com/package/downdoc",title="npm version"]
+      image:https://img.shields.io/npm/v/downdoc[npm version]
       endif::[]
 
       Summary
@@ -799,16 +800,38 @@ describe('downdoc()', () => {
     const expected = outdent`
       # Title
 
+      ![npm version](https://img.shields.io/npm/v/downdoc)
+
       Summary
     `
     expect(downdoc(input)).to.equal(expected)
   })
 
-  it('should skip ifndef directive block and collapse empty lines', () => {
+  it('should keep contents of ifndef directive block if attribute is not set', () => {
     const input = outdent`
       = Title
 
-      ifndef::env-site[]
+      ifndef::author[]
+      There is no author.
+      endif::[]
+
+      Summary
+    `
+    const expected = outdent`
+      # Title
+
+      There is no author.
+
+      Summary
+    `
+    expect(downdoc(input)).to.equal(expected)
+  })
+
+  it('should skip ifdef directive block if attribute is not set and collapse empty lines', () => {
+    const input = outdent`
+      = Title
+
+      ifdef::not-set[]
       image:https://img.shields.io/npm/v/downdoc[link="https://www.npmjs.com/package/downdoc",title="npm version"]
       endif::[]
 
@@ -822,7 +845,26 @@ describe('downdoc()', () => {
     expect(downdoc(input)).to.equal(expected)
   })
 
-  it('should skip single line conditional directive', () => {
+  it('should skip ifndef directive block if attribute is set and collapse empty lines', () => {
+    const input = outdent`
+      = Title
+      :author: Author Name
+
+      ifndef::author[]
+      There is no author.
+      endif::[]
+
+      Summary
+    `
+    const expected = outdent`
+      # Title
+
+      Summary
+    `
+    expect(downdoc(input)).to.equal(expected)
+  })
+
+  it('should skip single line conditional directive if condition is false', () => {
     const input = outdent`
       = Title
 
@@ -833,6 +875,21 @@ describe('downdoc()', () => {
       # Title
 
       Summary
+    `
+    expect(downdoc(input)).to.equal(expected)
+  })
+
+  it('should keep and process text from single line conditional directive if condition is true', () => {
+    const input = outdent`
+      = Title
+      :foo: bar
+
+      ifndef::bar[{foo}]
+    `
+    const expected = outdent`
+      # Title
+
+      bar
     `
     expect(downdoc(input)).to.equal(expected)
   })
