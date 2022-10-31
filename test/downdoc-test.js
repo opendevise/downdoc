@@ -199,7 +199,40 @@ describe('downdoc()', () => {
     expect(downdoc(input)).to.equal(expected)
   })
 
-  it('should honor ifndef enclosure on attribute entry in header for undefined attribute', () => {
+  it('should expand ifdef enclosure on attribute entry in header for defined attribute', () => {
+    const input = outdent`
+      = Title
+      :project-handle: downdoc
+      ifdef::project-handle[:url-project: https://example.org/{project-handle}]
+
+      This project is named {project-handle}.
+      The URL of the project is {url-project}.
+    `
+    const expected = outdent`
+      # Title
+
+      This project is named downdoc.
+      The URL of the project is https://example.org/downdoc.
+    `
+    expect(downdoc(input)).to.equal(expected)
+  })
+
+  it('should skip ifdef enclosure on attribute entry in header for undefined attribute', () => {
+    const input = outdent`
+      = Title
+      ifdef::env-github[:toc-title: Contents]
+
+      {toc-title}
+    `
+    const expected = outdent`
+      # Title
+
+      {toc-title}
+    `
+    expect(downdoc(input)).to.equal(expected)
+  })
+
+  it('should expand ifndef enclosure on attribute entry in header for undefined attribute', () => {
     const input = outdent`
       = Title
       ifndef::project-handle[:project-handle: downdoc]
@@ -738,6 +771,11 @@ describe('downdoc()', () => {
   it('should skip comment lines and blocks', () => {
     const input = outdent`
       = Title
+      ////
+      ignored
+      ////
+      :summary: Summary
+      // ignore this line
 
       ////
       ignore
@@ -745,7 +783,7 @@ describe('downdoc()', () => {
       lines
       ////
 
-      Summary
+      {summary}
 
       // ignore this line
       More summary
@@ -848,18 +886,20 @@ describe('downdoc()', () => {
   it('should skip ifndef directive block if attribute is set and collapse empty lines', () => {
     const input = outdent`
       = Title
-      :author: Author Name
+      Author Name
+      ifdef::author[:attribution: written by {author}]
+      garbage
 
       ifndef::author[]
       There is no author.
       endif::[]
 
-      Summary
+      Summary {attribution}.
     `
     const expected = outdent`
       # Title
 
-      Summary
+      Summary written by Author Name.
     `
     expect(downdoc(input)).to.equal(expected)
   })

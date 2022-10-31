@@ -28,7 +28,7 @@ It's intended to be used with simple README files.
 
 Here's a rough list of the syntax it current handles:
 
-* document title
+* document title (must be first line of document)
 * author line in document header, directly below document title
 * document attribute entries in document header (single-line only)
 * document attribute references
