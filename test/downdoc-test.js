@@ -808,6 +808,38 @@ describe('downdoc()', () => {
     expect(downdoc(input)).to.equal(expected)
   })
 
+  it('should indent block following a list continuation', () => {
+    const input = heredoc`
+      * Install
+      +
+      [,console]
+      ----
+      $ npm i downdoc
+      ----
+
+      * Use
+      +
+      [,console]
+      ----
+      $ npx downdoc README.adoc
+      ----
+    `
+    const expected = heredoc`
+      * Install
+
+        \`\`\`console
+        $ npm i downdoc
+        \`\`\`
+
+      * Use
+
+        \`\`\`console
+        $ npx downdoc README.adoc
+        \`\`\`
+    `
+    expect(downdoc(input)).to.equal(expected)
+  })
+
   it('should replace conums in source block with circled numbers', () => {
     const input = heredoc`
       = Title
