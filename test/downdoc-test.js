@@ -20,6 +20,20 @@ describe('downdoc()', () => {
     expect(downdoc(input)).to.equal(expected)
   })
 
+  it('should store document title in doctitle attribute', () => {
+    const input = outdent`
+      = Document Title
+
+      The title of this document is {doctitle}.
+    `
+    const expected = outdent`
+      # Document Title
+
+      The title of this document is Document Title.
+    `
+    expect(downdoc(input)).to.equal(expected)
+  })
+
   it('should discard author line with single author', () => {
     const input = outdent`
       = Title
