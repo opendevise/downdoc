@@ -100,7 +100,6 @@ describe('downdoc()', () => {
     expect(downdoc(input)).to.equal(expected)
   })
 
-  // FIXME remove blank line
   it('should remove attribute entries found in body', () => {
     const input = outdent`
       = Title
@@ -115,7 +114,6 @@ describe('downdoc()', () => {
       # Title
 
       before
-
 
       after
     `
