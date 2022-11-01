@@ -35,11 +35,11 @@ Here's a rough list of the syntax it current handles:
 * section titles
 * block titles
 * formatted text (bold, italic, monospace)
-* ordered, unordered, and callout lists
+* ordered, unordered, and callout lists (1-9)
 * link and URL macros
 * image macros
 * listing and source blocks
-* callout numbers in verbatim blocks
+* callout numbers (1-9) in verbatim blocks
 * attribute references in verbatim blocks (when attributes sub is enabled)
 * literal paragraphs
 * admonition paragraphs
