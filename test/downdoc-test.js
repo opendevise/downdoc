@@ -755,6 +755,19 @@ describe('downdoc()', () => {
     expect(downdoc(input)).to.equal(expected)
   })
 
+  it('should retain unordered list', () => {
+    const input = heredoc`
+      * work
+      * play
+      * drink
+
+      paragraph
+
+      * and party!
+    `
+    expect(downdoc(input)).to.equal(input)
+  })
+
   it('should convert ordered list to numbered list', () => {
     const input = heredoc`
       = Title
