@@ -633,6 +633,25 @@ describe('downdoc()', () => {
     expect(downdoc(input)).to.equal(expected)
   })
 
+  it('should convert source block with language preceded by space', () => {
+    const input = heredoc`
+      = Title
+
+      [, text]
+      ----
+      just plain text
+      ----
+    `
+    const expected = heredoc`
+      # Title
+
+      \`\`\`text
+      just plain text
+      \`\`\`
+    `
+    expect(downdoc(input)).to.equal(expected)
+  })
+
   it('should convert source block without language', () => {
     const input = heredoc`
       = Title
