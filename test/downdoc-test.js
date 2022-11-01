@@ -891,6 +891,36 @@ describe('downdoc()', () => {
     expect(downdoc(input)).to.equal(expected)
   })
 
+  it('should reset indent when starting new ordered list item', () => {
+    const input = heredoc`
+      . Install
+      +
+      [,console]
+      ----
+      $ npm i downdoc
+      ----
+      . Use
+      +
+      [,console]
+      ----
+      $ npx downdoc README.adoc
+      ----
+    `
+    const expected = heredoc`
+      1. Install
+
+        \`\`\`console
+        $ npm i downdoc
+        \`\`\`
+      2. Use
+
+        \`\`\`console
+        $ npx downdoc README.adoc
+        \`\`\`
+    `
+    expect(downdoc(input)).to.equal(expected)
+  })
+
   it('should replace conums in source block with circled numbers', () => {
     const input = heredoc`
       = Title
