@@ -120,7 +120,7 @@ describe('downdoc()', () => {
     expect(downdoc(input)).to.equal(expected)
   })
 
-  it('should replace attribute reference', () => {
+  it('should substitute attribute reference', () => {
     const input = outdent`
       = Title
       :project-name: ACME
@@ -135,7 +135,7 @@ describe('downdoc()', () => {
     expect(downdoc(input)).to.equal(expected)
   })
 
-  it('should replace attribute reference in value of attribute entry', () => {
+  it('should substitute attribute reference in value of attribute entry', () => {
     const input = outdent`
       = Title
       :project-slug: acme
@@ -152,7 +152,7 @@ describe('downdoc()', () => {
     expect(downdoc(input)).to.equal(expected)
   })
 
-  it('should replace multiple attribute references in same line', () => {
+  it('should substitute multiple attribute references in same line', () => {
     const input = outdent`
       = Title
       :author-1: Jim
