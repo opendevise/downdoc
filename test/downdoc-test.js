@@ -467,6 +467,33 @@ describe('downdoc()', () => {
     expect(downdoc(input)).to.equal(expected)
   })
 
+  it('should retain Markdown-style blockquotes', () => {
+    const input = outdent`
+      = Title
+
+      > Roads?
+      >
+      > Where we're going, we don't need _roads_!
+
+      The rest is...the future!
+
+      > And away we go!
+    `
+
+    const expected = outdent`
+      # Title
+
+      > Roads?
+      >
+      > Where we're going, we don't need *roads*!
+
+      The rest is...the future!
+
+      > And away we go!
+    `
+    expect(downdoc(input)).to.equal(expected)
+  })
+
   it('should convert literal paragraph', () => {
     const input = outdent`
       = Title
