@@ -165,7 +165,7 @@ describe('downdoc()', () => {
     expect(downdoc(input)).to.equal(expected)
   })
 
-  it('should substitute attribute reference', () => {
+  it('should substitute attribute reference in paragraph', () => {
     const input = heredoc`
       = Title
       :project-name: ACME
@@ -176,6 +176,41 @@ describe('downdoc()', () => {
       # Title
 
       The name of this project is ACME.
+    `
+    expect(downdoc(input)).to.equal(expected)
+  })
+
+  it('should substitute attribute reference in section title', () => {
+    const input = heredoc`
+      = Title
+      :product: ACME
+
+      == Introduction to {product}
+
+      Let's get acquainted.
+    `
+    const expected = heredoc`
+      # Title
+
+      ## Introduction to ACME
+
+      Let's get acquainted.
+    `
+    expect(downdoc(input)).to.equal(expected)
+  })
+
+  it('should substitute attribute reference in unordered list item', () => {
+    const input = heredoc`
+      = Title
+      :product: ACME
+      :url-product: https://example.org/acme
+
+      . First, download the {product} installer from the {url-product}[{product} website].
+    `
+    const expected = heredoc`
+      # Title
+
+      1. First, download the ACME installer from the https://example.org/acme[ACME website].
     `
     expect(downdoc(input)).to.equal(expected)
   })
