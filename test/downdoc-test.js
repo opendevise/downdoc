@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 'use strict'
 
-const { expect, outdent } = require('./harness')
+const { expect, heredoc } = require('./harness')
 const downdoc = require('downdoc')
 
 describe('downdoc()', () => {
@@ -11,22 +11,22 @@ describe('downdoc()', () => {
   })
 
   it('should convert document title', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
     `
     expect(downdoc(input)).to.equal(expected)
   })
 
   it('should store document title in doctitle attribute', () => {
-    const input = outdent`
+    const input = heredoc`
       = Document Title
 
       The title of this document is {doctitle}.
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Document Title
 
       The title of this document is Document Title.
@@ -35,13 +35,13 @@ describe('downdoc()', () => {
   })
 
   it('should discard author line with single author', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
       Doc Writer <doc@example.org>
 
       Body written by {author}.
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       Body written by Doc Writer.
@@ -50,13 +50,13 @@ describe('downdoc()', () => {
   })
 
   it('should discard author line with multiple authors', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
       Doc Writer <doc@example.org>; Junior Écrivain <jr@example.org>
 
       Body written by {authors}.
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       Body written by Doc Writer, Junior Écrivain.
@@ -65,7 +65,7 @@ describe('downdoc()', () => {
   })
 
   it('should convert section titles', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
 
       == Level 1
@@ -80,7 +80,7 @@ describe('downdoc()', () => {
 
       == Another Level 1
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       ## Level 1
@@ -99,14 +99,14 @@ describe('downdoc()', () => {
   })
 
   it('should remove attribute entries found in document header', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
       :foo: bar
       :yin: yang
 
       Body
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       Body
@@ -115,7 +115,7 @@ describe('downdoc()', () => {
   })
 
   it('should remove attribute entries found in body', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
 
       before
@@ -124,7 +124,7 @@ describe('downdoc()', () => {
 
       after
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       before
@@ -135,13 +135,13 @@ describe('downdoc()', () => {
   })
 
   it('should substitute attribute reference', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
       :project-name: ACME
 
       The name of this project is {project-name}.
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       The name of this project is ACME.
@@ -150,7 +150,7 @@ describe('downdoc()', () => {
   })
 
   it('should substitute attribute reference in value of attribute entry', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
       :project-slug: acme
       :url-org: https://example.org
@@ -158,7 +158,7 @@ describe('downdoc()', () => {
 
       The URL for this project is {url-project}.
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       The URL for this project is https://example.org/acme.
@@ -167,14 +167,14 @@ describe('downdoc()', () => {
   })
 
   it('should substitute multiple attribute references in same line', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
       :author-1: Jim
       :author-2: Jane
 
       This project was created by {author-1} and {author-2}.
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       This project was created by Jim and Jane.
@@ -183,13 +183,13 @@ describe('downdoc()', () => {
   })
 
   it('should set value of attribute entry to empty string if value is not specified', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
       :empty-string:
 
       foo{empty-string}bar
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       foobar
@@ -198,12 +198,12 @@ describe('downdoc()', () => {
   })
 
   it('should skip unresolved attribute reference', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
 
       This project is named {unknown}.
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       This project is named {unknown}.
@@ -212,7 +212,7 @@ describe('downdoc()', () => {
   })
 
   it('should expand ifdef enclosure on attribute entry in header for defined attribute', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
       :project-handle: downdoc
       ifdef::project-handle[:url-project: https://example.org/{project-handle}]
@@ -220,7 +220,7 @@ describe('downdoc()', () => {
       This project is named {project-handle}.
       The URL of the project is {url-project}.
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       This project is named downdoc.
@@ -230,13 +230,13 @@ describe('downdoc()', () => {
   })
 
   it('should skip ifdef enclosure on attribute entry in header for undefined attribute', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
       ifdef::env-github[:toc-title: Contents]
 
       {toc-title}
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       {toc-title}
@@ -245,7 +245,7 @@ describe('downdoc()', () => {
   })
 
   it('should expand ifndef enclosure on attribute entry in header for undefined attribute', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
       ifndef::project-handle[:project-handle: downdoc]
       :url-project: https://example.org/{project-handle}
@@ -253,7 +253,7 @@ describe('downdoc()', () => {
       This project is named {project-handle}.
       The URL of the project is {url-project}.
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       This project is named downdoc.
@@ -263,7 +263,7 @@ describe('downdoc()', () => {
   })
 
   it('should skip ifndef enclosure on attribute entry in header for defined attribute', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
       :project-handle: downdoc
       ifndef::project-handle[:project-handle: foobar]
@@ -272,7 +272,7 @@ describe('downdoc()', () => {
       This project is named {project-handle}.
       The URL of the project is {url-project}.
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       This project is named downdoc.
@@ -282,12 +282,12 @@ describe('downdoc()', () => {
   })
 
   it('should convert URL macro', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
 
       These tests are run using https://mochajs.org[Mocha].
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       These tests are run using [Mocha](https://mochajs.org).
@@ -296,13 +296,13 @@ describe('downdoc()', () => {
   })
 
   it('should convert URL macro defined using attribute reference', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
       :url-mocha: https://mochajs.org
 
       These tests are run using {url-mocha}[Mocha].
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       These tests are run using [Mocha](https://mochajs.org).
@@ -311,12 +311,12 @@ describe('downdoc()', () => {
   })
 
   it('should convert link macro to relative file', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
 
       See link:LICENSE[LICENSE] or link:LICENSE[] to find the license text.
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       See [LICENSE](LICENSE) or [LICENSE](LICENSE) to find the license text.
@@ -325,12 +325,12 @@ describe('downdoc()', () => {
   })
 
   it('should convert URL macro with link macro prefix', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
 
       These tests are run using link:https://mochajs.org[Mocha].
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       These tests are run using [Mocha](https://mochajs.org).
@@ -339,12 +339,12 @@ describe('downdoc()', () => {
   })
 
   it('should convert remote image', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
 
       * image:https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit/Assets/PNG/FR.png[fr]
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       * ![fr](https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit/Assets/PNG/FR.png)
@@ -353,12 +353,12 @@ describe('downdoc()', () => {
   })
 
   it('should convert bold formatting', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
 
       You *really* need to check *this* out!
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       You **really** need to check **this** out!
@@ -367,12 +367,12 @@ describe('downdoc()', () => {
   })
 
   it('should convert italic formatting', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
 
       This is _so_ incredibly _easy_.
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       This is *so* incredibly *easy*.
@@ -381,12 +381,12 @@ describe('downdoc()', () => {
   })
 
   it('should convert monospace formatting', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
 
       A boolean value can be \`true\` or \`false\`.
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       A boolean value can be \`true\` or \`false\`.
@@ -395,12 +395,12 @@ describe('downdoc()', () => {
   })
 
   it('should honor backslash at start of monospace formatting', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
 
       Visit \`\\http://localhost:8080\` in your browser to see a preview.
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       Visit \`http://localhost:8080\` in your browser to see a preview.
@@ -409,12 +409,12 @@ describe('downdoc()', () => {
   })
 
   it('should drop attribute list in front of formatted text', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
 
       Use downdoc to convert [.path]_README.adoc_ to [.path]_README.md_ *before* publishing.
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       Use downdoc to convert *README.adoc* to *README.md* **before** publishing.
@@ -423,13 +423,13 @@ describe('downdoc()', () => {
   })
 
   it('should drop block attribute list', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
 
       [.lead]
       Lead paragraph.
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       Lead paragraph.
@@ -438,12 +438,12 @@ describe('downdoc()', () => {
   })
 
   it('should not drop line that starts with formatting text with attribute list', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
 
       [.path]_README.adoc_ contains all the essential information.
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       *README.adoc* contains all the essential information.
@@ -452,7 +452,7 @@ describe('downdoc()', () => {
   })
 
   it('should convert admonitions', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
 
       NOTE: Remember the milk.
@@ -465,7 +465,7 @@ describe('downdoc()', () => {
 
       WARNING: The software you're about to use has not been tested.
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       📌 **NOTE:** Remember the milk.
@@ -482,7 +482,7 @@ describe('downdoc()', () => {
   })
 
   it('should retain Markdown-style blockquotes', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
 
       > Roads?
@@ -494,7 +494,7 @@ describe('downdoc()', () => {
       > And away we go!
     `
 
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       > Roads?
@@ -509,7 +509,7 @@ describe('downdoc()', () => {
   })
 
   it('should convert literal paragraph', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
 
       beginning
@@ -523,7 +523,7 @@ describe('downdoc()', () => {
 
       end
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       beginning
@@ -547,7 +547,7 @@ describe('downdoc()', () => {
   })
 
   it('should convert source block with language', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
 
       [,js]
@@ -556,7 +556,7 @@ describe('downdoc()', () => {
       console.log(downdoc('= Document Title'))
       ----
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       \`\`\`js
@@ -568,7 +568,7 @@ describe('downdoc()', () => {
   })
 
   it('should convert source block without language', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
 
       [source]
@@ -577,7 +577,7 @@ describe('downdoc()', () => {
       /node_modules/
       ----
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       \`\`\`
@@ -589,7 +589,7 @@ describe('downdoc()', () => {
   })
 
   it('should convert listing block', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
 
       ----
@@ -599,7 +599,7 @@ describe('downdoc()', () => {
           file.js
       ----
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       \`\`\`
@@ -613,7 +613,7 @@ describe('downdoc()', () => {
   })
 
   it('should not substitute text in a verbatim block', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
       :project-name: ACME
 
@@ -626,7 +626,7 @@ describe('downdoc()', () => {
 
       {project-name} is awesome.
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       The name of the project is ACME.
@@ -641,7 +641,7 @@ describe('downdoc()', () => {
   })
 
   it('should not process line-oriented syntax inside verbatim block', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
 
       [,asciidoc]
@@ -659,7 +659,7 @@ describe('downdoc()', () => {
 
       Isn't AsciiDoc grand?
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       \`\`\`asciidoc
@@ -680,7 +680,7 @@ describe('downdoc()', () => {
   })
 
   it('should honor subs=+attributes on source block', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
       :url-repo: https://github.com/octocat/Spoon-Knife
 
@@ -689,7 +689,7 @@ describe('downdoc()', () => {
       $ git clone {url-repo}
       ----
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       \`\`\`console
@@ -700,7 +700,7 @@ describe('downdoc()', () => {
   })
 
   it('should honor subs=attributes+ on source block', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
       :url-repo: https://github.com/octocat/Spoon-Knife
 
@@ -709,7 +709,7 @@ describe('downdoc()', () => {
       $ git clone {url-repo}
       ----
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       \`\`\`console
@@ -720,7 +720,7 @@ describe('downdoc()', () => {
   })
 
   it('should convert block title on source block', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
 
       .Clone the repository
@@ -729,7 +729,7 @@ describe('downdoc()', () => {
       $ git clone https://github.com/octocat/Spoon-Knife
       ----
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       **Clone the repository**
@@ -741,7 +741,7 @@ describe('downdoc()', () => {
   })
 
   it('should convert ordered list to numbered list', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
 
       . one
@@ -752,7 +752,7 @@ describe('downdoc()', () => {
 
       . and one
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       1. one
@@ -767,12 +767,12 @@ describe('downdoc()', () => {
   })
 
   it('should convert colist to numbered list', () => {
-    const input = outdent`
+    const input = heredoc`
       = Document Title
 
       <1> Prints the number 1.
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Document Title
 
       1. Prints the number 1.
@@ -781,7 +781,7 @@ describe('downdoc()', () => {
   })
 
   it('should replace conums in source block with circled numbers', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
 
       [,js]
@@ -793,7 +793,7 @@ describe('downdoc()', () => {
       <1> Enables strict mode.
       <2> Requires the built-in fs module.
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       \`\`\`js
@@ -808,7 +808,7 @@ describe('downdoc()', () => {
   })
 
   it('should skip comment lines and blocks', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
       ////
       ignored
@@ -828,7 +828,7 @@ describe('downdoc()', () => {
       More summary
       //fin
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       Summary
@@ -839,7 +839,7 @@ describe('downdoc()', () => {
   })
 
   it('should skip table (for now)', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
 
       Here's a list of configuration options.
@@ -853,7 +853,7 @@ describe('downdoc()', () => {
 
       That's all.
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       Here's a list of configuration options.
@@ -864,7 +864,7 @@ describe('downdoc()', () => {
   })
 
   it('should keep contents of ifdef directive block if attribute is set', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
       :badges:
 
@@ -874,7 +874,7 @@ describe('downdoc()', () => {
 
       Summary
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       ![npm version](https://img.shields.io/npm/v/downdoc)
@@ -885,7 +885,7 @@ describe('downdoc()', () => {
   })
 
   it('should keep contents of ifndef directive block if attribute is not set', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
 
       ifndef::author[]
@@ -894,7 +894,7 @@ describe('downdoc()', () => {
 
       Summary
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       There is no author.
@@ -905,7 +905,7 @@ describe('downdoc()', () => {
   })
 
   it('should skip ifdef directive block if attribute is not set and collapse empty lines', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
 
       ifdef::not-set[]
@@ -914,7 +914,7 @@ describe('downdoc()', () => {
 
       Summary
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       Summary
@@ -923,7 +923,7 @@ describe('downdoc()', () => {
   })
 
   it('should skip ifndef directive block if attribute is set and collapse empty lines', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
       Author Name
       ifdef::author[:attribution: written by {author}]
@@ -935,7 +935,7 @@ describe('downdoc()', () => {
 
       Summary {attribution}.
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       Summary written by Author Name.
@@ -944,13 +944,13 @@ describe('downdoc()', () => {
   })
 
   it('should skip single line conditional directive if condition is false', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
 
       ifdef::flag[ignored line]
       Summary
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       Summary
@@ -959,13 +959,13 @@ describe('downdoc()', () => {
   })
 
   it('should keep and process text from single line conditional directive if condition is true', () => {
-    const input = outdent`
+    const input = heredoc`
       = Title
       :foo: bar
 
       ifndef::bar[{foo}]
     `
-    const expected = outdent`
+    const expected = heredoc`
       # Title
 
       bar

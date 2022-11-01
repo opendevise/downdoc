@@ -46,7 +46,6 @@
     "eslint-config-standard": "~17.0",
     "mocha": "~10.1",
     "nyc": "~15.1",
-    "outdent": "0.8.0",
     "prettier-eslint": "~15.0"
   },
   "nyc": {
