@@ -134,6 +134,21 @@ describe('downdoc()', () => {
     expect(downdoc(input)).to.equal(expected)
   })
 
+  it('should unescape escaped attribute references', () => {
+    const input = heredoc`
+      = Title
+
+      Use the endpoint \`/repos/\\{owner}/\\{repo}\` to retrieve information about a repository.
+    `
+    expect(input).to.include('\\')
+    const expected = heredoc`
+      # Title
+
+      Use the endpoint \`/repos/{owner}/{repo}\` to retrieve information about a repository.
+    `
+    expect(downdoc(input)).to.equal(expected)
+  })
+
   it('should substitute attribute reference', () => {
     const input = heredoc`
       = Title
