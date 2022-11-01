@@ -6,16 +6,26 @@ const downdoc = require('downdoc')
 
 describe('downdoc()', () => {
   it('should convert document with only body', () => {
-    const input = 'body'
+    const input = 'Body.'
     expect(downdoc(input)).to.equal(input)
   })
 
-  it('should convert document title', () => {
+  it('should convert document with only document title', () => {
+    const input = '= Title'
+    const expected = '# Title'
+    expect(downdoc(input)).to.equal(expected)
+  })
+
+  it('should convert document with header and body', () => {
     const input = heredoc`
       = Title
+
+      Body.
     `
     const expected = heredoc`
       # Title
+
+      Body.
     `
     expect(downdoc(input)).to.equal(expected)
   })
