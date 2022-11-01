@@ -98,7 +98,7 @@ describe('downdoc()', () => {
     expect(downdoc(input)).to.equal(expected)
   })
 
-  it('should remove attribute entries found in document header', () => {
+  it('should process and remove attribute entries found in document header', () => {
     const input = heredoc`
       = Title
       :foo: bar
@@ -130,6 +130,22 @@ describe('downdoc()', () => {
       before
 
       after
+    `
+    expect(downdoc(input)).to.equal(expected)
+  })
+
+  it('should remove toc macro', () => {
+    const input = heredoc`
+      = Title
+
+      toc::[]
+
+      == First Section
+    `
+    const expected = heredoc`
+      # Title
+
+      ## First Section
     `
     expect(downdoc(input)).to.equal(expected)
   })
