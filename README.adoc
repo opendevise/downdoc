@@ -34,14 +34,16 @@ Here's a rough list of the syntax it current handles:
 * document attribute references
 * section titles
 * block titles
-* text formatting (bold, italic, monospace)
+* formatted text (bold, italic, monospace)
 * ordered, unordered, and callout lists
 * link and URL macros
 * image macros
 * listing and source blocks
-* attribute subs in verbatim blocks
+* callout numbers in verbatim blocks
+* attribute references in verbatim blocks (when attributes sub is enabled)
 * literal paragraphs
 * admonition paragraphs
+* Markdown-style blockquotes
 * ifdef and ifndef preprocessor conditionals
 * comment lines and blocks
 * tables (dropped)
