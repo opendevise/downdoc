@@ -765,12 +765,12 @@ describe('downdoc()', () => {
     expect(downdoc(input)).to.equal(expected)
   })
 
-  it('should honor subs=attributes+ on source block', () => {
+  it('should honor subs="attributes+" on source block', () => {
     const input = heredoc`
       = Title
       :url-repo: https://github.com/octocat/Spoon-Knife
 
-      [,console,subs=attributes+]
+      [,console,subs="attributes+"]
       ----
       $ git clone {url-repo}
       ----
