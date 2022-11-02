@@ -114,7 +114,7 @@ describe('downdoc()', () => {
 
       == First Section
 
-      Go to the <<second-section,next section>> or skip to <<#fin,the end>>.
+      Go to the <<second-section,next section>> or skip to <<#fin, the end>>.
 
       == Second Section
 
@@ -138,6 +138,134 @@ describe('downdoc()', () => {
       ## Fin
 
       The end.
+    `
+    expect(downdoc(input)).to.equal(expected)
+  })
+
+  it('should fill in text for backward xref', () => {
+    const input = heredoc`
+      = HOWTO
+
+      You are reading this <<howto>>.
+
+      == System Requirements
+
+      A computer connected to the internet.
+
+      == Usage
+
+      Be sure you have read the <<system-requirements>>.
+    `
+    const expected = heredoc`
+      # HOWTO
+
+      You are reading this [HOWTO](#howto).
+
+      ## System Requirements
+
+      A computer connected to the internet.
+
+      ## Usage
+
+      Be sure you have read the [System Requirements](#system-requirements).
+    `
+    expect(downdoc(input)).to.equal(expected)
+  })
+
+  it('should fill in text for forward xref', () => {
+    const input = heredoc`
+      = Title
+
+      == System Requirements
+
+      A computer connected to the internet.
+      Once you have that, move on to <<usage>>.
+
+      == Usage
+
+      Let's get started.
+    `
+    const expected = heredoc`
+      # Title
+
+      ## System Requirements
+
+      A computer connected to the internet.
+      Once you have that, move on to [Usage](#usage).
+
+      ## Usage
+
+      Let's get started.
+    `
+    expect(downdoc(input)).to.equal(expected)
+  })
+
+  it('should rewrite explicit ID to auto-generated ID', () => {
+    const input = heredoc`
+      = HOWTO
+
+      You'll learn how to <<build>> and how to xref:deploy[].
+
+      [#build]
+      == Build Your Site
+
+      Instructions go here.
+
+      [[deploy]]
+      == Deploy Your Site
+
+      Instructions go here.
+    `
+    const expected = heredoc`
+      # HOWTO
+
+      You'll learn how to [Build Your Site](#build-your-site) and how to [Deploy Your Site](#deploy-your-site).
+
+      ## Build Your Site
+
+      Instructions go here.
+
+      ## Deploy Your Site
+
+      Instructions go here.
+    `
+    expect(downdoc(input)).to.equal(expected)
+  })
+
+  it('should replace attribute reference in title of internal reference', () => {
+    const input = heredoc`
+      = Title
+      :product: ACME
+
+      Let's <<get-started>>.
+
+      [[get-started]]
+      == Get Started with {product}
+
+      Let's go!
+    `
+    const expected = heredoc`
+      # Title
+
+      Let's [Get Started with ACME](#get-started-with-acme).
+
+      ## Get Started with ACME
+
+      Let's go!
+    `
+    expect(downdoc(input)).to.equal(expected)
+  })
+
+  it('should use ID as text for unresolved xref', () => {
+    const input = heredoc`
+      = Title
+
+      Refer to <<webserver-instructions>> to set up your webserver.
+    `
+    const expected = heredoc`
+      # Title
+
+      Refer to [webserver-instructions](#webserver-instructions) to set up your webserver.
     `
     expect(downdoc(input)).to.equal(expected)
   })
