@@ -442,7 +442,7 @@ describe('downdoc()', () => {
     expect(downdoc(input)).to.equal(expected)
   })
 
-  it('should convert bold formatting in ordered list item', () => {
+  it('should convert bold formatting in unordered list item', () => {
     const input = heredoc`
       * be *bold*
     `
@@ -504,6 +504,21 @@ describe('downdoc()', () => {
       # Title
 
       Use downdoc to convert *README.adoc* to *README.md* **before** publishing.
+    `
+    expect(downdoc(input)).to.equal(expected)
+  })
+
+  it('should convert formatted text before replacing attribute references', () => {
+    const input = heredoc`
+      = Title
+      :italic: *italic*
+
+      {italic}
+    `
+    const expected = heredoc`
+      # Title
+
+      *italic*
     `
     expect(downdoc(input)).to.equal(expected)
   })
