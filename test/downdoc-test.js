@@ -414,7 +414,7 @@ describe('downdoc()', () => {
     expect(downdoc(input)).to.equal(expected)
   })
 
-  it('should convert remote image', () => {
+  it('should convert remote inline image', () => {
     const input = heredoc`
       = Title
 
@@ -424,6 +424,20 @@ describe('downdoc()', () => {
       # Title
 
       * ![fr](https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit/Assets/PNG/FR.png)
+    `
+    expect(downdoc(input)).to.equal(expected)
+  })
+
+  it('should convert remote block image', () => {
+    const input = heredoc`
+      = Title
+
+      image::https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit/Assets/PNG/FR.png[fr,32]
+    `
+    const expected = heredoc`
+      # Title
+
+      ![fr](https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit/Assets/PNG/FR.png)
     `
     expect(downdoc(input)).to.equal(expected)
   })
