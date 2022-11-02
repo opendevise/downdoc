@@ -432,12 +432,22 @@ describe('downdoc()', () => {
     const input = heredoc`
       = Title
 
-      You *really* need to check *this* out!
+      You *really* need to check *this* * out!
     `
     const expected = heredoc`
       # Title
 
-      You **really** need to check **this** out!
+      You **really** need to check **this** * out!
+    `
+    expect(downdoc(input)).to.equal(expected)
+  })
+
+  it('should convert bold formatting in ordered list item', () => {
+    const input = heredoc`
+      * be *bold*
+    `
+    const expected = heredoc`
+      * be **bold**
     `
     expect(downdoc(input)).to.equal(expected)
   })
@@ -446,12 +456,12 @@ describe('downdoc()', () => {
     const input = heredoc`
       = Title
 
-      This is _so_ incredibly _easy_.
+      The _ is _so_ incredibly _useful_ when making snake_case.
     `
     const expected = heredoc`
       # Title
 
-      This is *so* incredibly *easy*.
+      The _ is *so* incredibly *useful* when making snake_case.
     `
     expect(downdoc(input)).to.equal(expected)
   })
