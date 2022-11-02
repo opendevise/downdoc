@@ -108,6 +108,40 @@ describe('downdoc()', () => {
     expect(downdoc(input)).to.equal(expected)
   })
 
+  it('should convert internal xrefs', () => {
+    const input = heredoc`
+      = Title
+
+      == First Section
+
+      Go to the <<second-section,next section>> or skip to <<#fin,the end>>.
+
+      == Second Section
+
+      Go to the xref:first-section[previous section] or continue to xref:#fin[the end].
+
+      == Fin
+
+      The end.
+    `
+    const expected = heredoc`
+      # Title
+
+      ## First Section
+
+      Go to the [next section](#second-section) or skip to [the end](#fin).
+
+      ## Second Section
+
+      Go to the [previous section](#first-section) or continue to [the end](#fin).
+
+      ## Fin
+
+      The end.
+    `
+    expect(downdoc(input)).to.equal(expected)
+  })
+
   it('should process and remove attribute entries found in document header', () => {
     const input = heredoc`
       = Title
