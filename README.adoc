@@ -5,7 +5,7 @@ ifdef::env-github[]
 :toclevels: 1
 endif::[]
 
-> Quickly converts AsciiDoc to Markdown
+> Hastily converts AsciiDoc to Markdown.
 
 == What is downdoc?
 
@@ -14,7 +14,8 @@ But you're a sensible developer who wants to maintain your README in AsciiDoc.
 Enter downdoc.
 
 The downdoc package provides a function and CLI to down-convert AsciiDoc to Markdown.
-The purpose of this tool is to prepare an AsciiDoc README for npm packaging.
+The intent of this tool is to prepare an AsciiDoc README for npm packaging.
+It's designed to be just good enough to get the job done.
 
 Typically, you convert the README from Markdown to AsciiDoc during the _prepublishOnly_ life cycle event.
 Then you restore the original README during the _postpublish_ life cycle event.
