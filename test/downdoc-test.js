@@ -747,8 +747,9 @@ describe('downdoc()', () => {
   it('should convert admonitions', () => {
     const input = heredoc`
       = Title
+      :milk-type: oat
 
-      NOTE: Remember the milk.
+      NOTE: Remember the {milk-type} milk.
 
       IMPORTANT: Don't forget the children!
 
@@ -761,7 +762,7 @@ describe('downdoc()', () => {
     const expected = heredoc`
       # Title
 
-      📌 **NOTE:** Remember the milk.
+      📌 **NOTE:** Remember the oat milk.
 
       ❗ **IMPORTANT:** Don't forget the children!
 
@@ -770,6 +771,24 @@ describe('downdoc()', () => {
       🔥 **CAUTION:** Slippery when wet.
 
       ⚠️ **WARNING:** The software you're about to use has not been tested.
+    `
+    expect(downdoc(input)).to.equal(expected)
+  })
+
+  it('should only replace admonition label at start of paragraph', () => {
+    const input = heredoc`
+      = Title
+
+      TIP: Look
+      for the
+      NOTE: prefix.
+    `
+    const expected = heredoc`
+      # Title
+
+      💡 **TIP:** Look
+      for the
+      NOTE: prefix.
     `
     expect(downdoc(input)).to.equal(expected)
   })
