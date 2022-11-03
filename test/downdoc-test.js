@@ -270,6 +270,22 @@ describe('downdoc()', () => {
     expect(downdoc(input)).to.equal(expected)
   })
 
+  it('should not prepend # to target of external xref', () => {
+    const input = heredoc`
+      = Title
+
+      Please refer to the <<contributing.adoc#,contributing guide>>.
+      The xref:contribution.adoc[contribution guide] will teach you how to <<contribution.adoc#build-project,build the project>>.
+    `
+    const expected = heredoc`
+      # Title
+
+      Please refer to the [contributing guide](contributing.adoc).
+      The [contribution guide](contribution.adoc) will teach you how to [build the project](contribution.adoc#build-project).
+    `
+    expect(downdoc(input)).to.equal(expected)
+  })
+
   it('should process and remove attribute entries found in document header', () => {
     const input = heredoc`
       = Title
