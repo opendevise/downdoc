@@ -28,7 +28,8 @@
     "downdoc": "bin/downdoc"
   },
   "exports": {
-    ".": "./lib/index.js"
+    ".": "./lib/index.js",
+    "./package.json": "./package.json"
   },
   "imports": {
     "#cli": "./lib/cli.js",
