@@ -32,8 +32,7 @@
     "./package.json": "./package.json"
   },
   "imports": {
-    "#cli": "./lib/cli.js",
-    "#util": "./lib/util.js"
+    "#cli": "./lib/cli.js"
   },
   "files": [
     "lib"
