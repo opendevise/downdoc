@@ -25,7 +25,7 @@ function logCoverageReportPath () {
   const coverageReportRelpath = 'reports/lcov-report/index.html'
   const coverageReportURL = CI_JOB_ID
     ? `https://gitlab.com/${CI_PROJECT_PATH}/-/jobs/${CI_JOB_ID}/artifacts/file/${coverageReportRelpath}`
-    : require('url').pathToFileURL(coverageReportRelpath)
+    : require('node:url').pathToFileURL(coverageReportRelpath)
   console.log(`Coverage report: ${coverageReportURL}`)
 }
 

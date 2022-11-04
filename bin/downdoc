@@ -3,7 +3,7 @@
 'use strict'
 
 const downdoc = require('..')
-const fs = require('fs')
+const fs = require('node:fs')
 
 const inputFile = process.argv[2]
 const outputFile = inputFile.replace(/\.adoc$/, '.md')
