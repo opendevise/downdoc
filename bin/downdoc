@@ -4,7 +4,7 @@
 
 const downdoc = require('downdoc')
 const fs = require('node:fs')
-const parseArgs = require('node:util').parseArgs || require('#util').parseArgs
+const { parseArgs = require('#util').parseArgs } = require('node:util')
 
 const { values, positionals } = parseArgs({ options: {}, strict: false })
 
