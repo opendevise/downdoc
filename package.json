@@ -31,6 +31,7 @@
     ".": "./lib/index.js"
   },
   "imports": {
+    "#cli": "./lib/cli.js",
     "#util": "./lib/util.js"
   },
   "files": [

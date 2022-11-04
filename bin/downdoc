@@ -2,13 +2,4 @@
 
 'use strict'
 
-const downdoc = require('downdoc')
-const fs = require('node:fs')
-const { parseArgs = require('#util').parseArgs } = require('node:util')
-
-const { values, positionals } = parseArgs({ options: {}, strict: false })
-
-const inputFile = positionals[0]
-const outputFile = inputFile.replace(/\.adoc$/, '.md')
-
-fs.writeFileSync(outputFile, downdoc(fs.readFileSync(inputFile, 'utf8')) + '\n', 'utf8')
+require('#cli')()
