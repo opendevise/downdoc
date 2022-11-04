@@ -30,6 +30,9 @@
   "exports": {
     ".": "./lib/index.js"
   },
+  "imports": {
+    "#util": "./lib/util.js"
+  },
   "files": [
     "lib"
   ],
