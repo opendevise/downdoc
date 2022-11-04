@@ -36,6 +36,9 @@
   "files": [
     "lib"
   ],
+  "workspaces": [
+    "."
+  ],
   "keywords": [
     "asciidoc",
     "markdown",
