@@ -79,6 +79,13 @@ $ npx downdoc README.adoc
 The `downdoc` command automatically generates a Markdown file.
 The Markdown file has the same name as the AsciiDoc file with the file extension changed to `.md`.
 
+You can instruct the command to write to a different file using the `-o` (or `--output`) option.
+
+[,console]
+----
+$ npx downdoc -o out.md README.adoc
+----
+
 === API
 
 [,js]
@@ -89,7 +96,7 @@ const { promises: fsp } = require('fs')
 ;(async () => {
   await fsp
     .readFile('README.adoc', 'utf8')
-    .then((asciidoc) => fsp.writeFile('README.md', downdoc(asciidoc)))
+    .then((asciidoc) => fsp.writeFile('README.md', downdoc(asciidoc) + '\n', 'utf8'))
 })()
 ----
 
