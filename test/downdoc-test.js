@@ -1043,7 +1043,7 @@ describe('downdoc()', () => {
         ----
         'use strict' // <1>
 
-        const fs = require('fs') // <2>
+        const fs = require('node:fs') // <2>
         ----
         <1> Enables strict mode.
         <2> Requires the built-in fs module.
@@ -1054,7 +1054,7 @@ describe('downdoc()', () => {
         \`\`\`js
         'use strict' // ❶
 
-        const fs = require('fs') // ❷
+        const fs = require('node:fs') // ❷
         \`\`\`
         1. Enables strict mode.
         2. Requires the built-in fs module.
