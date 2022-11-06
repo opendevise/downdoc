@@ -41,7 +41,8 @@ Here's a rough list of the syntax it current handles:
 * internal xrefs (assumes `:idprefix:` and `:idseparator: -` attributes are set on document)
 * auto-generated text for internal xrefs
 * block and inline image macros (target must be a URL)
-* listing and source blocks
+* listing and source blocks with optional language
+* diagram blocks (listing block with diagram dialect)
 * callout numbers (1-9) in verbatim blocks
 * attribute references in verbatim blocks (when attributes sub is enabled)
 * literal paragraphs
