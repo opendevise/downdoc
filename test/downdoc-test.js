@@ -322,6 +322,26 @@ describe('downdoc()', () => {
     expect(downdoc(input)).to.equal(expected)
   })
 
+  it('should allow seed attributes to be passed in to API function', () => {
+    const input = heredoc`
+      = Title
+      :attribute-from-document: from document
+      :attribute-from-api: from document
+
+      {attribute-from-api}
+
+      {attribute-from-document}
+    `
+    const expected = heredoc`
+      # Title
+
+      from API
+
+      from document
+    `
+    expect(downdoc(input, { attributes: { 'attribute-from-api': 'from API' } })).to.equal(expected)
+  })
+
   it('should remove toc macro', () => {
     const input = heredoc`
       = Title
