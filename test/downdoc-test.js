@@ -801,6 +801,32 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should promote literal paragraph that starts with command prompt to a console code block', () => {
+      const input = heredoc`
+        Example:
+
+         $ npx downdoc README.adoc
+
+        Get more information:
+
+         $ npx downdoc -h
+      `
+      const expected = heredoc`
+        Example:
+
+        \`\`\`console
+        $ npx downdoc README.adoc
+        \`\`\`
+
+        Get more information:
+
+        \`\`\`console
+        $ npx downdoc -h
+        \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert source block with language', () => {
       const input = heredoc`
         = Title
