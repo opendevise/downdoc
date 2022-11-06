@@ -886,6 +886,27 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should convert literal block with style (diagram)', () => {
+      const input = heredoc`
+        = Title
+
+        [plantuml]
+        ....
+        start;
+        stop;
+        ....
+      `
+      const expected = heredoc`
+        # Title
+
+        \`\`\`plantuml
+        start;
+        stop;
+        \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should not substitute text in a verbatim block', () => {
       const input = heredoc`
         = Title
