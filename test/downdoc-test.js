@@ -667,6 +667,20 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should convert local inline image', () => {
+      const input = heredoc`
+        = Title
+
+        When you see image:green-bar.png[green bar], you know the tests have passed!
+      `
+      const expected = heredoc`
+        # Title
+
+        When you see ![green bar](green-bar.png), you know the tests have passed!
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert remote inline image', () => {
       const input = heredoc`
         = Title
@@ -677,6 +691,24 @@ describe('downdoc()', () => {
         # Title
 
         * ![fr](https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit/Assets/PNG/FR.png)
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert local block image', () => {
+      const input = heredoc`
+        = Title
+
+        Here's a screenshot of the application in action.
+
+        image::screenshot.png[Screenshot]
+      `
+      const expected = heredoc`
+        # Title
+
+        Here's a screenshot of the application in action.
+
+        ![Screenshot](screenshot.png)
       `
       expect(downdoc(input)).to.equal(expected)
     })
