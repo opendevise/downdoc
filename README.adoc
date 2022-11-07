@@ -40,7 +40,7 @@ Here's a rough list of the syntax it current handles:
 * link and URL macros
 * internal xrefs (assumes `:idprefix:` and `:idseparator: -` attributes are set on document)
 * auto-generated text for internal xrefs
-* block and inline image macros (target must be a URL)
+* block and inline image macros
 * listing and source blocks with optional language
 * diagram blocks (listing block with diagram dialect)
 * callout numbers (1-9) in verbatim blocks
