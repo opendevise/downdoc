@@ -653,6 +653,20 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should not convert bare URL', () => {
+      const input = heredoc`
+        = Title
+
+        https://example.org is a domain for tests, like this one.
+      `
+      const expected = heredoc`
+        # Title
+
+        https://example.org is a domain for tests, like this one.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert remote inline image', () => {
       const input = heredoc`
         = Title
