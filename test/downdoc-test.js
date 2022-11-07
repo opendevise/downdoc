@@ -540,6 +540,31 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should preserve escaped square brackets in xref text', () => {
+      const input = heredoc`
+        = Title
+        :idprefix:
+        :idseparator: -
+
+        The next section covers the xref:array-of-strings[String\\[\\] type].
+
+        [#array-of-strings]
+        == Array of strings
+
+        A type that represents multiple string values.
+      `
+      const expected = heredoc`
+        # Title
+
+        The next section covers the [String\\[\\] type](#array-of-strings).
+
+        ## Array of strings
+
+        A type that represents multiple string values.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should replace attribute reference in title of internal reference', () => {
       const input = heredoc`
         = Title
@@ -653,6 +678,20 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should preserve escaped square brackets in link text', () => {
+      const input = heredoc`
+        = Title
+
+        The https://example.org[toc::\\[\\]] macro is not supported in Markdown.
+      `
+      const expected = heredoc`
+        # Title
+
+        The [toc::\\[\\]](https://example.org) macro is not supported in Markdown.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should not convert bare URL', () => {
       const input = heredoc`
         = Title
@@ -723,6 +762,20 @@ describe('downdoc()', () => {
         # Title
 
         ![fr](https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit/Assets/PNG/FR.png)
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should preserve escaped square brackets in image alt text', () => {
+      const input = heredoc`
+        = Title
+
+        image::square-brackets.png[The \\[ and \\] brackets]
+      `
+      const expected = heredoc`
+        # Title
+
+        ![The \\[ and \\] brackets](square-brackets.png)
       `
       expect(downdoc(input)).to.equal(expected)
     })
