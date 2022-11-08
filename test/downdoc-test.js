@@ -779,6 +779,29 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should not match macro whose target contains backslash characters', () => {
+      const input = heredoc`
+        = Title
+
+        Learn more about the xref:image-macro[image:\\[\\] macro].
+
+        [#image-macro]
+        == Image macro
+
+        Similar to the xref:\\[\\] macro, but for images. The text between [ and ] is the alt text.
+      `
+      const expected = heredoc`
+        # Title
+
+        Learn more about the [image:\\[\\] macro](#image-macro).
+
+        ## Image macro
+
+        Similar to the xref:\\[\\] macro, but for images. The text between [ and ] is the alt text.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
   })
 
   describe('admonitions', () => {
