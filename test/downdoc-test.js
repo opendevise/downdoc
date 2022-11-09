@@ -35,6 +35,19 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should convert document with body directly adjacent to header', () => {
+      const input = heredoc`
+        = Title
+        Body.
+      `
+      const expected = heredoc`
+        # Title
+
+        Body.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
   })
 
   describe('document header', () => {
@@ -82,11 +95,27 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should process and remove attribute entries found in document header', () => {
+    it('should process and remove attribute entries found in document header below doctitle', () => {
       const input = heredoc`
         = Title
         :foo: bar
         :yin: yang
+
+        Body
+      `
+      const expected = heredoc`
+        # Title
+
+        Body
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should process and remove attribute entries found in document header above doctitle', () => {
+      const input = heredoc`
+        :foo: bar
+        :yin: yang
+        = Title
 
         Body
       `
@@ -120,8 +149,8 @@ describe('downdoc()', () => {
 
     it('should substitute attribute reference in value of attribute entry', () => {
       const input = heredoc`
-        = Title
         :project-slug: acme
+        = Title
         :url-org: https://example.org
         :url-project: {url-org}/{project-slug}
 
@@ -168,6 +197,20 @@ describe('downdoc()', () => {
         from document
       `
       expect(downdoc(input, { attributes: { 'attribute-from-api': 'from API' } })).to.equal(expected)
+    })
+
+    it('should ignore doctitle attribute set from CLI', () => {
+      const input = heredoc`
+        = Document Title
+
+        The doctitle is {doctitle}.
+      `
+      const expected = heredoc`
+        # Document Title
+
+        The doctitle is Document Title.
+      `
+      expect(downdoc(input, { attributes: { doctitle: 'Title' } })).to.equal(expected)
     })
   })
 
@@ -476,6 +519,35 @@ describe('downdoc()', () => {
         ## Usage
 
         Be sure you have read the [System Requirements](#system-requirements).
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should not fill in text for xref to doctitle without explicit ID', () => {
+      const input = heredoc`
+        = HOWTO
+
+        In this <<_howto>>, you will learn how to do stuff.
+      `
+      const expected = heredoc`
+        # HOWTO
+
+        In this [_howto](#_howto), you will learn how to do stuff.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should fill in text for xref to doctitle with explicit ID', () => {
+      const input = heredoc`
+        [#howto]
+        = HOWTO
+
+        In this <<howto>>, you will learn how to do stuff.
+      `
+      const expected = heredoc`
+        # HOWTO
+
+        In this [HOWTO](#howto), you will learn how to do stuff.
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -1356,6 +1428,7 @@ describe('downdoc()', () => {
   describe('comments', () => {
     it('should skip comment lines and blocks', () => {
       const input = heredoc`
+        // This is an AsciiDoc document.
         = Title
         ////
         ignored
@@ -1401,6 +1474,22 @@ describe('downdoc()', () => {
 
         This project is named downdoc.
         The URL of the project is https://example.org/downdoc.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should permit use of conditional directive above doctitle', () => {
+      const input = heredoc`
+        ifdef::not-set[ignore line]
+        = Title
+        :project-handle: downdoc
+
+        This project is named {project-handle}.
+      `
+      const expected = heredoc`
+        # Title
+
+        This project is named downdoc.
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -1521,7 +1610,7 @@ describe('downdoc()', () => {
         = Title
         Author Name
         ifdef::author[:attribution: written by {author}]
-        garbage
+        First paragraph.
 
         ifndef::author[]
         There is no author.
@@ -1531,6 +1620,8 @@ describe('downdoc()', () => {
       `
       const expected = heredoc`
         # Title
+
+        First paragraph.
 
         Summary written by Author Name.
       `
