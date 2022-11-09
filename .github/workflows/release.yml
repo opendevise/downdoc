@@ -24,7 +24,7 @@ jobs:
       run: npm run lint
     - name: Run tests
       run: npm test
-    - name: Setup release environment
+    - name: Set up release environment
       run: |
         echo RELEASE_VERSION=${{ github.event.inputs.release-version }} >> $GITHUB_ENV
         echo RELEASE_NPM_TOKEN=${{ secrets[format('NPM_TOKEN_{0}', github.actor)] }} >> $GITHUB_ENV
