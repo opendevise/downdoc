@@ -29,11 +29,11 @@ It's intended to be used with simple README files.
 
 Here's a rough list of the syntax it current handles:
 
-* document title (must be first line of document)
+* document title
 * author info line in document header
 * document attribute entries in document header (single-line only)
 * document attribute references
-* section titles
+* part/chapter/section titles
 * block titles
 * formatted text (bold, italic, monospace)
 * ordered, unordered, and callout lists (1-9)
