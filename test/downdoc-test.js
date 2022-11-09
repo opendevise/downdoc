@@ -39,6 +39,8 @@ describe('downdoc()', () => {
     it('should convert document with body directly adjacent to header', () => {
       const input = heredoc`
         = Title
+        > Ignored
+
         Body.
       `
       const expected = heredoc`
@@ -312,7 +314,7 @@ describe('downdoc()', () => {
   })
 
   describe('sections', () => {
-    it('should convert section titles', () => {
+    it('should convert section titles that follow doctitle', () => {
       const input = heredoc`
         = Title
 
@@ -342,6 +344,62 @@ describe('downdoc()', () => {
         content
 
         ## Another Level 1
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should process document that starts with section title', () => {
+      const input = heredoc`
+        == First Steps
+
+        Let's get started!
+      `
+      const expected = heredoc`
+        ## First Steps
+
+        Let's get started!
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert part titles', () => {
+      const input = heredoc`
+        = Title
+        :doctype: book
+
+        = First Steps
+
+        = Fundamentals
+
+        = Going Further
+      `
+      const expected = heredoc`
+        # Title
+
+        # First Steps
+
+        # Fundamentals
+
+        # Going Further
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should drop section title directly adjacent to document header', () => {
+      const input = heredoc`
+        = Title
+        == First Steps
+
+        == Fundamentals
+
+        == Going Further
+      `
+      const expected = heredoc`
+        # Title
+
+        ## Fundamentals
+
+        ## Going Further
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -1610,7 +1668,7 @@ describe('downdoc()', () => {
         = Title
         Author Name
         ifdef::author[:attribution: written by {author}]
-        First paragraph.
+        Ignored.
 
         ifndef::author[]
         There is no author.
@@ -1620,8 +1678,6 @@ describe('downdoc()', () => {
       `
       const expected = heredoc`
         # Title
-
-        First paragraph.
 
         Summary written by Author Name.
       `
