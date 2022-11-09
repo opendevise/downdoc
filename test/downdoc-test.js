@@ -1515,6 +1515,24 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should trim trailing space on result', () => {
+      const input = heredoc`
+        = Document Title
+
+        Content.
+
+        ////
+        Comments about this document.
+        ////
+      `
+      const expected = heredoc`
+        # Document Title
+
+        Content.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
   })
 
   describe('preprocessor conditionals', () => {
