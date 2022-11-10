@@ -278,7 +278,7 @@ describe('downdoc()', () => {
       const expected = heredoc`
         # Title
 
-        1. First, download the ACME installer from the https://example.org/acme[ACME website].
+        1. First, download the ACME installer from the [ACME website](https://example.org/acme).
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -313,7 +313,7 @@ describe('downdoc()', () => {
     })
   })
 
-  describe('sections', () => {
+  describe('section titles', () => {
     it('should convert section titles that follow doctitle', () => {
       const input = heredoc`
         = Title
@@ -400,6 +400,48 @@ describe('downdoc()', () => {
         ## Fundamentals
 
         ## Going Further
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+  })
+
+  describe('block titles', () => {
+    it('should convert block title on a block', () => {
+      const input = heredoc`
+        = Title
+
+        .Usage
+        ----
+        downdoc FILE
+        ----
+      `
+      const expected = heredoc`
+        # Title
+
+        **Usage**
+        \`\`\`
+        downdoc FILE
+        \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should not apply strong emphasis to block title with emphasis', () => {
+      const input = heredoc`
+        = Title
+
+        .*To make butter:*
+        . Mix ingredients
+        . Chill
+        . Whip
+      `
+      const expected = heredoc`
+        # Title
+
+        **To make butter:**
+        1. Mix ingredients
+        2. Chill
+        3. Whip
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -969,11 +1011,11 @@ describe('downdoc()', () => {
 
         IMPORTANT: Don't forget the children!
 
-        TIP: Look for the warp zone under the bridge.
+        TIP: Look for the https://en.wikipedia.org/wiki/Warp_(video_games)[warp] under the bridge.
 
         CAUTION: Slippery when wet.
 
-        WARNING: The software you're about to use has not been tested.
+        WARNING: The software you're about to use has *not* been tested.
       `
       const expected = heredoc`
         # Title
@@ -982,11 +1024,11 @@ describe('downdoc()', () => {
 
         ❗ **IMPORTANT:** Don't forget the children!
 
-        💡 **TIP:** Look for the warp zone under the bridge.
+        💡 **TIP:** Look for the [warp](https://en.wikipedia.org/wiki/Warp_(video_games)) under the bridge.
 
         🔥 **CAUTION:** Slippery when wet.
 
-        ⚠️ **WARNING:** The software you're about to use has not been tested.
+        ⚠️ **WARNING:** The software you're about to use has **not** been tested.
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -1317,27 +1359,6 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should convert block title on source block', () => {
-      const input = heredoc`
-        = Title
-
-        .Clone the repository
-        [,console]
-        ----
-        $ git clone https://github.com/octocat/Spoon-Knife
-        ----
-      `
-      const expected = heredoc`
-        # Title
-
-        **Clone the repository**
-        \`\`\`console
-        $ git clone https://github.com/octocat/Spoon-Knife
-        \`\`\`
-      `
-      expect(downdoc(input)).to.equal(expected)
-    })
-
     it('should replace conums in source block with circled numbers', () => {
       const input = heredoc`
         = Title
@@ -1387,6 +1408,7 @@ describe('downdoc()', () => {
         . one
         . two
         . three
+        . _done!_
 
         paragraph
 
@@ -1398,6 +1420,7 @@ describe('downdoc()', () => {
         1. one
         2. two
         3. three
+        4. *done!*
 
         paragraph
 
