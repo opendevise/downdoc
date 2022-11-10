@@ -18,8 +18,8 @@
     "coverage": "nyc _mocha",
     "format": "node npm/format.js lib,test,npm",
     "lint": "eslint \"{lib,test,npm}/**/*.js\"",
-    "prepublishOnly": "node npm/prepublishOnly.js",
-    "postpublish": "node npm/postpublish.js",
+    "postpublish": "downdoc --postpublish",
+    "prepublishOnly": "downdoc --prepublish",
     "test": "_mocha",
     "version": "node npm/version.js"
   },
