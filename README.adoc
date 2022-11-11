@@ -37,6 +37,8 @@ Here's a rough list of the syntax it current handles:
 * block titles
 * formatted text (bold, italic, monospace)
 * ordered, unordered, and callout lists (1-9)
+* nested ordered and unordered lists (marker must start at left margin)
+* list continuation (top-level list only)
 * link and URL macros
 * internal xrefs (honors value of `idprefix` and `idseparator` document attributes)
 * auto-generated text for internal xrefs

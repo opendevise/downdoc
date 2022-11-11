@@ -445,6 +445,17 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should not process . on a line by itself as a block title', () => {
+      const input = heredoc`
+        before
+
+        .
+
+        after
+      `
+      expect(downdoc(input)).to.equal(input)
+    })
   })
 
   describe('text formatting', () => {
@@ -1401,6 +1412,24 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(input)
     })
 
+    it('should convert nested ordered lists', () => {
+      const input = heredoc`
+        * foo
+        ** bar
+        *** baz
+        ** bar
+        * foo
+      `
+      const expected = heredoc`
+        * foo
+          * bar
+            * baz
+          * bar
+        * foo
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert ordered list to numbered list', () => {
       const input = heredoc`
         = Title
@@ -1425,6 +1454,58 @@ describe('downdoc()', () => {
         paragraph
 
         1. and one
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert nested unordered lists', () => {
+      const input = heredoc`
+        . foo
+        .. bar
+        ... baz
+        .. bar
+        . foo
+      `
+      const expected = heredoc`
+        1. foo
+           1. bar
+              1. baz
+           2. bar
+        2. foo
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert mixed nested lists', () => {
+      const input = heredoc`
+        * unordered
+        . ordered
+        ** unordered
+        . ordered
+        * unordered
+      `
+      const expected = heredoc`
+        * unordered
+          1. ordered
+             * unordered
+          2. ordered
+        * unordered
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should continue numbering from ancestor list', () => {
+      const input = heredoc`
+        . foo
+        .. bar
+        ... baz
+        . foo
+      `
+      const expected = heredoc`
+        1. foo
+           1. bar
+              1. baz
+        2. foo
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -1493,14 +1574,14 @@ describe('downdoc()', () => {
       const expected = heredoc`
         1. Install
 
-          \`\`\`console
-          $ npm i downdoc
-          \`\`\`
+           \`\`\`console
+           $ npm i downdoc
+           \`\`\`
         2. Use
 
-          \`\`\`console
-          $ npx downdoc README.adoc
-          \`\`\`
+           \`\`\`console
+           $ npx downdoc README.adoc
+           \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
     })
