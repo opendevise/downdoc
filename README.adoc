@@ -9,17 +9,21 @@ endif::[]
 
 == What is downdoc?
 
-npm package repositories such as https://npmjs.com and https://yarnpkg.com assume the README for a package is in Markdown.
+The downdoc package provides a JavaScript function and CLI (command: `downdoc`) to down-convert AsciiDoc to Markdown.
+But why, you may ask?
+
+The reality is, the AsciiDoc format isn't always supported.
+For instance, npm package repositories such as https://npmjs.com and https://yarnpkg.com assume the README for a package is in Markdown.
 But you're a sensible developer who wants to maintain your README in AsciiDoc.
 Enter downdoc.
 
-The downdoc package provides a function and CLI to down-convert AsciiDoc to Markdown.
-The intent of this tool is to prepare an AsciiDoc README for npm packaging.
-It's designed to be just good enough to get the job done.
+This project initially started out with the goal to transpile an AsciiDoc README to the Markdown format for npm packaging.
+In that regard, it was designed to be just good enough to get the job done.
 
-Typically, you convert the README from Markdown to AsciiDoc during the _prepublishOnly_ life cycle event.
-Then you restore the original README during the _postpublish_ life cycle event.
-That way, then npm package ends up with a Markdown README, but the README in your repository remains in AsciiDoc.
+Over time, downdoc has proven to have broader application.
+With downdoc, you can draft content in AsciiDoc even for places where only Markdown is accepted, such as in an issue tracker or chat application.
+To post in Markdown, run the content through downdoc and paste the result.
+downdoc does the switch to Markdown so your brain doesn't have to.
 
 == How does it work?
 
