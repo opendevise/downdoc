@@ -71,7 +71,7 @@ Use the following command to install the downdoc package into your project:
 $ npm i downdoc
 ----
 
-Alternately, you can defer installation and invoke the CLI via npx.
+Alternately, you can defer installation and invoke the CLI using npx.
 
 == Usage
 
@@ -83,7 +83,7 @@ $ npx downdoc README.adoc
 ----
 
 The `downdoc` command automatically generates a Markdown file.
-The Markdown file has the same name as the AsciiDoc file with the file extension changed to `.md`.
+By default, the Markdown file has the same name as the AsciiDoc file with the file extension changed to `.md`.
 
 You can instruct the command to write to a different file using the `-o` (or `--output`) option.
 
