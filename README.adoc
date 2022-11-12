@@ -23,7 +23,7 @@ In that regard, it was designed to be just good enough to get the job done.
 Over time, downdoc has proven to have broader application.
 With downdoc, you can draft content in AsciiDoc even for places where only Markdown is accepted, such as in an issue tracker or chat application.
 To post in Markdown, run the content through downdoc and paste the result.
-downdoc does the switch to Markdown so your brain doesn't have to.
+downdoc handles the context switch to Markdown so your brain doesn't have to.
 
 == How does it work?
 
