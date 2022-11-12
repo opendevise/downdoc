@@ -12,7 +12,7 @@ endif::[]
 The downdoc package provides a JavaScript function and CLI (command: `downdoc`) to down-convert AsciiDoc to Markdown.
 But why, you may ask?
 
-The reality is, the AsciiDoc format isn't always supported.
+The reality is, the AsciiDoc format isn't supported everywhere.
 For instance, npm package repositories such as https://npmjs.com and https://yarnpkg.com assume the README for a package is in Markdown.
 But you're a sensible developer who wants to maintain your README in AsciiDoc.
 Enter downdoc.
