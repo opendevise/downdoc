@@ -106,6 +106,47 @@ const { promises: fsp } = require('node:fs')
 })()
 ----
 
+ifndef::env-npm[]
+=== npm publish
+
+The prime focus of this tool is to convert an AsciiDoc README to Markdown for npm packaging.
+This switch is done by leveraging the pre and post lifecycle hooks of the `publish` task.
+In the pre hook, you convert the README to Markdown and hide the AsciiDoc README.
+The main `publish` task will then discover the Markdown README and include it in the package.
+In the post hook, you remove the Markdown README and restore the AsciiDoc README.
+
+Using this technique, the published npm package ends up with a Markdown README, but the README in your repository remains in AsciiDoc.
+We refer to this process as the README dance.
+
+If that sounds complicated, no need to worry.
+downdoc has you covered.
+The downdoc CLI provides the helpers you need to call during these lifecycle hooks.
+To use them, add the following entries to the `scripts` property in the [.path]_package.json_ at the root of your project.
+
+[,json]
+----
+"postpublish": "downdoc --postpublish",
+"prepublishOnly": "downdoc --prepublish",
+----
+
+Let's have a look at where these entries go when we step back and look at a complete file:
+
+[,json]
+----
+{
+  "name": "my-package",
+  "version": "1.0.0",
+  "scripts": {
+    "postpublish": "downdoc --postpublish",
+    "prepublishOnly": "downdoc --prepublish",
+    "test": "mocha"
+  }
+}
+----
+
+You can find an example of downdoc used for this purpose in the downdoc project itself.
+endif::[]
+
 == Copyright and License
 
 Copyright (C) 2022-present Dan Allen (OpenDevise Inc.) and the individual contributors to this project.
