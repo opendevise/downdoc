@@ -1031,6 +1031,29 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should substitute attribute reference in target of block image', () => {
+      const input = heredoc`
+        = Title
+        :url-flags: https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit/Assets/PNG
+
+        image::{url-flags}/FR.png[fr]
+      `
+      const expected = heredoc`
+        # Title
+
+        ![fr](https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit/Assets/PNG/FR.png)
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should not convert local block image within a paragraph', () => {
+      const input = heredoc`
+        A block image macro uses the following form:
+        image::target[]
+      `
+      expect(downdoc(input)).to.equal(input)
+    })
+
     it('should preserve escaped square brackets in image alt text', () => {
       const input = heredoc`
         = Title
