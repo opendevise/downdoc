@@ -559,12 +559,12 @@ describe('downdoc()', () => {
       const input = heredoc`
         = Title
 
-        Visit \`\\http://localhost:8080\` in your browser to see a preview.
+        Visit \`\\http://localhost:8080\` or \`\\http://127.0.0.1:8080\` in your browser to see a preview.
       `
       const expected = heredoc`
         # Title
 
-        Visit \`http://localhost:8080\` in your browser to see a preview.
+        Visit \`http://localhost:8080\` or \`http://127.0.0.1:8080\` in your browser to see a preview.
       `
       expect(downdoc(input)).to.equal(expected)
     })
