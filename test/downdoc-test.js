@@ -500,6 +500,30 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(input)
     })
+
+    it('should convert hard line break in paragraph', () => {
+      const input = heredoc`
+        roses are red, +
+        violets are blue.
+      `
+      const expected = heredoc`
+        roses are red, \\
+        violets are blue.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should not convert hard line break in block title', () => {
+      const input = heredoc`
+        .what color? +
+        red
+      `
+      const expected = heredoc`
+        **what color? +**
+        red
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
   })
 
   describe('text formatting', () => {
