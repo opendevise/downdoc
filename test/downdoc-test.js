@@ -458,6 +458,50 @@ describe('downdoc()', () => {
     })
   })
 
+  describe('blocks', () => {
+    it('should not process section title within a paragraph', () => {
+      const input = heredoc`
+        Let the paragraph begin.
+        == only starts a section title outside of a paragraph.
+      `
+      expect(downdoc(input)).to.equal(input)
+    })
+
+    it('should not process attribute entry within a paragraph', () => {
+      const input = heredoc`
+        Let the paragraph begin.
+        :name: declares an attibute in the document header.
+      `
+      expect(downdoc(input)).to.equal(input)
+    })
+
+    it('should not process block title within a paragraph', () => {
+      const input = heredoc`
+        Let the paragraph begin.
+        .hidden.adoc is a hidden file.
+      `
+      expect(downdoc(input)).to.equal(input)
+    })
+
+    it('should not process list indented line within a paragragh', () => {
+      const input = heredoc`
+        Let the paragraph begin.
+          This paragraph uses a hanging indent.
+      `
+      expect(downdoc(input)).to.equal(input)
+    })
+
+    it('should not process toc::[] macro within a paragragh', () => {
+      const input = heredoc`
+        Let the paragraph begin.
+        When you see this line outside a paragraph:
+        toc::[]
+        it will be replaced with the table of contents.
+      `
+      expect(downdoc(input)).to.equal(input)
+    })
+  })
+
   describe('text formatting', () => {
     it('should convert bold formatting', () => {
       const input = heredoc`
@@ -688,6 +732,19 @@ describe('downdoc()', () => {
         ## Usage
 
         Let's get started.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should end block at next block attribute list', () => {
+      const input = heredoc`
+        The paragraph before <<idname>>.
+        [#idname]
+        == Section Title
+      `
+      const expected = heredoc`
+        The paragraph before [Section Title](#section-title).
+        ## Section Title
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -1399,6 +1456,20 @@ describe('downdoc()', () => {
   })
 
   describe('lists', () => {
+    it('should not process list item within a paragraph', () => {
+      const input = heredoc`
+        Let the paragraph begin.
+        * is the formatting mark for bold.
+
+        Let another paragraph begin.
+        . followed by a space starts an ordered list outside a paragraph.
+
+        One more for the road.
+        <1> is a callout list marker and conum.
+      `
+      expect(downdoc(input)).to.equal(input)
+    })
+
     it('should retain unordered list', () => {
       const input = heredoc`
         * work
@@ -1506,6 +1577,22 @@ describe('downdoc()', () => {
            1. bar
               1. baz
         2. foo
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should not process section title inside list item', () => {
+      const input = heredoc`
+        * first list item
+        == not a section title
+          * nested list item
+        * last list item
+      `
+      const expected = heredoc`
+        * first list item
+        == not a section title
+          * nested list item
+        * last list item
       `
       expect(downdoc(input)).to.equal(expected)
     })
