@@ -35,7 +35,7 @@ Here's a rough list of the syntax it current handles:
 
 * document title
 * author info line in document header
-* document attribute entries in document header (single-line only)
+* document attribute entries (single-line only)
 * document attribute references
 * part/chapter/section titles
 * block titles
