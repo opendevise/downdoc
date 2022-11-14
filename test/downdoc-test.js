@@ -1687,6 +1687,46 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should interpret block title following list continuation', () => {
+      const input = heredoc`
+        * Say hello
+        +
+        .With Ruby
+        [,ruby]
+        ----
+        puts 'Hello!'
+        ----
+        +
+        .With JavaScript
+        [,js]
+        ----
+        console.log('Hello!')
+        ----
+      `
+      const expected = heredoc`
+        * Say hello
+
+          **With Ruby**
+          \`\`\`ruby
+          puts 'Hello!'
+          \`\`\`
+
+          **With JavaScript**
+          \`\`\`js
+          console.log('Hello!')
+          \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should not process list continuation outside of list', () => {
+      const input = heredoc`
+        +
+        paragraph
+      `
+      expect(downdoc(input)).to.equal(input)
+    })
+
     it('should reset indent when starting new ordered list item', () => {
       const input = heredoc`
         . Install
