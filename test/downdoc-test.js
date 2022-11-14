@@ -129,22 +129,23 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should remove attribute entries found in body', () => {
+    it('should process attribute entries found in body', () => {
       const input = heredoc`
         = Title
+        :foo: bar
 
-        before
+        initial: {foo}
 
-        :ignore-me:
+        :foo: baz
 
-        after
+        after: {foo}
       `
       const expected = heredoc`
         # Title
 
-        before
+        initial: bar
 
-        after
+        after: baz
       `
       expect(downdoc(input)).to.equal(expected)
     })
