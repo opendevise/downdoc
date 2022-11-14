@@ -92,6 +92,13 @@ You can instruct the command to write to a different file using the `-o` (or `--
 $ npx downdoc -o out.md README.adoc
 ----
 
+If the value of the `-o` option is `-`, the command will write the output to the console (i.e., stdout).
+
+[,console]
+----
+$ npx downdoc -o - README.adoc
+----
+
 === API
 
 [,js]
