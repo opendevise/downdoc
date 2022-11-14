@@ -409,19 +409,25 @@ describe('downdoc()', () => {
   describe('block titles', () => {
     it('should convert block title on a block', () => {
       const input = heredoc`
-        = Title
-
         .Usage
         ----
-        downdoc FILE
+        downdoc [OPTION]... FILE
+        ----
+
+        ..npmrc
+        ----
+        omit=optional
         ----
       `
       const expected = heredoc`
-        # Title
-
         **Usage**
         \`\`\`
-        downdoc FILE
+        downdoc [OPTION]... FILE
+        \`\`\`
+
+        **.npmrc**
+        \`\`\`
+        omit=optional
         \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
@@ -454,6 +460,14 @@ describe('downdoc()', () => {
         .
 
         after
+      `
+      expect(downdoc(input)).to.equal(input)
+    })
+
+    it('should ignore ellipsis at start of paragraph', () => {
+      const input = heredoc`
+        ...and then,
+        go get 'em!
       `
       expect(downdoc(input)).to.equal(input)
     })
