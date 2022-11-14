@@ -542,12 +542,8 @@ describe('downdoc()', () => {
     })
 
     it('should convert bold formatting in unordered list item', () => {
-      const input = heredoc`
-        * be *bold*
-      `
-      const expected = heredoc`
-        * be **bold**
-      `
+      const input = '* be *bold*'
+      const expected = '* be **bold**'
       expect(downdoc(input)).to.equal(expected)
     })
 
