@@ -410,9 +410,7 @@ describe('downdoc()', () => {
     it('should convert block title on a block', () => {
       const input = heredoc`
         .Usage
-        ----
-        downdoc [OPTION]... FILE
-        ----
+         downdoc [OPTION]... FILE
 
         ..npmrc
         ----
@@ -421,11 +419,11 @@ describe('downdoc()', () => {
       `
       const expected = heredoc`
         **Usage**
-        \`\`\`
-        downdoc [OPTION]... FILE
-        \`\`\`
+
+            downdoc [OPTION]... FILE
 
         **.npmrc**
+
         \`\`\`
         omit=optional
         \`\`\`
@@ -446,6 +444,7 @@ describe('downdoc()', () => {
         # Title
 
         **To make butter:**
+
         1. Mix ingredients
         2. Chill
         3. Whip
@@ -535,6 +534,7 @@ describe('downdoc()', () => {
       `
       const expected = heredoc`
         **what color? +**
+
         red
       `
       expect(downdoc(input)).to.equal(expected)
@@ -1817,11 +1817,13 @@ describe('downdoc()', () => {
         * Say hello
 
           **With Ruby**
+
           \`\`\`ruby
           puts 'Hello!'
           \`\`\`
 
           **With JavaScript**
+
           \`\`\`js
           console.log('Hello!')
           \`\`\`
@@ -1894,6 +1896,7 @@ describe('downdoc()', () => {
         * enter this:
 
           **code**
+
           \`\`\`
           listing
           \`\`\`
