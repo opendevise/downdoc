@@ -1500,7 +1500,7 @@ describe('downdoc()', () => {
   })
 
   describe('lists', () => {
-    it('should not process list item within a paragraph', () => {
+    it('should not process list marker within a paragraph', () => {
       const input = heredoc`
         Let the paragraph begin.
         * is the formatting mark for bold.
@@ -1525,6 +1525,27 @@ describe('downdoc()', () => {
         * and party!
       `
       expect(downdoc(input)).to.equal(input)
+    })
+
+    it('should remove blank lines between unordered list items', () => {
+      const input = heredoc`
+        * work
+
+        * play
+
+
+        * drink
+
+        and party!
+      `
+      const expected = heredoc`
+        * work
+        * play
+        * drink
+
+        and party!
+      `
+      expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert nested ordered lists', () => {
@@ -1569,6 +1590,27 @@ describe('downdoc()', () => {
         paragraph
 
         1. and one
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should remove blank lines between ordered list items', () => {
+      const input = heredoc`
+        . one
+
+        . two
+
+
+        . three
+
+        done
+      `
+      const expected = heredoc`
+        1. one
+        2. two
+        3. three
+
+        done
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -1625,6 +1667,35 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should continue numbering after list item with attached block followed by blank line', () => {
+      const input = heredoc`
+        . one
+        +
+         literal paragraph
+        +
+        paragraph
+
+        . two
+        +
+         literal paragraph
+
+        paragraph
+      `
+      const expected = heredoc`
+        1. one
+
+               literal paragraph
+
+           paragraph
+        2. two
+
+               literal paragraph
+
+        paragraph
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should not process section title inside list item', () => {
       const input = heredoc`
         * first list item
@@ -1677,7 +1748,6 @@ describe('downdoc()', () => {
           \`\`\`console
           $ npm i downdoc
           \`\`\`
-
         * Use
 
           \`\`\`console
