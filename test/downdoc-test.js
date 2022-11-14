@@ -1687,6 +1687,32 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should indent block following a list continuation of nested list item', () => {
+      const input = heredoc`
+        * Install
+        ** npx
+        +
+         $ npx downdoc -v
+        * Use
+        +
+         $ npx downdoc README.adoc
+      `
+      const expected = heredoc`
+        * Install
+          * npx
+
+            \`\`\`console
+            $ npx downdoc -v
+            \`\`\`
+        * Use
+
+          \`\`\`console
+          $ npx downdoc README.adoc
+          \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should interpret block title following list continuation', () => {
       const input = heredoc`
         * Say hello
@@ -1714,6 +1740,78 @@ describe('downdoc()', () => {
           **With JavaScript**
           \`\`\`js
           console.log('Hello!')
+          \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should apply correct indentation to literal paragraph in list', () => {
+      const input = heredoc`
+        * Option to print version:
+        +
+         -v
+        * Option to see help:
+        +
+         -h
+      `
+      const expected = heredoc`
+        * Option to print version:
+
+              -v
+        * Option to see help:
+
+              -h
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should close implicit console listing before starting next list item', () => {
+      const input = heredoc`
+        . Run this:
+        +
+         $ cmd
+        . Follow the instructions in the console.
+      `
+      const expected = heredoc`
+        1. Run this:
+
+           \`\`\`console
+           $ cmd
+           \`\`\`
+        2. Follow the instructions in the console.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should indent verabtim blocks in list item', () => {
+      const input = heredoc`
+        * run this:
+        +
+         $ command
+        * look for this:
+        +
+         output
+        * enter this:
+        +
+        .code
+        ----
+        listing
+        ----
+      `
+      const expected = heredoc`
+        * run this:
+
+          \`\`\`console
+          $ command
+          \`\`\`
+        * look for this:
+
+              output
+        * enter this:
+
+          **code**
+          \`\`\`
+          listing
           \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
