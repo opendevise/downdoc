@@ -155,6 +155,27 @@ When an AsciiDoc file is converted using the `--prepublish` CLI option, both the
 This allows you to show or hide content in the README that is displayed in the npm package registry.
 
 You can find an example of downdoc used for this purpose in the downdoc project itself.
+
+=== Create executables
+
+Thus far, we've assumed that you're running downdoc using Node.js installed on your system.
+However, downdoc is one of those tools you might want to use in any environment.
+In that case, what you want is an executable that doesn't require Node.js to be installed.
+That's where pkg comes in.
+
+Using https://github.com/vercel/pkg[pkg], you can bundle Node.js and downdoc into a single executable (i.e., a precompiled binary) per system (OS and architecture).
+To do so, clone this project and run the following command:
+
+ $ npx pkg .
+
+This command will produce `downdoc-linux`, `downdoc-macos`, and `downdoc-win.exe`.
+You can transfer any one of these executables to a suitable system and run it without having to install Node.js.
+For example:
+
+ $ ./downdoc-linux README.adoc
+
+The binary includes the package metadata and source code of this project in raw form.
+Run `npx pkg -h` or read the https://github.com/vercel/pkg[pkg README] to learn more about how it works.
 endif::[]
 
 == Copyright and License
