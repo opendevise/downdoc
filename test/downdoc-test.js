@@ -1077,12 +1077,16 @@ describe('downdoc()', () => {
       const input = heredoc`
         = Title
 
-        When you see image:green-bar.png[green bar], you know the tests have passed!
+        When you see image:images/green-bar.png[green bar], you know the tests have passed!
+
+        When you see image:images/red-bar.png[], something has gone wrong.
       `
       const expected = heredoc`
         # Title
 
-        When you see ![green bar](green-bar.png), you know the tests have passed!
+        When you see ![green bar](images/green-bar.png), you know the tests have passed!
+
+        When you see ![red-bar.png](images/red-bar.png), something has gone wrong.
       `
       expect(downdoc(input)).to.equal(expected)
     })
