@@ -1585,6 +1585,7 @@ describe('downdoc()', () => {
       const input = heredoc`
         Let the paragraph begin.
         * is the formatting mark for bold.
+        - is only a list marker.
 
         Let another paragraph begin.
         . followed by a space starts an ordered list outside a paragraph.
@@ -1643,6 +1644,20 @@ describe('downdoc()', () => {
             * baz
           * bar
         * foo
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should support - as unordered list marker', () => {
+      const input = heredoc`
+        * Do
+        - Re
+        * Do
+      `
+      const expected = heredoc`
+        * Do
+          * Re
+        * Do
       `
       expect(downdoc(input)).to.equal(expected)
     })
