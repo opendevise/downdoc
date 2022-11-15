@@ -42,18 +42,22 @@ Here's a rough list of the syntax it current handles:
 * formatted text (bold, italic, monospace, double curly quotes, curly apostrophe)
 * ordered, unordered, and callout lists (1-9)
 * nested ordered and unordered lists (marker must start at left margin)
-* list continuation (top-level list only)
+* list continuation (basic support)
 * link and URL macros
+* escaped bare URL
 * internal xrefs (honors value of `idprefix` and `idseparator` document attributes)
+* block IDs for document and section titles
 * auto-generated text for internal xrefs
 * block and inline image macros
-* listing and source blocks with optional language
+* listing and source blocks with optional source language
 * diagram blocks (listing block with diagram dialect)
 * callout numbers (1-9) in verbatim blocks
 * attribute references in verbatim blocks (when attributes sub is enabled)
-* literal paragraphs
+* literal paragraphs (auto-detects command prompt and promotes to code block)
 * admonition paragraphs
 * Markdown-style blockquotes
+* Markdown-style thematic break (`---`)
+* hard line break
 * ifdef and ifndef preprocessor conditionals
 * comment lines and blocks
 * tables (dropped)
