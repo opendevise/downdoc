@@ -590,7 +590,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should honor backslash at start of monospace formatting', () => {
+    it('should honor backslash at start of monospace phrase', () => {
       const input = heredoc`
         = Title
 
@@ -1018,6 +1018,34 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should not process non-escaped bare URL', () => {
+      const input = heredoc`
+        Navigate to http://localhost:8080/app to view your application.
+
+        The https://example.org domain name is for tests, tutorials, and examples.
+      `
+      const expected = heredoc`
+        Navigate to http://localhost:8080/app to view your application.
+
+        The https://example.org domain name is for tests, tutorials, and examples.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should hide escaped bare URL', () => {
+      const input = heredoc`
+        The site will be running at \\http://localhost:8080/app.
+
+        The \\https://example.org domain name is for tests, tutorials, and examples.
+      `
+      const expected = heredoc`
+        The site will be running at <span>http:</span>//localhost:8080/app.
+
+        The <span>https:</span>//example.org domain name is for tests, tutorials, and examples.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should preserve escaped square brackets in link text', () => {
       const input = heredoc`
         = Title
@@ -1032,18 +1060,17 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should not convert bare URL', () => {
+    it('should ignore inline macros if target contains space', () => {
       const input = heredoc`
-        = Title
+        link:not processed.html[]
 
-        https://example.org is a domain for tests, like this one.
-      `
-      const expected = heredoc`
-        # Title
+        xref:not processed.adoc[]
 
-        https://example.org is a domain for tests, like this one.
+        image:not processed.png[]
+
+        https://example.org/not processed.html[]
       `
-      expect(downdoc(input)).to.equal(expected)
+      expect(downdoc(input)).to.equal(input)
     })
 
     it('should convert local inline image', () => {
