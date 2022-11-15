@@ -263,7 +263,7 @@ describe('downdoc()', () => {
 
         ## Introduction to ACME
 
-        Let's get acquainted.
+        Let’s get acquainted.
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -358,7 +358,7 @@ describe('downdoc()', () => {
       const expected = heredoc`
         ## First Steps
 
-        Let's get started!
+        Let’s get started!
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -646,6 +646,46 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should substitute double smart quotes', () => {
+      const input = heredoc`
+        Before you say "\`no way\`", I say "\`try before you deny\`".
+
+        That "\`bug\`" is actually a feature of the software.
+      `
+      const expected = heredoc`
+        Before you say <q>no way</q>, I say <q>try before you deny</q>.
+
+        That <q>bug</q> is actually a feature of the software.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should substitute smart apostrophe', () => {
+      const input = heredoc`
+        That\`'s probably not going to work.
+
+        That's probably not going to work.
+
+        The \`'90s was the heydey of alternative rock.
+
+        Ruby 2.6's endless range operator is a useful addition.
+
+        Qu'est ce qu'AsciiDoc ?
+      `
+      const expected = heredoc`
+        That’s probably not going to work.
+
+        That’s probably not going to work.
+
+        The ’90s was the heydey of alternative rock.
+
+        Ruby 2.6’s endless range operator is a useful addition.
+
+        Qu’est ce qu’AsciiDoc ?
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
   })
 
   describe('xrefs', () => {
@@ -766,7 +806,7 @@ describe('downdoc()', () => {
 
         ## Usage
 
-        Let's get started.
+        Let’s get started.
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -827,7 +867,7 @@ describe('downdoc()', () => {
       const expected = heredoc`
         # HOWTO
 
-        You'll learn how to [Build Your Site](#build-your-site) and how to [Deploy Your Site](#deploy-your-site).
+        You’ll learn how to [Build Your Site](#build-your-site) and how to [Deploy Your Site](#deploy-your-site).
 
         ## Build Your Site
 
@@ -875,16 +915,16 @@ describe('downdoc()', () => {
         [[get-started]]
         == Get Started with {product}
 
-        Let's go!
+        Let’s go!
       `
       const expected = heredoc`
         # Title
 
-        Let's [Get Started with ACME](#get-started-with-acme).
+        Let’s [Get Started with ACME](#get-started-with-acme).
 
         ## Get Started with ACME
 
-        Let's go!
+        Let’s go!
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -1045,7 +1085,7 @@ describe('downdoc()', () => {
       const expected = heredoc`
         # Title
 
-        Here's a screenshot of the application in action.
+        Here’s a screenshot of the application in action.
 
         ![Screenshot](screenshot.png)
       `
@@ -1148,13 +1188,13 @@ describe('downdoc()', () => {
 
         📌 **NOTE:** Remember the oat milk.
 
-        ❗ **IMPORTANT:** Don't forget the children!
+        ❗ **IMPORTANT:** Don’t forget the children!
 
         💡 **TIP:** Look for the [warp](https://en.wikipedia.org/wiki/Warp_(video_games)) under the bridge.
 
         🔥 **CAUTION:** Slippery when wet.
 
-        ⚠️ **WARNING:** The software you're about to use has **not** been tested.
+        ⚠️ **WARNING:** The software you’re about to use has **not** been tested.
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -1197,7 +1237,7 @@ describe('downdoc()', () => {
 
         > Roads?
         >
-        > Where we're going, we don't need *roads*!
+        > Where we’re going, we don’t need *roads*!
 
         The rest is...the future!
 
@@ -1440,7 +1480,7 @@ describe('downdoc()', () => {
         content
         \`\`\`
 
-        Isn't AsciiDoc grand?
+        Isn’t AsciiDoc grand?
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -2243,9 +2283,9 @@ describe('downdoc()', () => {
       const expected = heredoc`
         # Title
 
-        Here's a list of configuration options.
+        Here’s a list of configuration options.
 
-        That's all.
+        That’s all.
       `
       expect(downdoc(input)).to.equal(expected)
     })
