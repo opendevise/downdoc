@@ -621,14 +621,14 @@ describe('downdoc()', () => {
     it('should convert formatted text before replacing attribute references', () => {
       const input = heredoc`
         = Title
-        :italic: *italic*
+        :bold: *not actually bold*
 
-        {italic}
+        {bold}
       `
       const expected = heredoc`
         # Title
 
-        *italic*
+        *not actually bold*
       `
       expect(downdoc(input)).to.equal(expected)
     })
