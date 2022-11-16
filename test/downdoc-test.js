@@ -571,7 +571,7 @@ describe('downdoc()', () => {
       const expected = heredoc`
         # Title
 
-        The _ is *so* incredibly *useful* when making snake_case.
+        The _ is _so_ incredibly _useful_ when making snake_case.
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -613,7 +613,7 @@ describe('downdoc()', () => {
       const expected = heredoc`
         # Title
 
-        Use downdoc to convert *README.adoc* to *README.md* **before** publishing.
+        Use downdoc to convert _README.adoc_ to _README.md_ **before** publishing.
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -642,7 +642,7 @@ describe('downdoc()', () => {
       const expected = heredoc`
         # Title
 
-        *README.adoc* contains all the essential information.
+        _README.adoc_ contains all the essential information.
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -1268,7 +1268,7 @@ describe('downdoc()', () => {
 
         > Roads?
         >
-        > Where we’re going, we don’t need *roads*!
+        > Where we’re going, we don’t need _roads_!
 
         The rest is...the future!
 
@@ -1685,7 +1685,7 @@ describe('downdoc()', () => {
         1. one
         2. two
         3. three
-        4. *done!*
+        4. _done!_
 
         paragraph
 
