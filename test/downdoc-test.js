@@ -770,14 +770,14 @@ describe('downdoc()', () => {
     it('should fill in text for xref to doctitle with explicit ID', () => {
       const input = heredoc`
         [#howto]
-        = HOWTO
+        = HOWTO downdoc
 
-        In this <<howto>>, you will learn how to do stuff.
+        In this <<howto>>, you will learn {doctitle}.
       `
       const expected = heredoc`
-        # HOWTO
+        # HOWTO downdoc
 
-        In this [HOWTO](#howto), you will learn how to do stuff.
+        In this [HOWTO downdoc](#howto-downdoc), you will learn HOWTO downdoc.
       `
       expect(downdoc(input)).to.equal(expected)
     })
