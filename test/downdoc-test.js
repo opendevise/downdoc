@@ -576,6 +576,20 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should convert bold italic formatting both ways', () => {
+      const input = heredoc`
+        = Title
+
+        If you really want to be some *_emphasis_* on it, use _*bold italic*_.
+      `
+      const expected = heredoc`
+        # Title
+
+        If you really want to be some **_emphasis_** on it, use _**bold italic**_.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert monospace formatting', () => {
       const input = heredoc`
         = Title
