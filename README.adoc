@@ -64,7 +64,7 @@ Here's a rough list of the syntax it current handles:
 
 == Prerequisites
 
-In order to use this extension, you must be using at least Node.js 16.
+In order to use this extension, you need Node.js 16.17.0 or higher.
 
 == Install
 
@@ -170,7 +170,7 @@ That's where pkg comes in.
 Using https://github.com/vercel/pkg[pkg], you can bundle Node.js and downdoc into a single executable (i.e., a precompiled binary) per system (OS and architecture).
 To do so, clone this project and run the following command:
 
- $ npx pkg .
+ $ npx pkg -t node18-linux,node18-macos,node18-win .
 
 This command will produce `downdoc-linux`, `downdoc-macos`, and `downdoc-win.exe`.
 You can transfer any one of these executables to a suitable system and run it without having to install Node.js.
