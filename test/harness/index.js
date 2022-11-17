@@ -4,11 +4,13 @@
 process.env.NODE_ENV = 'test'
 
 const chai = require('chai')
+const fsp = require('node:fs/promises')
+
 chai.use(require('chai-fs'))
 chai.use(require('chai-string'))
+// dirty-chai must be loaded after all other plugins
+// see https://github.com/prodatakey/dirty-chai#plugin-assertions
 chai.use(require('dirty-chai'))
-
-const { promises: fsp } = require('fs')
 
 const cleanDir = (dir, { create } = {}) =>
   fsp.rm(dir, { recursive: true, force: true }).then(() => (create ? fsp.mkdir(dir, { recursive: true }) : undefined))
