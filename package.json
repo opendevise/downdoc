@@ -16,6 +16,7 @@
   },
   "scripts": {
     "coverage": "nyc _mocha",
+    "build": "npm test && npm run lint",
     "format": "node npm/format.js lib,test,npm",
     "lint": "eslint \"{lib,test,npm}/**/*.js\"",
     "postpublish": "downdoc --postpublish",
@@ -23,10 +24,10 @@
     "test": "_mocha",
     "version": "node npm/version.js"
   },
-  "main": "lib/index.js",
   "bin": {
     "downdoc": "bin/downdoc"
   },
+  "main": "lib/index.js",
   "exports": {
     ".": "./lib/index.js",
     "./package.json": "./package.json"
