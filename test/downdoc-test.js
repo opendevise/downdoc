@@ -386,6 +386,25 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should convert part title when document has no title', () => {
+      const input = heredoc`
+        :doctype: book
+        Not an author line.
+
+        = First Steps
+
+        == Installation
+      `
+      const expected = heredoc`
+        Not an author line.
+
+        # First Steps
+
+        ## Installation
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should drop section title directly adjacent to document header', () => {
       const input = heredoc`
         = Title
