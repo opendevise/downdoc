@@ -993,7 +993,7 @@ describe('downdoc()', () => {
     })
   })
 
-  describe('macros', () => {
+  describe('link and URL macros', () => {
     it('should convert URL macro', () => {
       const input = heredoc`
         = Title
@@ -1105,7 +1105,9 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(input)
     })
+  })
 
+  describe('image macros', () => {
     it('should convert local inline image', () => {
       const input = heredoc`
         = Title
