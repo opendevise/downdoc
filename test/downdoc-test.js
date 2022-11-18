@@ -2094,24 +2094,6 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
-
-    it('should trim trailing space on result', () => {
-      const input = heredoc`
-        = Document Title
-
-        Content.
-
-        ////
-        Comments about this document.
-        ////
-      `
-      const expected = heredoc`
-        # Document Title
-
-        Content.
-      `
-      expect(downdoc(input)).to.equal(expected)
-    })
   })
 
   describe('preprocessor conditionals', () => {
@@ -2308,6 +2290,48 @@ describe('downdoc()', () => {
 
         bar
       `
+      expect(downdoc(input)).to.equal(expected)
+    })
+  })
+
+  describe('output', () => {
+    it('should trim trailing blank line', () => {
+      const input = heredoc`
+        = Document Title
+
+        Content.
+
+        ////
+        Comments about this document.
+        ////
+      `
+      const expected = heredoc`
+        # Document Title
+
+        Content.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should trim trailing space', () => {
+      const input = heredoc`
+        first paragraph
+
+        second paragraph
+      `
+      expect(downdoc(input + '\n ')).to.equal(input)
+    })
+
+    it('should trim leading blank lines', () => {
+      const input = heredoc`
+        // Note to self
+
+        ifdef::not-set:[]
+        Draft content.
+        endif::[]
+        Visible content.
+      `
+      const expected = 'Visible content.'
       expect(downdoc(input)).to.equal(expected)
     })
   })
