@@ -2065,27 +2065,55 @@ describe('downdoc()', () => {
   })
 
   describe('comments', () => {
-    it('should skip comment lines and blocks', () => {
+    it('should skip line comments', () => {
       const input = heredoc`
         // This is an AsciiDoc document.
         = Title
-        ////
-        ignored
-        ////
+        // This line defines an attribute.
         :summary: Summary
-        // ignore this line
+        // This line is simply ignored.
+
+        // This outputs the value of the summary attribute.
+        {summary}
+
+        // This is just a regular paragraph.
+        More summary
+        //fin
+      `
+      const expected = heredoc`
+        # Title
+
+        Summary
+
+        More summary
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should skip block comments', () => {
+      const input = heredoc`
+        ////
+        Maybe a license header?
+
+        Any amount of lines are skipped.
+        ////
+        = Title
+        :summary: Summary
 
         ////
-        ignore
-        these
-        lines
+        - ignore
+        - these
+        - lines
+
+        these are just notes
         ////
 
         {summary}
 
-        // ignore this line
         More summary
-        //fin
+        ////
+        Maybe some instructions to the author here?
+        ////
       `
       const expected = heredoc`
         # Title
