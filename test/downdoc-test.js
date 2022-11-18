@@ -2319,7 +2319,7 @@ describe('downdoc()', () => {
 
         second paragraph
       `
-      expect(downdoc(input + '\n ')).to.equal(input)
+      expect(downdoc(input + '\n  ')).to.equal(input)
     })
 
     it('should trim leading blank lines', () => {
