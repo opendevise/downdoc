@@ -1617,6 +1617,26 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should replace conum at start of otherwise blank line', () => {
+      const input = heredoc`
+        ....
+        first line
+        <1>
+        last line
+        ----
+        <1> blank line
+      `
+      const expected = heredoc`
+        \`\`\`
+        first line
+        ❶
+        last line
+        \`\`\`
+        1. blank line
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
   })
 
   describe('lists', () => {
