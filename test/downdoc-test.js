@@ -540,7 +540,7 @@ describe('downdoc()', () => {
         violets are blue.
       `
       const expected = heredoc`
-        roses are red, \\
+        roses are red,\\
         violets are blue.
       `
       expect(downdoc(input)).to.equal(expected)
