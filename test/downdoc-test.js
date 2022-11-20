@@ -546,6 +546,20 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should convert hard line break on line by itsef', () => {
+      const input = heredoc`
+        foo
+         +
+        bar
+      `
+      const expected = heredoc`
+        foo
+        \\
+        bar
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should not convert hard line break in block title', () => {
       const input = heredoc`
         .what color? +
