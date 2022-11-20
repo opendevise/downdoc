@@ -1378,6 +1378,26 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should close implicit console code block at end of document after trimming trailing newline', () => {
+      const input = heredoc`
+        = Document Title
+
+         $ npx downdoc -h
+
+        ////
+        -h and also be written as --help
+        ////
+      `
+      const expected = heredoc`
+        # Document Title
+
+        \`\`\`console
+        $ npx downdoc -h
+        \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert source block with language', () => {
       const input = heredoc`
         = Title
