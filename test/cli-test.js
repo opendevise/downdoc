@@ -75,11 +75,11 @@ describe('downdoc', () => {
     it('should only print usage when --help option is specified', async () => {
       const args = ['-h']
       const expectedStart = `downdoc ${version}\nUsage: downdoc [OPTION]... FILE\nConvert the specified AsciiDoc FILE`
-      const expectedIncludes = '\n  -a, --attribute name=val   set an AsciiDoc attribute; can be specified multiple times\n'
+      const expectedIn = '\n  -a, --attribute name=val   set an AsciiDoc attribute; can be specified multiple times\n'
       const expectedEnd = 'If --output is not specified, the output file path is derived from FILE (e.g., README.md).\n'
       await downdoc({ args, stdout })
       expect(stdout.string).to.startWith(expectedStart)
-      expect(stdout.string).to.include(expectedIncludes)
+      expect(stdout.string).to.include(expectedIn)
       expect(stdout.string).to.endWith(expectedEnd)
       expect(stdout.string).to.endWith('\n')
     })
