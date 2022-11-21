@@ -97,6 +97,70 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should discard revision line with only version', () => {
+      const input = heredoc`
+        = Title
+        Author Name
+        v1.0.0
+
+        {revnumber}
+      `
+      const expected = heredoc`
+        # Title
+
+        1.0.0
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should discard revision line with only date', () => {
+      const input = heredoc`
+        = Title
+        Author Name
+        2022-10-22
+
+        {revdate}
+      `
+      const expected = heredoc`
+        # Title
+
+        2022-10-22
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should discard revision line with version and date', () => {
+      const input = heredoc`
+        = Title
+        Author Name
+        v2, 2022-10-22
+
+        Version {revnumber} released on {revdate}.
+      `
+      const expected = heredoc`
+        # Title
+
+        Version 2 released on 2022-10-22.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should discard line after author line if only contains single number', () => {
+      const input = heredoc`
+        = Title
+        Author Name
+        2
+
+        {revnumber}
+      `
+      const expected = heredoc`
+        # Title
+
+        {revnumber}
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should process and remove attribute entries found in document header below doctitle', () => {
       const input = heredoc`
         = Title
