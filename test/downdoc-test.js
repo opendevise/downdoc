@@ -1787,7 +1787,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should convert nested ordered lists', () => {
+    it('should convert nested unordered lists', () => {
       const input = heredoc`
         * foo
         ** bar
@@ -1868,7 +1868,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should convert nested unordered lists', () => {
+    it('should convert nested ordered lists', () => {
       const input = heredoc`
         . foo
         .. bar
