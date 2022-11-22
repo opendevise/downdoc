@@ -1805,6 +1805,24 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should honor markdown-list-indent when converting nested unordered lists', () => {
+      const input = heredoc`
+        * foo
+        ** bar
+        *** baz
+        ** bar
+        * foo
+      `
+      const expected = heredoc`
+        * foo
+            * bar
+                * baz
+            * bar
+        * foo
+      `
+      expect(downdoc(input, { attributes: { 'markdown-list-indent': '4' } })).to.equal(expected)
+    })
+
     it('should support - as unordered list marker', () => {
       const input = heredoc`
         * Do
@@ -1884,6 +1902,24 @@ describe('downdoc()', () => {
         2. foo
       `
       expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should honor markdown-list-indent when converting nested ordered lists', () => {
+      const input = heredoc`
+        . foo
+        .. bar
+        ... baz
+        .. bar
+        . foo
+      `
+      const expected = heredoc`
+        1. foo
+            1. bar
+                1. baz
+            2. bar
+        2. foo
+      `
+      expect(downdoc(input, { attributes: { 'markdown-list-indent': '4' } })).to.equal(expected)
     })
 
     it('should convert mixed nested lists', () => {
