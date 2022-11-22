@@ -1920,6 +1920,79 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should convert description list into unorderd list with bold first line', () => {
+      const input = heredoc`
+        term:: desc
+
+        another term::
+        desc
+        +
+        attached paragraph
+
+        yet another term:: desc
+      `
+      const expected = heredoc`
+        * **term**\\
+        desc
+        * **another term**\\
+        desc
+
+          attached paragraph
+        * **yet another term**\\
+        desc
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert description list nested in unordered list', () => {
+      const input = heredoc`
+        * foo
+        term:: desc
+        * bar
+      `
+      const expected = heredoc`
+        * foo
+          * **term**\\
+        desc
+        * bar
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert unordered list nested in description list', () => {
+      const input = heredoc`
+        term::
+        * foo
+          * bar
+        * baz
+        another term::
+      `
+      const expected = heredoc`
+        * **term**
+          * foo
+            * bar
+          * baz
+        * **another term**
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should not leave behind hard line break marker after description list term followed by separate block', () => {
+      const input = heredoc`
+        term::
+        ----
+        listing
+        ----
+      `
+      const expected = heredoc`
+        * **term**
+        \`\`\`
+        listing
+        \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should continue numbering after list item with attached block followed by blank line', () => {
       const input = heredoc`
         . one
@@ -2002,6 +2075,37 @@ describe('downdoc()', () => {
           $ npm i downdoc
           \`\`\`
         * Use
+
+          \`\`\`console
+          $ npx downdoc README.adoc
+          \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should indent block following a list continuation on description list item', () => {
+      const input = heredoc`
+        Install::
+        +
+        [,console]
+        ----
+        $ npm i downdoc
+        ----
+
+        Use::
+        +
+        [,console]
+        ----
+        $ npx downdoc README.adoc
+        ----
+      `
+      const expected = heredoc`
+        * **Install**
+
+          \`\`\`console
+          $ npm i downdoc
+          \`\`\`
+        * **Use**
 
           \`\`\`console
           $ npx downdoc README.adoc
