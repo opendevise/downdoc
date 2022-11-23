@@ -1,7 +1,7 @@
 'use strict'
 
-const { promises: fsp } = require('fs')
-const ospath = require('path')
+const fsp = require('node:fs/promises')
+const ospath = require('node:path')
 
 const PROJECT_ROOT_DIR = ospath.join(__dirname, '..')
 const CHANGELOG_FILE = ospath.join(PROJECT_ROOT_DIR, 'CHANGELOG.adoc')
