@@ -3,8 +3,8 @@
 
 const { cleanDir, expect, heredoc, StringIO } = require('./harness')
 const downdoc = require('#cli')
-const { promises: fsp } = require('fs')
-const ospath = require('path')
+const fsp = require('node:fs/promises')
+const ospath = require('node:path')
 const { version } = require('downdoc/package.json')
 
 const WORK_DIR = ospath.join(__dirname, 'work')
