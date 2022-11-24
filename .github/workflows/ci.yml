@@ -14,7 +14,8 @@ concurrency:
 jobs:
   activate:
     if: |
-      (github.event_name == 'schedule' && github.repository_owner == 'mojavelinux') || (github.event_name == 'push') ||
+      github.event_name == 'push' ||
+      (github.event_name == 'schedule' && github.repository_owner == 'mojavelinux')
       (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'docs/'))
     runs-on: ubuntu-latest
     steps:
