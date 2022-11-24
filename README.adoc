@@ -109,7 +109,7 @@ $ npx downdoc -o - README.adoc
 [,js]
 ----
 const downdoc = require('downdoc')
-const { promises: fsp } = require('node:fs')
+const fsp = require('node:fs/promises')
 
 ;(async () => {
   await fsp
