@@ -41,7 +41,7 @@ Here's a rough list of the syntax it current handles:
 * block titles
 * formatted text (bold, italic, monospace, double curly quotes, curly apostrophe)
 * ordered, unordered, and callout lists (1-9)
-* nested ordered and unordered lists (marker must start at left margin)
+* nested ordered and unordered lists (marker must start at left margin; use `markdown-list-indent` attribute to control indent size)
 * description list (first level only)
 * list continuation (basic support)
 * link and URL macros
