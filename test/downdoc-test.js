@@ -636,6 +636,22 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should not look for hardbreak if previous line is empty', () => {
+      const input = heredoc`
+        foo
+
+        {empty}
+        bar
+      `
+      const expected = heredoc`
+        foo
+
+
+        bar
+      `
+      expect(downdoc(input, { attributes: { empty: '' } })).to.equal(expected)
+    })
   })
 
   describe('text formatting', () => {
