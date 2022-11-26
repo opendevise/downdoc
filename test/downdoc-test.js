@@ -535,6 +535,26 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should apply normal substitutions to title of verbatim block', () => {
+      const input = heredoc`
+        :product: ACME Cloud
+        :url-host: https://cloud.example.org
+
+        .Configuration using {product} on {url-host}[host]
+        ----
+        auto=true
+        ----
+      `
+      const expected = heredoc`
+        **Configuration using ACME Cloud on [host](https://cloud.example.org)**
+
+        \`\`\`
+        auto=true
+        \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should not process . on a line by itself as a block title', () => {
       const input = heredoc`
         before
