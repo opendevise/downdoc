@@ -1552,6 +1552,27 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should convert promoted source block with language', () => {
+      const input = heredoc`
+        = Title
+
+        [source,js]
+        ....
+        const downdoc = require('downdoc')
+        console.log(downdoc('= Document Title'))
+        ....
+      `
+      const expected = heredoc`
+        # Title
+
+        \`\`\`js
+        const downdoc = require('downdoc')
+        console.log(downdoc('= Document Title'))
+        \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert source block with language with block title above or below block attribute line', () => {
       const input = heredoc`
         = Title
@@ -1626,6 +1647,48 @@ describe('downdoc()', () => {
           file.yml
           subfolder/
             file.js
+        \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert literal block without block style', () => {
+      const input = heredoc`
+        = Title
+
+        [,ignored]
+        ....
+        expected
+        output
+        ....
+      `
+      const expected = heredoc`
+        # Title
+
+        \`\`\`
+        expected
+        output
+        \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should ignore language on listing block with listing style', () => {
+      const input = heredoc`
+        = Title
+
+        [listing,ignored]
+        ----
+        plain
+        verbatim
+        ----
+      `
+      const expected = heredoc`
+        # Title
+
+        \`\`\`
+        plain
+        verbatim
         \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
