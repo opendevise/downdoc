@@ -1516,6 +1516,40 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should convert source block with language with block title above or below block attribute line', () => {
+      const input = heredoc`
+        = Title
+
+        .Print 1 in JavaScript
+        [,js]
+        ----
+        console.log(1)
+        ----
+
+        [,ruby]
+        .Print 1 in Ruby
+        ----
+        puts 1
+        ----
+      `
+      const expected = heredoc`
+        # Title
+
+        **Print 1 in JavaScript**
+
+        \`\`\`js
+        console.log(1)
+        \`\`\`
+
+        **Print 1 in Ruby**
+
+        \`\`\`ruby
+        puts 1
+        \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert source block without language', () => {
       const input = heredoc`
         = Title
