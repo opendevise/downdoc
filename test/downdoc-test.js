@@ -1590,6 +1590,27 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should convert source block with language set on document', () => {
+      const input = heredoc`
+      = Title
+      :source-language: js
+
+      ----
+      const downdoc = require('downdoc')
+      console.log(downdoc('= Document Title'))
+      ----
+      `
+      const expected = heredoc`
+      # Title
+
+      \`\`\`js
+      const downdoc = require('downdoc')
+      console.log(downdoc('= Document Title'))
+      \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert promoted source block with language', () => {
       const input = heredoc`
       = Title
