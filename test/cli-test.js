@@ -28,18 +28,18 @@ describe('downdoc', () => {
     stderr = new StringIO()
     example = {
       input: heredoc`
-        = Document Title
+      = Document Title
 
-        == Section Title
+      == Section Title
 
-        Paragraph. \\
+      Paragraph. \\
       `,
       expected: heredoc`
-        # Document Title
+      # Document Title
 
-        ## Section Title
+      ## Section Title
 
-        Paragraph. \\
+      Paragraph. \\
       `,
     }
   })

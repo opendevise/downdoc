@@ -24,29 +24,29 @@ describe('downdoc()', () => {
 
     it('should convert document with header and body', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        Body.
+      Body.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        Body.
+      Body.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert document with body directly adjacent to header', () => {
       const input = heredoc`
-        = Title
-        > Ignored
+      = Title
+      > Ignored
 
-        Body.
+      Body.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        Body.
+      Body.
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -55,227 +55,227 @@ describe('downdoc()', () => {
   describe('document header', () => {
     it('should store document title in doctitle attribute', () => {
       const input = heredoc`
-        = Document Title
+      = Document Title
 
-        The title of this document is {doctitle}.
+      The title of this document is {doctitle}.
       `
       const expected = heredoc`
-        # Document Title
+      # Document Title
 
-        The title of this document is Document Title.
+      The title of this document is Document Title.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should discard author line with single author', () => {
       const input = heredoc`
-        = Title
-        Doc Writer <doc@example.org>
+      = Title
+      Doc Writer <doc@example.org>
 
-        Body written by {author}.
+      Body written by {author}.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        Body written by Doc Writer.
+      Body written by Doc Writer.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should discard author line with multiple authors', () => {
       const input = heredoc`
-        = Title
-        Doc Writer <doc@example.org>; Junior Écrivain <jr@example.org>
+      = Title
+      Doc Writer <doc@example.org>; Junior Écrivain <jr@example.org>
 
-        Body written by {authors}.
+      Body written by {authors}.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        Body written by Doc Writer, Junior Écrivain.
+      Body written by Doc Writer, Junior Écrivain.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should discard revision line with only version', () => {
       const input = heredoc`
-        = Title
-        Author Name
-        v1.0.0
+      = Title
+      Author Name
+      v1.0.0
 
-        {revnumber}
+      {revnumber}
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        1.0.0
+      1.0.0
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should discard revision line with only date', () => {
       const input = heredoc`
-        = Title
-        Author Name
-        2022-10-22
+      = Title
+      Author Name
+      2022-10-22
 
-        {revdate}
+      {revdate}
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        2022-10-22
+      2022-10-22
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should discard revision line with version and date', () => {
       const input = heredoc`
-        = Title
-        Author Name
-        v2, 2022-10-22
+      = Title
+      Author Name
+      v2, 2022-10-22
 
-        Version {revnumber} released on {revdate}.
+      Version {revnumber} released on {revdate}.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        Version 2 released on 2022-10-22.
+      Version 2 released on 2022-10-22.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should discard line after author line if only contains single number', () => {
       const input = heredoc`
-        = Title
-        Author Name
-        2
+      = Title
+      Author Name
+      22
 
-        {revnumber}
+      {revnumber}
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        {revnumber}
+      {revnumber}
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should process and remove attribute entries found in document header below doctitle', () => {
       const input = heredoc`
-        = Title
-        :foo: bar
-        :yin: yang
+      = Title
+      :foo: bar
+      :yin: yang
 
-        Body
+      Body
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        Body
+      Body
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should process and remove attribute entries found in document header above doctitle', () => {
       const input = heredoc`
-        :foo: bar
-        :yin: yang
-        = Title
+      :foo: bar
+      :yin: yang
+      = Title
 
-        Body
+      Body
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        Body
+      Body
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should process attribute entries found in body', () => {
       const input = heredoc`
-        = Title
-        :foo: bar
+      = Title
+      :foo: bar
 
-        initial: {foo}
+      initial: {foo}
 
-        :foo: baz
+      :foo: baz
 
-        after: {foo}
+      after: {foo}
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        initial: bar
+      initial: bar
 
-        after: baz
+      after: baz
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should substitute attribute reference in value of attribute entry', () => {
       const input = heredoc`
-        :project-slug: acme
-        = Title
-        :url-org: https://example.org
-        :url-project: {url-org}/{project-slug}
+      :project-slug: acme
+      = Title
+      :url-org: https://example.org
+      :url-project: {url-org}/{project-slug}
 
-        The URL for this project is {url-project}.
+      The URL for this project is {url-project}.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        The URL for this project is https://example.org/acme.
+      The URL for this project is https://example.org/acme.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should set value of attribute entry to empty string if value is not specified', () => {
       const input = heredoc`
-        = Title
-        :empty-string:
+      = Title
+      :empty-string:
 
-        foo{empty-string}bar
+      foo{empty-string}bar
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        foobar
+      foobar
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should allow seed attributes to be passed in to API function', () => {
       const input = heredoc`
-        = Title
-        :attribute-from-document: from document
-        :attribute-from-api: from document
+      = Title
+      :attribute-from-document: from document
+      :attribute-from-api: from document
 
-        {attribute-from-api}
+      {attribute-from-api}
 
-        {attribute-from-document}
+      {attribute-from-document}
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        from API
+      from API
 
-        from document
+      from document
       `
       expect(downdoc(input, { attributes: { 'attribute-from-api': 'from API' } })).to.equal(expected)
     })
 
     it('should ignore doctitle attribute set from CLI', () => {
       const input = heredoc`
-        = Document Title
+      = Document Title
 
-        The doctitle is {doctitle}.
+      The doctitle is {doctitle}.
       `
       const expected = heredoc`
-        # Document Title
+      # Document Title
 
-        The doctitle is Document Title.
+      The doctitle is Document Title.
       `
       expect(downdoc(input, { attributes: { doctitle: 'Title' } })).to.equal(expected)
     })
@@ -284,95 +284,95 @@ describe('downdoc()', () => {
   describe('attribute references', () => {
     it('should substitute attribute reference in paragraph', () => {
       const input = heredoc`
-        = Title
-        :project-name: ACME
+      = Title
+      :project-name: ACME
 
-        The name of this project is {project-name}.
+      The name of this project is {project-name}.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        The name of this project is ACME.
+      The name of this project is ACME.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should substitute multiple attribute references in same line', () => {
       const input = heredoc`
-        = Title
-        :author-1: Jim
-        :author-2: Jane
+      = Title
+      :author-1: Jim
+      :author-2: Jane
 
-        This project was created by {author-1} and {author-2}.
+      This project was created by {author-1} and {author-2}.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        This project was created by Jim and Jane.
+      This project was created by Jim and Jane.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should substitute attribute reference in section title', () => {
       const input = heredoc`
-        = Title
-        :product: ACME
+      = Title
+      :product: ACME
 
-        == Introduction to {product}
+      == Introduction to {product}
 
-        Let's get acquainted.
+      Let's get acquainted.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        ## Introduction to ACME
+      ## Introduction to ACME
 
-        Let’s get acquainted.
+      Let’s get acquainted.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should substitute attribute reference in unordered list item', () => {
       const input = heredoc`
-        = Title
-        :product: ACME
-        :url-product: https://example.org/acme
+      = Title
+      :product: ACME
+      :url-product: https://example.org/acme
 
-        . First, download the {product} installer from the {url-product}[{product} website].
+      . First, download the {product} installer from the {url-product}[{product} website].
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        1. First, download the ACME installer from the [ACME website](https://example.org/acme).
+      1. First, download the ACME installer from the [ACME website](https://example.org/acme).
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should unescape escaped attribute references', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        Use the endpoint \`/repos/\\{owner}/\\{repo}\` to retrieve information about a repository.
+      Use the endpoint \`/repos/\\{owner}/\\{repo}\` to retrieve information about a repository.
       `
       expect(input).to.include('\\')
       const expected = heredoc`
-        # Title
+      # Title
 
-        Use the endpoint \`/repos/{owner}/{repo}\` to retrieve information about a repository.
+      Use the endpoint \`/repos/{owner}/{repo}\` to retrieve information about a repository.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should skip unresolved attribute reference', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        This project is named {unknown}.
+      This project is named {unknown}.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        This project is named {unknown}.
+      This project is named {unknown}.
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -381,109 +381,109 @@ describe('downdoc()', () => {
   describe('section titles', () => {
     it('should convert section titles that follow doctitle', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        == Level 1
+      == Level 1
 
-        content
+      content
 
-        === Level 2
+      === Level 2
 
-        ==== Level 3
+      ==== Level 3
 
-        content
+      content
 
-        == Another Level 1
+      == Another Level 1
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        ## Level 1
+      ## Level 1
 
-        content
+      content
 
-        ### Level 2
+      ### Level 2
 
-        #### Level 3
+      #### Level 3
 
-        content
+      content
 
-        ## Another Level 1
+      ## Another Level 1
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should process document that starts with section title', () => {
       const input = heredoc`
-        == First Steps
+      == First Steps
 
-        Let's get started!
+      Let's get started!
       `
       const expected = heredoc`
-        ## First Steps
+      ## First Steps
 
-        Let’s get started!
+      Let’s get started!
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert part titles', () => {
       const input = heredoc`
-        = Title
-        :doctype: book
+      = Title
+      :doctype: book
 
-        = First Steps
+      = First Steps
 
-        = Fundamentals
+      = Fundamentals
 
-        = Going Further
+      = Going Further
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        # First Steps
+      # First Steps
 
-        # Fundamentals
+      # Fundamentals
 
-        # Going Further
+      # Going Further
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert part title when document has no title', () => {
       const input = heredoc`
-        :doctype: book
-        Not an author line.
+      :doctype: book
+      Not an author line.
 
-        = First Steps
+      = First Steps
 
-        == Installation
+      == Installation
       `
       const expected = heredoc`
-        Not an author line.
+      Not an author line.
 
-        # First Steps
+      # First Steps
 
-        ## Installation
+      ## Installation
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should drop section title directly adjacent to document header', () => {
       const input = heredoc`
-        = Title
-        == First Steps
+      = Title
+      == First Steps
 
-        == Fundamentals
+      == Fundamentals
 
-        == Going Further
+      == Going Further
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        ## Fundamentals
+      ## Fundamentals
 
-        ## Going Further
+      ## Going Further
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -492,114 +492,114 @@ describe('downdoc()', () => {
   describe('block titles', () => {
     it('should convert block title on a block', () => {
       const input = heredoc`
-        .Usage
-         downdoc [OPTION]... FILE
+      .Usage
+       downdoc [OPTION]... FILE
       `
       const expected = heredoc`
-        **Usage**
+      **Usage**
 
-            downdoc [OPTION]... FILE
+          downdoc [OPTION]... FILE
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert block title that begins with .', () => {
       const input = heredoc`
-        ..npmrc
-        ----
-        omit=optional
-        ----
+      ..npmrc
+      ----
+      omit=optional
+      ----
       `
       const expected = heredoc`
-        **.npmrc**
+      **.npmrc**
 
-        \`\`\`
-        omit=optional
-        \`\`\`
+      \`\`\`
+      omit=optional
+      \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert block title on each block', () => {
       const input = heredoc`
-        .Purpose
-        To convert AsciiDoc to Markdown.
+      .Purpose
+      To convert AsciiDoc to Markdown.
 
-        .In Action
-        image::screenshot.png[Screenshot]
+      .In Action
+      image::screenshot.png[Screenshot]
       `
       const expected = heredoc`
-        **Purpose**
+      **Purpose**
 
-        To convert AsciiDoc to Markdown.
+      To convert AsciiDoc to Markdown.
 
-        **In Action**
+      **In Action**
 
-        ![Screenshot](screenshot.png)
+      ![Screenshot](screenshot.png)
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should not apply strong emphasis to block title with emphasis', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        .*To make butter:*
-        . Mix ingredients
-        . Chill
-        . Whip
+      .*To make butter:*
+      . Mix ingredients
+      . Chill
+      . Whip
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        **To make butter:**
+      **To make butter:**
 
-        1. Mix ingredients
-        2. Chill
-        3. Whip
+      1. Mix ingredients
+      2. Chill
+      3. Whip
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should apply normal substitutions to title of verbatim block', () => {
       const input = heredoc`
-        :product: ACME Cloud
-        :url-host: https://cloud.example.org
+      :product: ACME Cloud
+      :url-host: https://cloud.example.org
 
-        .Configuration using {product} on {url-host}[host]
-        ----
-        auto=true
-        ----
+      .Configuration using {product} on {url-host}[host]
+      ----
+      auto=true
+      ----
       `
       const expected = heredoc`
-        **Configuration using ACME Cloud on [host](https://cloud.example.org)**
+      **Configuration using ACME Cloud on [host](https://cloud.example.org)**
 
-        \`\`\`
-        auto=true
-        \`\`\`
+      \`\`\`
+      auto=true
+      \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should not process . on a line by itself as a block title', () => {
       const input = heredoc`
-        before
+      before
 
-        .
+      .
 
-        after
+      after
       `
       expect(downdoc(input)).to.equal(input)
     })
 
     it('should process paragraph that begins with ellipsis normally', () => {
       const input = heredoc`
-        ...and to *home*
-        we shall go!
+      ...and to *home*
+      we shall go!
       `
       const expected = heredoc`
-        ...and to **home**
-        we shall go!
+      ...and to **home**
+      we shall go!
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -608,97 +608,97 @@ describe('downdoc()', () => {
   describe('blocks', () => {
     it('should not process section title within a paragraph', () => {
       const input = heredoc`
-        Let the paragraph begin.
-        == only starts a section title outside of a paragraph.
+      Let the paragraph begin.
+      == only starts a section title outside of a paragraph.
       `
       expect(downdoc(input)).to.equal(input)
     })
 
     it('should not process attribute entry within a paragraph', () => {
       const input = heredoc`
-        Let the paragraph begin.
-        :name: declares an attibute in the document header.
+      Let the paragraph begin.
+      :name: declares an attibute in the document header.
       `
       expect(downdoc(input)).to.equal(input)
     })
 
     it('should not process block title within a paragraph', () => {
       const input = heredoc`
-        Let the paragraph begin.
-        .hidden.adoc is a hidden file.
+      Let the paragraph begin.
+      .hidden.adoc is a hidden file.
       `
       expect(downdoc(input)).to.equal(input)
     })
 
     it('should not process list indented line within a paragragh', () => {
       const input = heredoc`
-        Let the paragraph begin.
-          This paragraph uses a hanging indent.
+      Let the paragraph begin.
+        This paragraph uses a hanging indent.
       `
       expect(downdoc(input)).to.equal(input)
     })
 
     it('should not process toc::[] macro within a paragragh', () => {
       const input = heredoc`
-        Let the paragraph begin.
-        When you see this line outside a paragraph:
-        toc::[]
-        it will be replaced with the table of contents.
+      Let the paragraph begin.
+      When you see this line outside a paragraph:
+      toc::[]
+      it will be replaced with the table of contents.
       `
       expect(downdoc(input)).to.equal(input)
     })
 
     it('should convert hard line break in paragraph', () => {
       const input = heredoc`
-        roses are red, +
-        violets are blue.
+      roses are red, +
+      violets are blue.
       `
       const expected = heredoc`
-        roses are red,\\
-        violets are blue.
+      roses are red,\\
+      violets are blue.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert hard line break on line by itsef', () => {
       const input = heredoc`
-        foo
-         +
-        bar
+      foo
+       +
+      bar
       `
       const expected = heredoc`
-        foo
-        \\
-        bar
+      foo
+      \\
+      bar
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should not convert hard line break in block title', () => {
       const input = heredoc`
-        .what color? +
-        red
+      .what color? +
+      red
       `
       const expected = heredoc`
-        **what color? +**
+      **what color? +**
 
-        red
+      red
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should not look for hardbreak if previous line is empty', () => {
       const input = heredoc`
-        foo
+      foo
 
-        {empty}
-        bar
+      {empty}
+      bar
       `
       const expected = heredoc`
-        foo
+      foo
 
 
-        bar
+      bar
       `
       expect(downdoc(input, { attributes: { empty: '' } })).to.equal(expected)
     })
@@ -707,14 +707,14 @@ describe('downdoc()', () => {
   describe('text formatting', () => {
     it('should convert bold formatting', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        You *really* need to check *this* * out!
+      You *really* need to check *this* * out!
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        You **really** need to check **this** * out!
+      You **really** need to check **this** * out!
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -727,139 +727,139 @@ describe('downdoc()', () => {
 
     it('should convert italic formatting', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        The _ is _so_ incredibly _useful_ when making snake_case.
+      The _ is _so_ incredibly _useful_ when making snake_case.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        The _ is _so_ incredibly _useful_ when making snake_case.
+      The _ is _so_ incredibly _useful_ when making snake_case.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert bold italic formatting both ways', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        If you really want to be some *_emphasis_* on it, use _*bold italic*_.
+      If you really want to be some *_emphasis_* on it, use _*bold italic*_.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        If you really want to be some **_emphasis_** on it, use _**bold italic**_.
+      If you really want to be some **_emphasis_** on it, use _**bold italic**_.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert monospace formatting', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        A boolean value can be \`true\` or \`false\`.
+      A boolean value can be \`true\` or \`false\`.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        A boolean value can be \`true\` or \`false\`.
+      A boolean value can be \`true\` or \`false\`.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should honor backslash at start of monospace phrase', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        Visit \`\\http://localhost:8080\` or \`\\http://127.0.0.1:8080\` in your browser to see a preview.
+      Visit \`\\http://localhost:8080\` or \`\\http://127.0.0.1:8080\` in your browser to see a preview.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        Visit \`http://localhost:8080\` or \`http://127.0.0.1:8080\` in your browser to see a preview.
+      Visit \`http://localhost:8080\` or \`http://127.0.0.1:8080\` in your browser to see a preview.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should drop attribute list in front of formatted text', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        Use downdoc to convert [.path]_README.adoc_ to [.path]_README.md_ *before* publishing.
+      Use downdoc to convert [.path]_README.adoc_ to [.path]_README.md_ *before* publishing.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        Use downdoc to convert _README.adoc_ to _README.md_ **before** publishing.
+      Use downdoc to convert _README.adoc_ to _README.md_ **before** publishing.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert formatted text before replacing attribute references', () => {
       const input = heredoc`
-        = Title
-        :bold: *not actually bold*
+      = Title
+      :bold: *not actually bold*
 
-        {bold}
+      {bold}
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        *not actually bold*
+      *not actually bold*
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should not drop line that starts with formatting text with attribute list', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        [.path]_README.adoc_ contains all the essential information.
+      [.path]_README.adoc_ contains all the essential information.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        _README.adoc_ contains all the essential information.
+      _README.adoc_ contains all the essential information.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should substitute double smart quotes', () => {
       const input = heredoc`
-        Before you say "\`no way\`", I say "\`try before you deny\`".
+      Before you say "\`no way\`", I say "\`try before you deny\`".
 
-        That "\`bug\`" is actually a feature of the software.
+      That "\`bug\`" is actually a feature of the software.
       `
       const expected = heredoc`
-        Before you say <q>no way</q>, I say <q>try before you deny</q>.
+      Before you say <q>no way</q>, I say <q>try before you deny</q>.
 
-        That <q>bug</q> is actually a feature of the software.
+      That <q>bug</q> is actually a feature of the software.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should substitute smart apostrophe', () => {
       const input = heredoc`
-        That\`'s probably not going to work.
+      That\`'s probably not going to work.
 
-        That's probably not going to work.
+      That's probably not going to work.
 
-        The \`'90s was the heydey of alternative rock.
+      The \`'90s was the heydey of alternative rock.
 
-        Ruby 2.6's endless range operator is a useful addition.
+      Ruby 2.6's endless range operator is a useful addition.
 
-        Qu'est ce qu'AsciiDoc ?
+      Qu'est ce qu'AsciiDoc ?
       `
       const expected = heredoc`
-        That’s probably not going to work.
+      That’s probably not going to work.
 
-        That’s probably not going to work.
+      That’s probably not going to work.
 
-        The ’90s was the heydey of alternative rock.
+      The ’90s was the heydey of alternative rock.
 
-        Ruby 2.6’s endless range operator is a useful addition.
+      Ruby 2.6’s endless range operator is a useful addition.
 
-        Qu’est ce qu’AsciiDoc ?
+      Qu’est ce qu’AsciiDoc ?
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -868,270 +868,270 @@ describe('downdoc()', () => {
   describe('xrefs', () => {
     it('should convert internal xrefs', () => {
       const input = heredoc`
-        = Title
-        :idprefix:
-        :idseparator: -
+      = Title
+      :idprefix:
+      :idseparator: -
 
-        == First Section
+      == First Section
 
-        Go to the <<second-section,next section>> or skip to <<#fin, the end>>.
+      Go to the <<second-section,next section>> or skip to <<#fin, the end>>.
 
-        == Second Section
+      == Second Section
 
-        Go to the xref:first-section[previous section] or continue to xref:#fin[the end].
+      Go to the xref:first-section[previous section] or continue to xref:#fin[the end].
 
-        == Fin
+      == Fin
 
-        The end.
+      The end.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        ## First Section
+      ## First Section
 
-        Go to the [next section](#second-section) or skip to [the end](#fin).
+      Go to the [next section](#second-section) or skip to [the end](#fin).
 
-        ## Second Section
+      ## Second Section
 
-        Go to the [previous section](#first-section) or continue to [the end](#fin).
+      Go to the [previous section](#first-section) or continue to [the end](#fin).
 
-        ## Fin
+      ## Fin
 
-        The end.
+      The end.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should fill in text for backward xref', () => {
       const input = heredoc`
-        = HOWTO
-        :idprefix:
-        :idseparator: -
+      = HOWTO
+      :idprefix:
+      :idseparator: -
 
-        == System Requirements
+      == System Requirements
 
-        A computer connected to the internet.
+      A computer connected to the internet.
 
-        == Usage
+      == Usage
 
-        Be sure you have read the <<system-requirements>>.
+      Be sure you have read the <<system-requirements>>.
       `
       const expected = heredoc`
-        # HOWTO
+      # HOWTO
 
-        ## System Requirements
+      ## System Requirements
 
-        A computer connected to the internet.
+      A computer connected to the internet.
 
-        ## Usage
+      ## Usage
 
-        Be sure you have read the [System Requirements](#system-requirements).
+      Be sure you have read the [System Requirements](#system-requirements).
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should not fill in text for xref to doctitle without explicit ID', () => {
       const input = heredoc`
-        = HOWTO
+      = HOWTO
 
-        In this <<_howto>>, you will learn how to do stuff.
+      In this <<_howto>>, you will learn how to do stuff.
       `
       const expected = heredoc`
-        # HOWTO
+      # HOWTO
 
-        In this [_howto](#_howto), you will learn how to do stuff.
+      In this [_howto](#_howto), you will learn how to do stuff.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should fill in text for xref to doctitle with explicit ID', () => {
       const input = heredoc`
-        [#howto]
-        = HOWTO downdoc
+      [#howto]
+      = HOWTO downdoc
 
-        In this <<howto>>, you will learn {doctitle}.
+      In this <<howto>>, you will learn {doctitle}.
       `
       const expected = heredoc`
-        # HOWTO downdoc
+      # HOWTO downdoc
 
-        In this [HOWTO downdoc](#howto-downdoc), you will learn HOWTO downdoc.
+      In this [HOWTO downdoc](#howto-downdoc), you will learn HOWTO downdoc.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should fill in text for forward xref', () => {
       const input = heredoc`
-        = Title
-        :idprefix:
+      = Title
+      :idprefix:
 
-        == System Requirements
+      == System Requirements
 
-        A computer connected to the internet.
-        Once you have that, move on to <<usage>>.
+      A computer connected to the internet.
+      Once you have that, move on to <<usage>>.
 
-        == Usage
+      == Usage
 
-        Let's get started.
+      Let's get started.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        ## System Requirements
+      ## System Requirements
 
-        A computer connected to the internet.
-        Once you have that, move on to [Usage](#usage).
+      A computer connected to the internet.
+      Once you have that, move on to [Usage](#usage).
 
-        ## Usage
+      ## Usage
 
-        Let’s get started.
+      Let’s get started.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should end block at next block attribute list', () => {
       const input = heredoc`
-        The paragraph before <<idname>>.
-        [#idname]
-        == Section Title
+      The paragraph before <<idname>>.
+      [#idname]
+      == Section Title
       `
       const expected = heredoc`
-        The paragraph before [Section Title](#section-title).
-        ## Section Title
+      The paragraph before [Section Title](#section-title).
+      ## Section Title
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should honor idprefix and idseparator when mapping autogenerated IDs', () => {
       const input = heredoc`
-        = Title
-        :idprefix: ref_
-        :idseparator: -
+      = Title
+      :idprefix: ref_
+      :idseparator: -
 
-        == System Requirements
+      == System Requirements
 
-        == Get Started
+      == Get Started
 
-        Check the <<ref_system-requirements>>, then <<ref_get-started>>.
+      Check the <<ref_system-requirements>>, then <<ref_get-started>>.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        ## System Requirements
+      ## System Requirements
 
-        ## Get Started
+      ## Get Started
 
-        Check the [System Requirements](#system-requirements), then [Get Started](#get-started).
+      Check the [System Requirements](#system-requirements), then [Get Started](#get-started).
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should rewrite explicit ID to auto-generated ID', () => {
       const input = heredoc`
-        = HOWTO
+      = HOWTO
 
-        You'll learn how to <<build>> and how to xref:deploy[].
+      You'll learn how to <<build>> and how to xref:deploy[].
 
-        [#build]
-        == Build Your Site
+      [#build]
+      == Build Your Site
 
-        Instructions go here.
+      Instructions go here.
 
-        [[deploy]]
-        == Deploy Your Site
+      [[deploy]]
+      == Deploy Your Site
 
-        Instructions go here.
+      Instructions go here.
       `
       const expected = heredoc`
-        # HOWTO
+      # HOWTO
 
-        You’ll learn how to [Build Your Site](#build-your-site) and how to [Deploy Your Site](#deploy-your-site).
+      You’ll learn how to [Build Your Site](#build-your-site) and how to [Deploy Your Site](#deploy-your-site).
 
-        ## Build Your Site
+      ## Build Your Site
 
-        Instructions go here.
+      Instructions go here.
 
-        ## Deploy Your Site
+      ## Deploy Your Site
 
-        Instructions go here.
+      Instructions go here.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should preserve escaped square brackets in xref text', () => {
       const input = heredoc`
-        = Title
-        :idprefix:
-        :idseparator: -
+      = Title
+      :idprefix:
+      :idseparator: -
 
-        The next section covers the xref:array-of-strings[String\\[\\] type].
+      The next section covers the xref:array-of-strings[String\\[\\] type].
 
-        [#array-of-strings]
-        == Array of strings
+      [#array-of-strings]
+      == Array of strings
 
-        A type that represents multiple string values.
+      A type that represents multiple string values.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        The next section covers the [String\\[\\] type](#array-of-strings).
+      The next section covers the [String\\[\\] type](#array-of-strings).
 
-        ## Array of strings
+      ## Array of strings
 
-        A type that represents multiple string values.
+      A type that represents multiple string values.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should replace attribute reference in title of internal reference', () => {
       const input = heredoc`
-        = Title
-        :product: ACME
+      = Title
+      :product: ACME
 
-        Let's <<get-started>>.
+      Let's <<get-started>>.
 
-        [[get-started]]
-        == Get Started with {product}
+      [[get-started]]
+      == Get Started with {product}
 
-        Let’s go!
+      Let’s go!
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        Let’s [Get Started with ACME](#get-started-with-acme).
+      Let’s [Get Started with ACME](#get-started-with-acme).
 
-        ## Get Started with ACME
+      ## Get Started with ACME
 
-        Let’s go!
+      Let’s go!
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should use ID as text for unresolved xref', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        Refer to <<webserver-instructions>> to set up your webserver.
+      Refer to <<webserver-instructions>> to set up your webserver.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        Refer to [webserver-instructions](#webserver-instructions) to set up your webserver.
+      Refer to [webserver-instructions](#webserver-instructions) to set up your webserver.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should not prepend # to target of external xref', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        Please refer to the <<contributing.adoc#,contributing guide>>.
-        The xref:contribution.adoc[contribution guide] will teach you how to <<contribution.adoc#build-project,build the project>>.
+      Please refer to the <<contributing.adoc#,contributing guide>>.
+      The xref:contribution.adoc[contribution guide] will teach you how to <<contribution.adoc#build-project,build the project>>.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        Please refer to the [contributing guide](contributing.adoc).
-        The [contribution guide](contribution.adoc) will teach you how to [build the project](contribution.adoc#build-project).
+      Please refer to the [contributing guide](contributing.adoc).
+      The [contribution guide](contribution.adoc) will teach you how to [build the project](contribution.adoc#build-project).
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -1140,112 +1140,112 @@ describe('downdoc()', () => {
   describe('link and URL macros', () => {
     it('should convert URL macro', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        These tests are run using https://mochajs.org[Mocha].
+      These tests are run using https://mochajs.org[Mocha].
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        These tests are run using [Mocha](https://mochajs.org).
+      These tests are run using [Mocha](https://mochajs.org).
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert URL macro defined using attribute reference', () => {
       const input = heredoc`
-        = Title
-        :url-mocha: https://mochajs.org
+      = Title
+      :url-mocha: https://mochajs.org
 
-        These tests are run using {url-mocha}[Mocha].
+      These tests are run using {url-mocha}[Mocha].
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        These tests are run using [Mocha](https://mochajs.org).
+      These tests are run using [Mocha](https://mochajs.org).
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert link macro to relative file', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        See link:LICENSE[LICENSE] or link:LICENSE[] to find the license text.
+      See link:LICENSE[LICENSE] or link:LICENSE[] to find the license text.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        See [LICENSE](LICENSE) or [LICENSE](LICENSE) to find the license text.
+      See [LICENSE](LICENSE) or [LICENSE](LICENSE) to find the license text.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert URL macro with link macro prefix', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        These tests are run using link:https://mochajs.org[Mocha].
+      These tests are run using link:https://mochajs.org[Mocha].
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        These tests are run using [Mocha](https://mochajs.org).
+      These tests are run using [Mocha](https://mochajs.org).
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should not process non-escaped bare URL', () => {
       const input = heredoc`
-        Navigate to http://localhost:8080/app to view your application.
+      Navigate to http://localhost:8080/app to view your application.
 
-        The https://example.org domain name is for tests, tutorials, and examples.
+      The https://example.org domain name is for tests, tutorials, and examples.
       `
       const expected = heredoc`
-        Navigate to http://localhost:8080/app to view your application.
+      Navigate to http://localhost:8080/app to view your application.
 
-        The https://example.org domain name is for tests, tutorials, and examples.
+      The https://example.org domain name is for tests, tutorials, and examples.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should hide escaped bare URL', () => {
       const input = heredoc`
-        The site will be running at \\http://localhost:8080/app.
+      The site will be running at \\http://localhost:8080/app.
 
-        The \\https://example.org domain name is for tests, tutorials, and examples.
+      The \\https://example.org domain name is for tests, tutorials, and examples.
       `
       const expected = heredoc`
-        The site will be running at <span>http:</span>//localhost:8080/app.
+      The site will be running at <span>http:</span>//localhost:8080/app.
 
-        The <span>https:</span>//example.org domain name is for tests, tutorials, and examples.
+      The <span>https:</span>//example.org domain name is for tests, tutorials, and examples.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should preserve escaped square brackets in link text', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        The https://example.org[toc::\\[\\]] macro is not supported in Markdown.
+      The https://example.org[toc::\\[\\]] macro is not supported in Markdown.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        The [toc::\\[\\]](https://example.org) macro is not supported in Markdown.
+      The [toc::\\[\\]](https://example.org) macro is not supported in Markdown.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should ignore inline macros if target contains space', () => {
       const input = heredoc`
-        link:not processed.html[]
+      link:not processed.html[]
 
-        xref:not processed.adoc[]
+      xref:not processed.adoc[]
 
-        image:not processed.png[]
+      image:not processed.png[]
 
-        https://example.org/not processed.html[]
+      https://example.org/not processed.html[]
       `
       expect(downdoc(input)).to.equal(input)
     })
@@ -1254,124 +1254,124 @@ describe('downdoc()', () => {
   describe('image macros', () => {
     it('should convert local inline image', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        When you see image:images/green-bar.png[green bar], you know the tests have passed!
+      When you see image:images/green-bar.png[green bar], you know the tests have passed!
 
-        When you see image:images/red-bar.png[], something has gone wrong.
+      When you see image:images/red-bar.png[], something has gone wrong.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        When you see ![green bar](images/green-bar.png), you know the tests have passed!
+      When you see ![green bar](images/green-bar.png), you know the tests have passed!
 
-        When you see ![red-bar.png](images/red-bar.png), something has gone wrong.
+      When you see ![red-bar.png](images/red-bar.png), something has gone wrong.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert remote inline image', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        * image:https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit/Assets/PNG/FR.png[fr]
+      * image:https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit/Assets/PNG/FR.png[fr]
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        * ![fr](https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit/Assets/PNG/FR.png)
+      * ![fr](https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit/Assets/PNG/FR.png)
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert local block image', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        Here's a screenshot of the application in action.
+      Here's a screenshot of the application in action.
 
-        image::screenshot.png[Screenshot]
+      image::screenshot.png[Screenshot]
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        Here’s a screenshot of the application in action.
+      Here’s a screenshot of the application in action.
 
-        ![Screenshot](screenshot.png)
+      ![Screenshot](screenshot.png)
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert remote block image', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        image::https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit/Assets/PNG/FR.png[fr,32]
+      image::https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit/Assets/PNG/FR.png[fr,32]
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        ![fr](https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit/Assets/PNG/FR.png)
+      ![fr](https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit/Assets/PNG/FR.png)
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should substitute attribute reference in target of block image', () => {
       const input = heredoc`
-        = Title
-        :url-flags: https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit/Assets/PNG
+      = Title
+      :url-flags: https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit/Assets/PNG
 
-        image::{url-flags}/FR.png[fr]
+      image::{url-flags}/FR.png[fr]
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        ![fr](https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit/Assets/PNG/FR.png)
+      ![fr](https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit/Assets/PNG/FR.png)
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should not convert local block image within a paragraph', () => {
       const input = heredoc`
-        A block image macro uses the following form:
-        image::target[]
+      A block image macro uses the following form:
+      image::target[]
       `
       expect(downdoc(input)).to.equal(input)
     })
 
     it('should preserve escaped square brackets in image alt text', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        image::square-brackets.png[The \\[ and \\] brackets]
+      image::square-brackets.png[The \\[ and \\] brackets]
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        ![The \\[ and \\] brackets](square-brackets.png)
+      ![The \\[ and \\] brackets](square-brackets.png)
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should not match macro whose target contains backslash characters', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        Learn more about the xref:image-macro[image:\\[\\] macro].
+      Learn more about the xref:image-macro[image:\\[\\] macro].
 
-        [#image-macro]
-        == Image macro
+      [#image-macro]
+      == Image macro
 
-        Similar to the xref:\\[\\] macro, but for images. The text between [ and ] is the alt text.
+      Similar to the xref:\\[\\] macro, but for images. The text between [ and ] is the alt text.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        Learn more about the [image:\\[\\] macro](#image-macro).
+      Learn more about the [image:\\[\\] macro](#image-macro).
 
-        ## Image macro
+      ## Image macro
 
-        Similar to the xref:\\[\\] macro, but for images. The text between [ and ] is the alt text.
+      Similar to the xref:\\[\\] macro, but for images. The text between [ and ] is the alt text.
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -1380,49 +1380,49 @@ describe('downdoc()', () => {
   describe('admonitions', () => {
     it('should convert admonitions', () => {
       const input = heredoc`
-        = Title
-        :milk-type: oat
+      = Title
+      :milk-type: oat
 
-        NOTE: Remember the {milk-type} milk.
+      NOTE: Remember the {milk-type} milk.
 
-        IMPORTANT: Don't forget the children!
+      IMPORTANT: Don't forget the children!
 
-        TIP: Look for the https://en.wikipedia.org/wiki/Warp_(video_games)[warp] under the bridge.
+      TIP: Look for the https://en.wikipedia.org/wiki/Warp_(video_games)[warp] under the bridge.
 
-        CAUTION: Slippery when wet.
+      CAUTION: Slippery when wet.
 
-        WARNING: The software you're about to use has *not* been tested.
+      WARNING: The software you're about to use has *not* been tested.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        📌 **NOTE:** Remember the oat milk.
+      📌 **NOTE:** Remember the oat milk.
 
-        ❗ **IMPORTANT:** Don’t forget the children!
+      ❗ **IMPORTANT:** Don’t forget the children!
 
-        💡 **TIP:** Look for the [warp](https://en.wikipedia.org/wiki/Warp_(video_games)) under the bridge.
+      💡 **TIP:** Look for the [warp](https://en.wikipedia.org/wiki/Warp_(video_games)) under the bridge.
 
-        🔥 **CAUTION:** Slippery when wet.
+      🔥 **CAUTION:** Slippery when wet.
 
-        ⚠️ **WARNING:** The software you’re about to use has **not** been tested.
+      ⚠️ **WARNING:** The software you’re about to use has **not** been tested.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should only replace admonition label at start of paragraph', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        TIP: Look
-        for the
-        NOTE: prefix.
+      TIP: Look
+      for the
+      NOTE: prefix.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        💡 **TIP:** Look
-        for the
-        NOTE: prefix.
+      💡 **TIP:** Look
+      for the
+      NOTE: prefix.
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -1431,27 +1431,27 @@ describe('downdoc()', () => {
   describe('blockquotes', () => {
     it('should retain Markdown-style blockquotes', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        > Roads?
-        >
-        > Where we're going, we don't need _roads_!
+      > Roads?
+      >
+      > Where we're going, we don't need _roads_!
 
-        The rest is...the future!
+      The rest is...the future!
 
-        > And away we go!
+      > And away we go!
       `
 
       const expected = heredoc`
-        # Title
+      # Title
 
-        > Roads?
-        >
-        > Where we’re going, we don’t need _roads_!
+      > Roads?
+      >
+      > Where we’re going, we don’t need _roads_!
 
-        The rest is...the future!
+      The rest is...the future!
 
-        > And away we go!
+      > And away we go!
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -1460,441 +1460,453 @@ describe('downdoc()', () => {
   describe('code blocks', () => {
     it('should convert literal paragraph', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        beginning
+      beginning
 
-         literal
+       literal
 
-        middle
+      middle
 
-            literal
-              so literal
+          literal
+            so literal
 
-        end
+      end
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        beginning
+      beginning
 
-            literal
+          literal
 
-        middle
+      middle
 
-            literal
-              so literal
+          literal
+            so literal
 
-        end
+      end
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert literal paragraph at start of document', () => {
-      const input = ' literal paragraph'
-      const expected = '    literal paragraph'
+      const input = heredoc`
+       literal paragraph
+
+      normal paragraph
+      `
+      const expected = heredoc`
+          literal paragraph
+
+      normal paragraph
+      `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should promote literal paragraph that starts with command prompt to a console code block', () => {
       const input = heredoc`
-        Example:
+      Example:
 
-         $ npx downdoc README.adoc
+       $ npx downdoc README.adoc
 
-        Get more information:
+      Get more information:
 
-         $ npx downdoc -h
+       $ npx downdoc -h
       `
       const expected = heredoc`
-        Example:
+      Example:
 
-        \`\`\`console
-        $ npx downdoc README.adoc
-        \`\`\`
+      \`\`\`console
+      $ npx downdoc README.adoc
+      \`\`\`
 
-        Get more information:
+      Get more information:
 
-        \`\`\`console
-        $ npx downdoc -h
-        \`\`\`
+      \`\`\`console
+      $ npx downdoc -h
+      \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should close implicit console code block at end of document after trimming trailing newline', () => {
       const input = heredoc`
-        = Document Title
+      = Document Title
 
-         $ npx downdoc -h
+       $ npx downdoc -h
 
-        ////
-        -h and also be written as --help
-        ////
+      ////
+      -h and also be written as --help
+      ////
       `
       const expected = heredoc`
-        # Document Title
+      # Document Title
 
-        \`\`\`console
-        $ npx downdoc -h
-        \`\`\`
+      \`\`\`console
+      $ npx downdoc -h
+      \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert source block with language', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        [,js]
-        ----
-        const downdoc = require('downdoc')
-        console.log(downdoc('= Document Title'))
-        ----
+      [,js]
+      ----
+      const downdoc = require('downdoc')
+      console.log(downdoc('= Document Title'))
+      ----
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        \`\`\`js
-        const downdoc = require('downdoc')
-        console.log(downdoc('= Document Title'))
-        \`\`\`
+      \`\`\`js
+      const downdoc = require('downdoc')
+      console.log(downdoc('= Document Title'))
+      \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert source block with language preceded by space', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        [, text]
-        ----
-        just plain text
-        ----
+      [, text]
+      ----
+      just plain text
+      ----
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        \`\`\`text
-        just plain text
-        \`\`\`
+      \`\`\`text
+      just plain text
+      \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert promoted source block with language', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        [source,js]
-        ....
-        const downdoc = require('downdoc')
-        console.log(downdoc('= Document Title'))
-        ....
+      [source,js]
+      ....
+      const downdoc = require('downdoc')
+      console.log(downdoc('= Document Title'))
+      ....
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        \`\`\`js
-        const downdoc = require('downdoc')
-        console.log(downdoc('= Document Title'))
-        \`\`\`
+      \`\`\`js
+      const downdoc = require('downdoc')
+      console.log(downdoc('= Document Title'))
+      \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert source block with language with block title above or below block attribute line', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        .Print 1 in JavaScript
-        [,js]
-        ----
-        console.log(1)
-        ----
+      .Print 1 in JavaScript
+      [,js]
+      ----
+      console.log(1)
+      ----
 
-        [,ruby]
-        .Print 1 in Ruby
-        ----
-        puts 1
-        ----
+      [,ruby]
+      .Print 1 in Ruby
+      ----
+      puts 1
+      ----
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        **Print 1 in JavaScript**
+      **Print 1 in JavaScript**
 
-        \`\`\`js
-        console.log(1)
-        \`\`\`
+      \`\`\`js
+      console.log(1)
+      \`\`\`
 
-        **Print 1 in Ruby**
+      **Print 1 in Ruby**
 
-        \`\`\`ruby
-        puts 1
-        \`\`\`
+      \`\`\`ruby
+      puts 1
+      \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert source block without language', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        [source]
-        ----
-        /.cache/
-        /node_modules/
-        ----
+      [source]
+      ----
+      /.cache/
+      /node_modules/
+      ----
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        \`\`\`
-        /.cache/
-        /node_modules/
-        \`\`\`
+      \`\`\`
+      /.cache/
+      /node_modules/
+      \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert listing block', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        ----
-        folder/
-          file.yml
-          subfolder/
-            file.js
-        ----
+      ----
+      folder/
+        file.yml
+        subfolder/
+          file.js
+      ----
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        \`\`\`
-        folder/
-          file.yml
-          subfolder/
-            file.js
-        \`\`\`
+      \`\`\`
+      folder/
+        file.yml
+        subfolder/
+          file.js
+      \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert literal block without block style', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        [,ignored]
-        ....
-        expected
-        output
-        ....
+      [,tree]
+      ....
+      folder/
+        file.yml
+        subfolder/
+          file.js
+      ....
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        \`\`\`
-        expected
-        output
-        \`\`\`
+      \`\`\`
+      folder/
+        file.yml
+        subfolder/
+          file.js
+      \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should ignore language on listing block with listing style', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        [listing,ignored]
-        ----
-        plain
-        verbatim
-        ----
+      [listing,ignored]
+      ----
+      plain
+      verbatim
+      ----
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        \`\`\`
-        plain
-        verbatim
-        \`\`\`
+      \`\`\`
+      plain
+      verbatim
+      \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert literal block with style (diagram)', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        [plantuml]
-        ....
-        start;
-        stop;
-        ....
+      [plantuml]
+      ....
+      start;
+      stop;
+      ....
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        \`\`\`plantuml
-        start;
-        stop;
-        \`\`\`
+      \`\`\`plantuml
+      start;
+      stop;
+      \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should not substitute text in a verbatim block', () => {
       const input = heredoc`
-        = Title
-        :project-name: ACME
+      = Title
+      :project-name: ACME
 
-        The name of the project is {project-name}.
+      The name of the project is {project-name}.
 
-        [,ruby]
-        ----
-        puts '{project-name}'
-        ----
+      [,ruby]
+      ----
+      puts '{project-name}'
+      ----
 
-        {project-name} is awesome.
+      {project-name} is awesome.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        The name of the project is ACME.
+      The name of the project is ACME.
 
-        \`\`\`ruby
-        puts '{project-name}'
-        \`\`\`
+      \`\`\`ruby
+      puts '{project-name}'
+      \`\`\`
 
-        ACME is awesome.
+      ACME is awesome.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should not process line-oriented syntax inside verbatim block', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        [,asciidoc]
-        ----
-        = Document Title
-        :toc: preamble
-        :toc-title: Contents
+      [,asciidoc]
+      ----
+      = Document Title
+      :toc: preamble
+      :toc-title: Contents
 
-        preamble
+      preamble
 
-        == Section
+      == Section
 
-        content
-        ----
+      content
+      ----
 
-        Isn't AsciiDoc grand?
+      Isn't AsciiDoc grand?
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        \`\`\`asciidoc
-        = Document Title
-        :toc: preamble
-        :toc-title: Contents
+      \`\`\`asciidoc
+      = Document Title
+      :toc: preamble
+      :toc-title: Contents
 
-        preamble
+      preamble
 
-        == Section
+      == Section
 
-        content
-        \`\`\`
+      content
+      \`\`\`
 
-        Isn’t AsciiDoc grand?
+      Isn’t AsciiDoc grand?
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should honor subs=+attributes on source block', () => {
       const input = heredoc`
-        = Title
-        :url-repo: https://github.com/octocat/Spoon-Knife
+      = Title
+      :url-repo: https://github.com/octocat/Spoon-Knife
 
-        [,console,subs=+attributes]
-        ----
-        $ git clone {url-repo}
-        ----
+      [,console,subs=+attributes]
+      ----
+      $ git clone {url-repo}
+      ----
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        \`\`\`console
-        $ git clone https://github.com/octocat/Spoon-Knife
-        \`\`\`
+      \`\`\`console
+      $ git clone https://github.com/octocat/Spoon-Knife
+      \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should honor subs="attributes+" on source block', () => {
       const input = heredoc`
-        = Title
-        :url-repo: https://github.com/octocat/Spoon-Knife
+      = Title
+      :url-repo: https://github.com/octocat/Spoon-Knife
 
-        [,console,subs="attributes+"]
-        ----
-        $ git clone {url-repo}
-        ----
+      [,console,subs="attributes+"]
+      ----
+      $ git clone {url-repo}
+      ----
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        \`\`\`console
-        $ git clone https://github.com/octocat/Spoon-Knife
-        \`\`\`
+      \`\`\`console
+      $ git clone https://github.com/octocat/Spoon-Knife
+      \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should replace conums in source block with circled numbers', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        [,js]
-        ----
-        'use strict' // <1>
+      [,js]
+      ----
+      'use strict' // <1>
 
-        const fs = require('node:fs') // <2>
-        ----
-        <1> Enables strict mode.
-        <2> Requires the built-in fs module.
+      const fs = require('node:fs') // <2>
+      ----
+      <1> Enables strict mode.
+      <2> Requires the built-in fs module.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        \`\`\`js
-        'use strict' // ❶
+      \`\`\`js
+      'use strict' // ❶
 
-        const fs = require('node:fs') // ❷
-        \`\`\`
-        1. Enables strict mode.
-        2. Requires the built-in fs module.
+      const fs = require('node:fs') // ❷
+      \`\`\`
+      1. Enables strict mode.
+      2. Requires the built-in fs module.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should replace conum at start of otherwise blank line', () => {
       const input = heredoc`
-        ....
-        first line
-        <1>
-        last line
-        ----
-        <1> blank line
+      ....
+      first line
+      <1>
+      last line
+      ----
+      <1> blank line
       `
       const expected = heredoc`
-        \`\`\`
-        first line
-        ❶
-        last line
-        \`\`\`
-        1. blank line
+      \`\`\`
+      first line
+      ❶
+      last line
+      \`\`\`
+      1. blank line
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -1903,583 +1915,583 @@ describe('downdoc()', () => {
   describe('lists', () => {
     it('should not process list marker within a paragraph', () => {
       const input = heredoc`
-        Let the paragraph begin.
-        * is the formatting mark for bold.
-        - is only a list marker.
+      Let the paragraph begin.
+      * is the formatting mark for bold.
+      - is only a list marker.
 
-        Let another paragraph begin.
-        . followed by a space starts an ordered list outside a paragraph.
+      Let another paragraph begin.
+      . followed by a space starts an ordered list outside a paragraph.
 
-        One more for the road.
-        <1> is a callout list marker and conum.
+      One more for the road.
+      <1> is a callout list marker and conum.
       `
       expect(downdoc(input)).to.equal(input)
     })
 
     it('should retain unordered list', () => {
       const input = heredoc`
-        * work
-        * play
-        * drink
+      * work
+      * play
+      * drink
 
-        paragraph
+      paragraph
 
-        * and party!
+      * and party!
       `
       expect(downdoc(input)).to.equal(input)
     })
 
     it('should remove blank lines between unordered list items', () => {
       const input = heredoc`
-        * work
+      * work
 
-        * play
+      * play
 
 
-        * drink
+      * drink
 
-        and party!
+      and party!
       `
       const expected = heredoc`
-        * work
-        * play
-        * drink
+      * work
+      * play
+      * drink
 
-        and party!
+      and party!
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert nested unordered lists', () => {
       const input = heredoc`
-        * foo
-        ** bar
-        *** baz
-        ** bar
-        * foo
+      * foo
+      ** bar
+      *** baz
+      ** bar
+      * foo
       `
       const expected = heredoc`
-        * foo
-          * bar
-            * baz
-          * bar
-        * foo
+      * foo
+        * bar
+          * baz
+        * bar
+      * foo
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should honor markdown-list-indent when converting nested unordered lists', () => {
       const input = heredoc`
-        * foo
-        ** bar
-        *** baz
-        ** bar
-        * foo
+      * foo
+      ** bar
+      *** baz
+      ** bar
+      * foo
       `
       const expected = heredoc`
-        * foo
-            * bar
-                * baz
-            * bar
-        * foo
+      * foo
+          * bar
+              * baz
+          * bar
+      * foo
       `
       expect(downdoc(input, { attributes: { 'markdown-list-indent': '4' } })).to.equal(expected)
     })
 
     it('should support - as unordered list marker', () => {
       const input = heredoc`
-        * Do
-        - Re
-        * Do
+      * Do
+      - Re
+      * Do
       `
       const expected = heredoc`
-        * Do
-          * Re
-        * Do
+      * Do
+        * Re
+      * Do
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert ordered list to numbered list', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        . one
-        . two
-        . three
-        . _done!_
+      . one
+      . two
+      . three
+      . _done!_
 
-        paragraph
+      paragraph
 
-        . and one
+      . and one
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        1. one
-        2. two
-        3. three
-        4. _done!_
+      1. one
+      2. two
+      3. three
+      4. _done!_
 
-        paragraph
+      paragraph
 
-        1. and one
+      1. and one
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should remove blank lines between ordered list items', () => {
       const input = heredoc`
-        . one
+      . one
 
-        . two
+      . two
 
 
-        . three
+      . three
 
-        done
+      done
       `
       const expected = heredoc`
-        1. one
-        2. two
-        3. three
+      1. one
+      2. two
+      3. three
 
-        done
+      done
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert nested ordered lists', () => {
       const input = heredoc`
-        . foo
-        .. bar
-        ... baz
-        .. bar
-        . foo
+      . foo
+      .. bar
+      ... baz
+      .. bar
+      . foo
       `
       const expected = heredoc`
-        1. foo
-           1. bar
-              1. baz
-           2. bar
-        2. foo
+      1. foo
+         1. bar
+            1. baz
+         2. bar
+      2. foo
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should honor markdown-list-indent when converting nested ordered lists', () => {
       const input = heredoc`
-        . foo
-        .. bar
-        ... baz
-        .. bar
-        . foo
+      . foo
+      .. bar
+      ... baz
+      .. bar
+      . foo
       `
       const expected = heredoc`
-        1. foo
-            1. bar
-                1. baz
-            2. bar
-        2. foo
+      1. foo
+          1. bar
+              1. baz
+          2. bar
+      2. foo
       `
       expect(downdoc(input, { attributes: { 'markdown-list-indent': '4' } })).to.equal(expected)
     })
 
     it('should convert mixed nested lists', () => {
       const input = heredoc`
-        * unordered
-        . ordered
-        ** unordered
-        . ordered
-        * unordered
+      * unordered
+      . ordered
+      ** unordered
+      . ordered
+      * unordered
       `
       const expected = heredoc`
-        * unordered
-          1. ordered
-             * unordered
-          2. ordered
-        * unordered
+      * unordered
+        1. ordered
+           * unordered
+        2. ordered
+      * unordered
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should continue numbering from ancestor list', () => {
       const input = heredoc`
-        . foo
-        .. bar
-        ... baz
-        . foo
+      . foo
+      .. bar
+      ... baz
+      . foo
       `
       const expected = heredoc`
-        1. foo
-           1. bar
-              1. baz
-        2. foo
+      1. foo
+         1. bar
+            1. baz
+      2. foo
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert description list into unorderd list with bold first line', () => {
       const input = heredoc`
-        term:: desc
+      term:: desc
 
-        another term::
-        desc
-        +
-        attached paragraph
+      another term::
+      desc
+      +
+      attached paragraph
 
-        yet another term:: desc
+      yet another term:: desc
       `
       const expected = heredoc`
-        * **term**\\
-        desc
-        * **another term**\\
-        desc
+      * **term**\\
+      desc
+      * **another term**\\
+      desc
 
-          attached paragraph
-        * **yet another term**\\
-        desc
+        attached paragraph
+      * **yet another term**\\
+      desc
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert description list nested in unordered list', () => {
       const input = heredoc`
-        * foo
-        term:: desc
-        * bar
+      * foo
+      term:: desc
+      * bar
       `
       const expected = heredoc`
-        * foo
-          * **term**\\
-        desc
-        * bar
+      * foo
+        * **term**\\
+      desc
+      * bar
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert unordered list nested in description list', () => {
       const input = heredoc`
-        term::
+      term::
+      * foo
+        * bar
+      * baz
+      another term::
+      `
+      const expected = heredoc`
+      * **term**
         * foo
           * bar
         * baz
-        another term::
-      `
-      const expected = heredoc`
-        * **term**
-          * foo
-            * bar
-          * baz
-        * **another term**
+      * **another term**
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should not leave behind hard line break marker after description list term followed by separate block', () => {
       const input = heredoc`
-        term::
-        ----
-        listing
-        ----
+      term::
+      ----
+      listing
+      ----
       `
       const expected = heredoc`
-        * **term**
-        \`\`\`
-        listing
-        \`\`\`
+      * **term**
+      \`\`\`
+      listing
+      \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should continue numbering after list item with attached block followed by blank line', () => {
       const input = heredoc`
-        . one
-        +
-         literal paragraph
-        +
-        paragraph
+      . one
+      +
+       literal paragraph
+      +
+      paragraph
 
-        . two
-        +
-         literal paragraph
+      . two
+      +
+       literal paragraph
 
-        paragraph
+      paragraph
       `
       const expected = heredoc`
-        1. one
+      1. one
 
-               literal paragraph
+             literal paragraph
 
-           paragraph
-        2. two
+         paragraph
+      2. two
 
-               literal paragraph
+             literal paragraph
 
-        paragraph
+      paragraph
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should not process section title inside list item', () => {
       const input = heredoc`
-        * first list item
-        == not a section title
-          * nested list item
-        * last list item
+      * first list item
+      == not a section title
+        * nested list item
+      * last list item
       `
       const expected = heredoc`
-        * first list item
-        == not a section title
-          * nested list item
-        * last list item
+      * first list item
+      == not a section title
+        * nested list item
+      * last list item
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert colist to numbered list', () => {
       const input = heredoc`
-        = Document Title
+      = Document Title
 
-        <1> Prints the number 1.
+      <1> Prints the number 1.
       `
       const expected = heredoc`
-        # Document Title
+      # Document Title
 
-        1. Prints the number 1.
+      1. Prints the number 1.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should indent block following a list continuation', () => {
       const input = heredoc`
-        * Install
-        +
-        [,console]
-        ----
-        $ npm i downdoc
-        ----
+      * Install
+      +
+      [,console]
+      ----
+      $ npm i downdoc
+      ----
 
-        * Use
-        +
-        [,console]
-        ----
-        $ npx downdoc README.adoc
-        ----
+      * Use
+      +
+      [,console]
+      ----
+      $ npx downdoc README.adoc
+      ----
       `
       const expected = heredoc`
-        * Install
+      * Install
 
-          \`\`\`console
-          $ npm i downdoc
-          \`\`\`
-        * Use
+        \`\`\`console
+        $ npm i downdoc
+        \`\`\`
+      * Use
 
-          \`\`\`console
-          $ npx downdoc README.adoc
-          \`\`\`
+        \`\`\`console
+        $ npx downdoc README.adoc
+        \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should indent block following a list continuation on description list item', () => {
       const input = heredoc`
-        Install::
-        +
-        [,console]
-        ----
-        $ npm i downdoc
-        ----
+      Install::
+      +
+      [,console]
+      ----
+      $ npm i downdoc
+      ----
 
-        Use::
-        +
-        [,console]
-        ----
-        $ npx downdoc README.adoc
-        ----
+      Use::
+      +
+      [,console]
+      ----
+      $ npx downdoc README.adoc
+      ----
       `
       const expected = heredoc`
-        * **Install**
+      * **Install**
 
-          \`\`\`console
-          $ npm i downdoc
-          \`\`\`
-        * **Use**
+        \`\`\`console
+        $ npm i downdoc
+        \`\`\`
+      * **Use**
 
-          \`\`\`console
-          $ npx downdoc README.adoc
-          \`\`\`
+        \`\`\`console
+        $ npx downdoc README.adoc
+        \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should indent block following a list continuation of nested list item', () => {
       const input = heredoc`
-        * Install
-        ** npx
-        +
-         $ npx downdoc -v
-        * Use
-        +
-         $ npx downdoc README.adoc
+      * Install
+      ** npx
+      +
+       $ npx downdoc -v
+      * Use
+      +
+       $ npx downdoc README.adoc
       `
       const expected = heredoc`
-        * Install
-          * npx
-
-            \`\`\`console
-            $ npx downdoc -v
-            \`\`\`
-        * Use
+      * Install
+        * npx
 
           \`\`\`console
-          $ npx downdoc README.adoc
+          $ npx downdoc -v
           \`\`\`
+      * Use
+
+        \`\`\`console
+        $ npx downdoc README.adoc
+        \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should interpret block title following list continuation', () => {
       const input = heredoc`
-        * Say hello
-        +
-        .With Ruby
-        [,ruby]
-        ----
-        puts 'Hello!'
-        ----
-        +
-        .With JavaScript
-        [,js]
-        ----
-        console.log('Hello!')
-        ----
+      * Say hello
+      +
+      .With Ruby
+      [,ruby]
+      ----
+      puts 'Hello!'
+      ----
+      +
+      .With JavaScript
+      [,js]
+      ----
+      console.log('Hello!')
+      ----
       `
       const expected = heredoc`
-        * Say hello
+      * Say hello
 
-          **With Ruby**
+        **With Ruby**
 
-          \`\`\`ruby
-          puts 'Hello!'
-          \`\`\`
+        \`\`\`ruby
+        puts 'Hello!'
+        \`\`\`
 
-          **With JavaScript**
+        **With JavaScript**
 
-          \`\`\`js
-          console.log('Hello!')
-          \`\`\`
+        \`\`\`js
+        console.log('Hello!')
+        \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should apply correct indentation to literal paragraph in list', () => {
       const input = heredoc`
-        * Option to print version:
-        +
-         -v
-        * Option to see help:
-        +
-         -h
+      * Option to print version:
+      +
+       -v
+      * Option to see help:
+      +
+       -h
       `
       const expected = heredoc`
-        * Option to print version:
+      * Option to print version:
 
-              -v
-        * Option to see help:
+            -v
+      * Option to see help:
 
-              -h
+            -h
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should close implicit console listing before starting next list item', () => {
       const input = heredoc`
-        . Run this:
-        +
-         $ cmd
-        . Follow the instructions in the console.
+      . Run this:
+      +
+       $ cmd
+      . Follow the instructions in the console.
       `
       const expected = heredoc`
-        1. Run this:
+      1. Run this:
 
-           \`\`\`console
-           $ cmd
-           \`\`\`
-        2. Follow the instructions in the console.
+         \`\`\`console
+         $ cmd
+         \`\`\`
+      2. Follow the instructions in the console.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should indent verabtim blocks in list item', () => {
       const input = heredoc`
-        * run this:
-        +
-         $ command
-        * look for this:
-        +
-         output
-        * enter this:
-        +
-        .code
-        ----
-        listing
-        ----
+      * run this:
+      +
+       $ command
+      * look for this:
+      +
+       output
+      * enter this:
+      +
+      .code
+      ----
+      listing
+      ----
       `
       const expected = heredoc`
-        * run this:
+      * run this:
 
-          \`\`\`console
-          $ command
-          \`\`\`
-        * look for this:
+        \`\`\`console
+        $ command
+        \`\`\`
+      * look for this:
 
-              output
-        * enter this:
+            output
+      * enter this:
 
-          **code**
+        **code**
 
-          \`\`\`
-          listing
-          \`\`\`
+        \`\`\`
+        listing
+        \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should not process list continuation outside of list', () => {
       const input = heredoc`
-        +
-        paragraph
+      +
+      paragraph
       `
       expect(downdoc(input)).to.equal(input)
     })
 
     it('should reset indent when starting new ordered list item', () => {
       const input = heredoc`
-        . Install
-        +
-        [,console]
-        ----
-        $ npm i downdoc
-        ----
-        . Use
-        +
-        [,console]
-        ----
-        $ npx downdoc README.adoc
-        ----
+      . Install
+      +
+      [,console]
+      ----
+      $ npm i downdoc
+      ----
+      . Use
+      +
+      [,console]
+      ----
+      $ npx downdoc README.adoc
+      ----
       `
       const expected = heredoc`
-        1. Install
+      1. Install
 
-           \`\`\`console
-           $ npm i downdoc
-           \`\`\`
-        2. Use
+         \`\`\`console
+         $ npm i downdoc
+         \`\`\`
+      2. Use
 
-           \`\`\`console
-           $ npx downdoc README.adoc
-           \`\`\`
+         \`\`\`console
+         $ npx downdoc README.adoc
+         \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -2488,60 +2500,60 @@ describe('downdoc()', () => {
   describe('comments', () => {
     it('should skip line comments', () => {
       const input = heredoc`
-        // This is an AsciiDoc document.
-        = Title
-        // This line defines an attribute.
-        :summary: Summary
-        // This line is simply ignored.
+      // This is an AsciiDoc document.
+      = Title
+      // This line defines an attribute.
+      :summary: Summary
+      // This line is simply ignored.
 
-        // This outputs the value of the summary attribute.
-        {summary}
+      // This outputs the value of the summary attribute.
+      {summary}
 
-        // This is just a regular paragraph.
-        More summary
-        //fin
+      // This is just a regular paragraph.
+      More summary
+      //fin
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        Summary
+      Summary
 
-        More summary
+      More summary
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should skip block comments', () => {
       const input = heredoc`
-        ////
-        Maybe a license header?
+      ////
+      Maybe a license header?
 
-        Any amount of lines are skipped.
-        ////
-        = Title
-        :summary: Summary
+      Any amount of lines are skipped.
+      ////
+      = Title
+      :summary: Summary
 
-        ////
-        - ignore
-        - these
-        - lines
+      ////
+      - ignore
+      - these
+      - lines
 
-        these are just notes
-        ////
+      these are just notes
+      ////
 
-        {summary}
+      {summary}
 
-        More summary
-        ////
-        Maybe some instructions to the author here?
-        ////
+      More summary
+      ////
+      Maybe some instructions to the author here?
+      ////
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        Summary
+      Summary
 
-        More summary
+      More summary
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -2550,196 +2562,196 @@ describe('downdoc()', () => {
   describe('preprocessor conditionals', () => {
     it('should expand ifdef enclosure on attribute entry in header for defined attribute', () => {
       const input = heredoc`
-        = Title
-        :project-handle: downdoc
-        ifdef::project-handle[:url-project: https://example.org/{project-handle}]
+      = Title
+      :project-handle: downdoc
+      ifdef::project-handle[:url-project: https://example.org/{project-handle}]
 
-        This project is named {project-handle}.
-        The URL of the project is {url-project}.
+      This project is named {project-handle}.
+      The URL of the project is {url-project}.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        This project is named downdoc.
-        The URL of the project is https://example.org/downdoc.
+      This project is named downdoc.
+      The URL of the project is https://example.org/downdoc.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should permit use of conditional directive above doctitle', () => {
       const input = heredoc`
-        ifdef::not-set[ignore line]
-        = Title
-        :project-handle: downdoc
+      ifdef::not-set[ignore line]
+      = Title
+      :project-handle: downdoc
 
-        This project is named {project-handle}.
+      This project is named {project-handle}.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        This project is named downdoc.
+      This project is named downdoc.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should skip ifdef enclosure on attribute entry in header for undefined attribute', () => {
       const input = heredoc`
-        = Title
-        ifdef::env-github[:toc-title: Contents]
+      = Title
+      ifdef::env-github[:toc-title: Contents]
 
-        {toc-title}
+      {toc-title}
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        {toc-title}
+      {toc-title}
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should expand ifndef enclosure on attribute entry in header for undefined attribute', () => {
       const input = heredoc`
-        = Title
-        ifndef::project-handle[:project-handle: downdoc]
-        :url-project: https://example.org/{project-handle}
+      = Title
+      ifndef::project-handle[:project-handle: downdoc]
+      :url-project: https://example.org/{project-handle}
 
-        This project is named {project-handle}.
-        The URL of the project is {url-project}.
+      This project is named {project-handle}.
+      The URL of the project is {url-project}.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        This project is named downdoc.
-        The URL of the project is https://example.org/downdoc.
+      This project is named downdoc.
+      The URL of the project is https://example.org/downdoc.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should skip ifndef enclosure on attribute entry in header for defined attribute', () => {
       const input = heredoc`
-        = Title
-        :project-handle: downdoc
-        ifndef::project-handle[:project-handle: foobar]
-        :url-project: https://example.org/{project-handle}
+      = Title
+      :project-handle: downdoc
+      ifndef::project-handle[:project-handle: foobar]
+      :url-project: https://example.org/{project-handle}
 
-        This project is named {project-handle}.
-        The URL of the project is {url-project}.
+      This project is named {project-handle}.
+      The URL of the project is {url-project}.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        This project is named downdoc.
-        The URL of the project is https://example.org/downdoc.
+      This project is named downdoc.
+      The URL of the project is https://example.org/downdoc.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should keep contents of ifdef directive block if attribute is set', () => {
       const input = heredoc`
-        = Title
-        :badges:
+      = Title
+      :badges:
 
-        ifdef::badges[]
-        image:https://img.shields.io/npm/v/downdoc[npm version]
-        endif::[]
+      ifdef::badges[]
+      image:https://img.shields.io/npm/v/downdoc[npm version]
+      endif::[]
 
-        Summary
+      Summary
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        ![npm version](https://img.shields.io/npm/v/downdoc)
+      ![npm version](https://img.shields.io/npm/v/downdoc)
 
-        Summary
+      Summary
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should keep contents of ifndef directive block if attribute is not set', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        ifndef::author[]
-        There is no author.
-        endif::[]
+      ifndef::author[]
+      There is no author.
+      endif::[]
 
-        Summary
+      Summary
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        There is no author.
+      There is no author.
 
-        Summary
+      Summary
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should skip ifdef directive block if attribute is not set and collapse empty lines', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        ifdef::not-set[]
-        image:https://img.shields.io/npm/v/downdoc[link="https://www.npmjs.com/package/downdoc",title="npm version"]
-        endif::[]
+      ifdef::not-set[]
+      image:https://img.shields.io/npm/v/downdoc[link="https://www.npmjs.com/package/downdoc",title="npm version"]
+      endif::[]
 
-        Summary
+      Summary
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        Summary
+      Summary
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should skip ifndef directive block if attribute is set and collapse empty lines', () => {
       const input = heredoc`
-        = Title
-        Author Name
-        ifdef::author[:attribution: written by {author}]
-        Ignored.
+      = Title
+      Author Name
+      ifdef::author[:attribution: written by {author}]
+      Ignored.
 
-        ifndef::author[]
-        There is no author.
-        endif::[]
+      ifndef::author[]
+      There is no author.
+      endif::[]
 
-        Summary {attribution}.
+      Summary {attribution}.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        Summary written by Author Name.
+      Summary written by Author Name.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should skip single line conditional directive if condition is false', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        ifdef::flag[ignored line]
-        Summary
+      ifdef::flag[ignored line]
+      Summary
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        Summary
+      Summary
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should keep and process text from single line conditional directive if condition is true', () => {
       const input = heredoc`
-        = Title
-        :foo: bar
+      = Title
+      :foo: bar
 
-        ifndef::bar[{foo}]
+      ifndef::bar[{foo}]
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        bar
+      bar
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -2748,39 +2760,39 @@ describe('downdoc()', () => {
   describe('output', () => {
     it('should trim trailing blank line', () => {
       const input = heredoc`
-        = Document Title
+      = Document Title
 
-        Content.
+      Content.
 
-        ////
-        Comments about this document.
-        ////
+      ////
+      Comments about this document.
+      ////
       `
       const expected = heredoc`
-        # Document Title
+      # Document Title
 
-        Content.
+      Content.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should trim trailing space', () => {
       const input = heredoc`
-        first paragraph
+      first paragraph
 
-        second paragraph
+      second paragraph
       `
       expect(downdoc(input + '\n  ')).to.equal(input)
     })
 
     it('should trim leading blank lines', () => {
       const input = heredoc`
-        // Note to self
+      // Note to self
 
-        ifdef::not-set:[]
-        Draft content.
-        endif::[]
-        Visible content.
+      ifdef::not-set:[]
+      Draft content.
+      endif::[]
+      Visible content.
       `
       const expected = 'Visible content.'
       expect(downdoc(input)).to.equal(expected)
@@ -2790,56 +2802,56 @@ describe('downdoc()', () => {
   describe('unsupported', () => {
     it('should drop block attribute list', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        [.lead]
-        Lead paragraph.
+      [.lead]
+      Lead paragraph.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        Lead paragraph.
+      Lead paragraph.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should remove toc macro', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        toc::[]
+      toc::[]
 
-        == First Section
+      == First Section
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        ## First Section
+      ## First Section
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
     it('should skip table (for now)', () => {
       const input = heredoc`
-        = Title
+      = Title
 
-        Here's a list of configuration options.
+      Here's a list of configuration options.
 
-        |===
-        | Name | Description
+      |===
+      | Name | Description
 
-        | dryRun
-        | Report what actions will be taken without doing them.
-        |===
+      | dryRun
+      | Report what actions will be taken without doing them.
+      |===
 
-        That's all.
+      That's all.
       `
       const expected = heredoc`
-        # Title
+      # Title
 
-        Here’s a list of configuration options.
+      Here’s a list of configuration options.
 
-        That’s all.
+      That’s all.
       `
       expect(downdoc(input)).to.equal(expected)
     })
