@@ -494,22 +494,48 @@ describe('downdoc()', () => {
       const input = heredoc`
         .Usage
          downdoc [OPTION]... FILE
+      `
+      const expected = heredoc`
+        **Usage**
 
+            downdoc [OPTION]... FILE
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert block title that begins with .', () => {
+      const input = heredoc`
         ..npmrc
         ----
         omit=optional
         ----
       `
       const expected = heredoc`
-        **Usage**
-
-            downdoc [OPTION]... FILE
-
         **.npmrc**
 
         \`\`\`
         omit=optional
         \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert block title on each block', () => {
+      const input = heredoc`
+        .Purpose
+        To convert AsciiDoc to Markdown.
+
+        .In Action
+        image::screenshot.png[Screenshot]
+      `
+      const expected = heredoc`
+        **Purpose**
+
+        To convert AsciiDoc to Markdown.
+
+        **In Action**
+
+        ![Screenshot](screenshot.png)
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -566,12 +592,16 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(input)
     })
 
-    it('should ignore ellipsis at start of paragraph', () => {
+    it('should process paragraph that begins with ellipsis normally', () => {
       const input = heredoc`
-        ...and then,
-        go get 'em!
+        ...and to *home*
+        we shall go!
       `
-      expect(downdoc(input)).to.equal(input)
+      const expected = heredoc`
+        ...and to **home**
+        we shall go!
+      `
+      expect(downdoc(input)).to.equal(expected)
     })
   })
 
