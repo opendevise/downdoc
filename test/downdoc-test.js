@@ -490,7 +490,7 @@ describe('downdoc()', () => {
   })
 
   describe('block titles', () => {
-    it('should convert block title on a block', () => {
+    it('should convert block title above block', () => {
       const input = heredoc`
       .Usage
        downdoc [OPTION]... FILE
@@ -536,6 +536,35 @@ describe('downdoc()', () => {
       **In Action**
 
       ![Screenshot](screenshot.png)
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should not output dangling block title', () => {
+      const input = heredoc`
+      last paragraph
+
+      .dangling block title
+      `
+      const expected = 'last paragraph'
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should ignore block title above section title', () => {
+      const input = heredoc`
+      = Document Title
+
+      .ignored block title
+      == Section Title
+
+      content
+      `
+      const expected = heredoc`
+      # Document Title
+
+      ## Section Title
+
+      content
       `
       expect(downdoc(input)).to.equal(expected)
     })
