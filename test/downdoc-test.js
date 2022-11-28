@@ -1874,6 +1874,24 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should not terminate verbatim block at alternate delimiter line', () => {
+      const input = heredoc`
+      ----
+      above
+      ....
+      below
+      ----
+      `
+      const expected = heredoc`
+      \`\`\`
+      above
+      ....
+      below
+      \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should honor subs=+attributes on source block', () => {
       const input = heredoc`
       = Title
