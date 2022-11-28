@@ -2905,5 +2905,23 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should not carry over block title on table to next adjacent block', () => {
+      const input = heredoc`
+      .Table caption
+      |===
+      | foo | bar
+      |===
+      ----
+      verbatim
+      ----
+      `
+      const expected = heredoc`
+      \`\`\`
+      verbatim
+      \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
   })
 })
