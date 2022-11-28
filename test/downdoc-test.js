@@ -2645,6 +2645,32 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should not stop skipping block comment that contains other skipping line', () => {
+      const input = heredoc`
+      before
+
+      ////
+      comment
+
+      |===
+
+      still comment
+
+      endif::[]
+
+      still comment
+      ////
+
+      after
+      `
+      const expected = heredoc`
+      before
+
+      after
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
   })
 
   describe('preprocessor conditionals', () => {
@@ -2810,6 +2836,28 @@ describe('downdoc()', () => {
       # Title
 
       Summary written by Author Name.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should not stop skipping ifdef enclosure if it contains another skipping line', () => {
+      const input = heredoc`
+      = Title
+
+      ifdef::not-set[]
+      skipped
+
+      ////
+
+      also skipped
+      endif::[]
+
+      Summary
+      `
+      const expected = heredoc`
+      # Title
+
+      Summary
       `
       expect(downdoc(input)).to.equal(expected)
     })
