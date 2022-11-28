@@ -1947,7 +1947,7 @@ describe('downdoc()', () => {
       first line
       <1>
       last line
-      ----
+      ....
       <1> blank line
       `
       const expected = heredoc`
