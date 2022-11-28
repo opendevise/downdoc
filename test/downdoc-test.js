@@ -1932,6 +1932,26 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should not mistake subs attribute for language on listing block', () => {
+      const input = heredoc`
+      = Title
+      :url-repo: https://github.com/octocat/Spoon-Knife
+
+      [,subs="attributes+"]
+      ----
+      Enter URL: {url-repo}
+      ----
+      `
+      const expected = heredoc`
+      # Title
+
+      \`\`\`
+      Enter URL: https://github.com/octocat/Spoon-Knife
+      \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should replace conums in source block with circled numbers', () => {
       const input = heredoc`
       = Title
