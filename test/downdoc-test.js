@@ -1470,7 +1470,6 @@ describe('downdoc()', () => {
 
       > And away we go!
       `
-
       const expected = heredoc`
       # Title
 
@@ -2888,6 +2887,29 @@ describe('downdoc()', () => {
       # Title
 
       bar
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should not remove unmatched endif::[] directive', () => {
+      const input = heredoc`
+      before
+      endif::[]
+      after
+      `
+      expect(downdoc(input)).to.equal(input)
+    })
+
+    it('should not remove unmatched endif::[] directive after single-line conditional directive', () => {
+      const input = heredoc`
+      ifndef::not-set[before]
+      endif::[]
+      after
+      `
+      const expected = heredoc`
+      before
+      endif::[]
+      after
       `
       expect(downdoc(input)).to.equal(expected)
     })
