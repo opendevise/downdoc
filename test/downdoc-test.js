@@ -733,6 +733,79 @@ describe('downdoc()', () => {
     })
   })
 
+  describe('delimited blocks', () => {
+    it('should drop block delimiters', () => {
+      const input = heredoc`
+      = Title
+
+      ====
+      This paragraph is promoted to the top level.
+      ====
+
+      This is already a top-level paragraph.
+
+      ****
+      This paragraph is also promoted to the top level.
+      ****
+
+      ****
+      ====
+      Even this paragraph is promoted to the top level.
+      ====
+      ****
+      `
+      const expected = heredoc`
+      # Title
+
+      This paragraph is promoted to the top level.
+
+      This is already a top-level paragraph.
+
+      This paragraph is also promoted to the top level.
+
+      Even this paragraph is promoted to the top level.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should unwrap verbatim block enclosed in example block', () => {
+      const input = heredoc`
+      = Title
+
+      .Ignored
+      ====
+      ....
+      verbatim content
+      ....
+      ====
+      `
+      const expected = heredoc`
+      # Title
+
+      \`\`\`
+      verbatim content
+      \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should not convert section title inside delimited block', () => {
+      const input = heredoc`
+      = Title
+
+      ====
+      == Not a Section Title
+      ====
+      `
+      const expected = heredoc`
+      # Title
+
+      == Not a Section Title
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+  })
+
   describe('text formatting', () => {
     it('should convert bold formatting', () => {
       const input = heredoc`
