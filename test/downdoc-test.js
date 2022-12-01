@@ -804,6 +804,133 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should convert collapsible block with title', () => {
+      const input = heredoc`
+      = Title
+
+      .Reveal Answer
+      [%collapsible]
+      ====
+      This is the answer.
+      ====
+      `
+      const expected = heredoc`
+      # Title
+
+      <details>
+      <summary>Reveal Answer</summary>
+
+      This is the answer.
+      </details>
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert collapsible block without title', () => {
+      const input = heredoc`
+      = Title
+
+      [%collapsible]
+      ====
+      These are the details.
+      ====
+      `
+      const expected = heredoc`
+      # Title
+
+      <details>
+      <summary>Details</summary>
+
+      These are the details.
+      </details>
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should indent collapsible block attached to list item', () => {
+      const input = heredoc`
+      = Title
+
+      . What is the square root of 4?
+      +
+      .Reveal Answer
+      [%collapsible]
+      ====
+      2
+      ====
+
+      . What is the capital of Italy?
+      +
+      .Reveal Answer
+      [%collapsible]
+      ====
+      Rome
+      ====
+      `
+      const expected = heredoc`
+      # Title
+
+      1. What is the square root of 4?
+
+         <details>
+         <summary>Reveal Answer</summary>
+
+         2
+         </details>
+      2. What is the capital of Italy?
+
+         <details>
+         <summary>Reveal Answer</summary>
+
+         Rome
+         </details>
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert collapsible block to spoiler variant if markdown-collapsible-variant is spoiler', () => {
+      const input = heredoc`
+      = Title
+
+      .Always visible text
+      [%collapsible]
+      ====
+      This text won't be visible until the user clicks the always visible text.
+
+      TIP: Click the *always visible text* to hide this text again.
+      ====
+      `
+      const expected = heredoc`
+      # Title
+
+      \`\`\`spoiler Always visible text
+      This text won’t be visible until the user clicks the always visible text.
+
+      💡 **TIP:** Click the **always visible text** to hide this text again.
+      \`\`\`
+      `
+      expect(downdoc(input, { attributes: { 'markdown-collapsible-variant': 'spoiler' } })).to.equal(expected)
+    })
+
+    it('should convert collapsible block without title to spoiler', () => {
+      const input = heredoc`
+      = Title
+
+      [%collapsible]
+      ====
+      This is the spoiler.
+      ====
+      `
+      const expected = heredoc`
+      # Title
+
+      \`\`\`spoiler
+      This is the spoiler.
+      \`\`\`
+      `
+      expect(downdoc(input, { attributes: { 'markdown-collapsible-variant': 'spoiler' } })).to.equal(expected)
+    })
   })
 
   describe('text formatting', () => {
