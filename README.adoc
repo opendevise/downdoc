@@ -48,7 +48,7 @@ Here's a rough list of the syntax it current handles:
 * escaped bare URLs
 * internal xrefs (honors value of `idprefix` and `idseparator` document attributes)
 * block IDs for document and section titles
-* auto-generated text for internal xrefs
+* auto-generated text for internal xrefs (honoring `reftext` attribute, if specified)
 * block and inline image macros
 * listing and source blocks with optional source language
 * diagram blocks (listing block with diagram dialect)

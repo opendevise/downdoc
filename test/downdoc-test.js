@@ -1337,11 +1337,11 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should rewrite explicit ID to auto-generated ID', () => {
+    it('should rewrite explicit ID to auto-generated ID and support explicit reftext', () => {
       const input = heredoc`
       = HOWTO
 
-      You'll learn how to <<build>> and how to xref:deploy[].
+      You'll learn how to <<build>> and xref:deploy[] your site.
 
       [#build,reftext=Build]
       == Build Your Site
@@ -1356,7 +1356,7 @@ describe('downdoc()', () => {
       const expected = heredoc`
       # HOWTO
 
-      You’ll learn how to [Build Your Site](#build-your-site) and how to [Deploy Your Site](#deploy-your-site).
+      You’ll learn how to [Build](#build-your-site) and [Deploy](#deploy-your-site) your site.
 
       ## Build Your Site
 
