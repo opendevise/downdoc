@@ -997,7 +997,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should convert bold italic formatting both ways', () => {
+    it('should convert bold italic formatting in either order', () => {
       const input = heredoc`
       = Title
 
@@ -1039,6 +1039,34 @@ describe('downdoc()', () => {
       Visit \`http://localhost:8080\` or \`http://127.0.0.1:8080\` in your browser to see a preview.
 
       The text is replaced with \`...yada...\`.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert marked phrase', () => {
+      const input = heredoc`
+      = Title
+
+      #highlight this# to remember it later.
+      `
+      const expected = heredoc`
+      # Title
+
+      <mark>highlight this</mark> to remember it later.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert generic phrase with role', () => {
+      const input = heredoc`
+      = Title
+
+      Something [.special]#special#.
+      `
+      const expected = heredoc`
+      # Title
+
+      Something special.
       `
       expect(downdoc(input)).to.equal(expected)
     })
