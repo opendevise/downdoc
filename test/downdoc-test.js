@@ -348,36 +348,6 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should unescape escaped attribute references in a monospaced phrase', () => {
-      const input = heredoc`
-      = Title
-
-      Use the endpoint \`/repos/\\{owner}/\\{repo}\` to retrieve information about a repository.
-      `
-      expect(input).to.include('\\')
-      const expected = heredoc`
-      # Title
-
-      Use the endpoint \`/repos/{owner}/{repo}\` to retrieve information about a repository.
-      `
-      expect(downdoc(input)).to.equal(expected)
-    })
-
-    it('should unescape escaped attribute references in normal phrase', () => {
-      const input = heredoc`
-      = Title
-
-      Replace the token \\{owner} with the username or organization and replace the token \\{repo} with the name of the repository.
-      `
-      expect(input).to.include('\\')
-      const expected = heredoc`
-      # Title
-
-      Replace the token {owner} with the username or organization and replace the token {repo} with the name of the repository.
-      `
-      expect(downdoc(input)).to.equal(expected)
-    })
-
     it('should skip unresolved attribute reference', () => {
       const input = heredoc`
       = Title
@@ -388,6 +358,58 @@ describe('downdoc()', () => {
       # Title
 
       This project is named {unknown}.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should unescape escaped attribute references in a monospaced phrase', () => {
+      const input = heredoc`
+      = Title
+
+      Use the endpoint \`/repos/\\{owner}/\\{repo}\` to retrieve information about a repository.
+      `
+      const expected = heredoc`
+      # Title
+
+      Use the endpoint \`/repos/{owner}/{repo}\` to retrieve information about a repository.
+      `
+      expect(input).to.include('\\')
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should unescape escaped attribute references in normal phrase', () => {
+      const input = heredoc`
+      = Title
+
+      Replace the token \\{owner} with the username or organization and replace the token \\{repo} with the name of the repository.
+      `
+      const expected = heredoc`
+      # Title
+
+      Replace the token {owner} with the username or organization and replace the token {repo} with the name of the repository.
+      `
+      expect(input).to.include('\\')
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should resolve all default attributes', () => {
+      const input = heredoc`
+      Valid responses: y {vbar} yes {vbar} n {vbar} no
+
+      Part{nbsp}number
+
+      Add it to the _{empty}_layouts_ folder.
+
+      Insert a \`{sp}\` character
+      `
+      const expected = heredoc`
+      Valid responses: y | yes | n | no
+
+      Part&#160;number
+
+      Add it to the __layouts_ folder.
+
+      Insert a \` \` character
       `
       expect(downdoc(input)).to.equal(expected)
     })
