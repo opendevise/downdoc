@@ -731,6 +731,20 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input, { attributes: { empty: '' } })).to.equal(expected)
     })
+
+    it('should not convert Markdown-style thematic break', () => {
+      const input = heredoc`
+      ---
+
+      ***
+
+      - - -
+
+      * * *
+      `
+      const expected = input
+      expect(downdoc(input)).to.equal(expected)
+    })
   })
 
   describe('delimited blocks', () => {
