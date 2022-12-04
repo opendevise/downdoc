@@ -348,7 +348,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should unescape escaped attribute references', () => {
+    it('should unescape escaped attribute references in a monospaced phrase', () => {
       const input = heredoc`
       = Title
 
@@ -359,6 +359,21 @@ describe('downdoc()', () => {
       # Title
 
       Use the endpoint \`/repos/{owner}/{repo}\` to retrieve information about a repository.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should unescape escaped attribute references in normal phrase', () => {
+      const input = heredoc`
+      = Title
+
+      Replace the token \\{owner} with the username or organization and replace the token \\{repo} with the name of the repository.
+      `
+      expect(input).to.include('\\')
+      const expected = heredoc`
+      # Title
+
+      Replace the token {owner} with the username or organization and replace the token {repo} with the name of the repository.
       `
       expect(downdoc(input)).to.equal(expected)
     })
