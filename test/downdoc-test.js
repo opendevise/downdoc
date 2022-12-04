@@ -1344,6 +1344,25 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should preserve escaped square brackets in xref text of xref enclosed in quotes', () => {
+      const input = heredoc`
+      = Title
+
+      The next section covers the "\`xref:array-of-strings[String\\[\\] type]\`".
+
+      [#array-of-strings]
+      == Array of strings
+      `
+      const expected = heredoc`
+      # Title
+
+      The next section covers the <q>[String\\[\\] type](#array-of-strings)</q>.
+
+      ## Array of strings
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should replace attribute reference in title of internal reference', () => {
       const input = heredoc`
       = Title
