@@ -1343,12 +1343,12 @@ describe('downdoc()', () => {
 
       You'll learn how to <<build>> and how to xref:deploy[].
 
-      [#build]
+      [#build,reftext=Build]
       == Build Your Site
 
       Instructions go here.
 
-      [[deploy]]
+      [[deploy,Deploy]]
       == Deploy Your Site
 
       Instructions go here.
