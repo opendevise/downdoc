@@ -984,6 +984,363 @@ describe('downdoc()', () => {
     })
   })
 
+  describe('tables', () => {
+    it('should convert table with header with implicit column count', () => {
+      const input = heredoc`
+      |===
+      | Col A | Col B
+      | A1
+      | B1
+      | A2
+      | B2
+      |===
+      `
+      const expected = heredoc`
+      | Col A | Col B |
+      | --- | --- |
+      | A1 | B1 |
+      | A2 | B2 |
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should collapse empty lines between rows', () => {
+      const input = heredoc`
+      |===
+      | Col A | Col B
+
+      | A1
+      | B1
+
+
+      | A2
+      | B2
+      |===
+      `
+      const expected = heredoc`
+      | Col A | Col B |
+      | --- | --- |
+      | A1 | B1 |
+      | A2 | B2 |
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert table with each row on its own line', () => {
+      const input = heredoc`
+      |===
+      | Col A | Col B
+      | A1 | B1
+      | A2 | B2
+      |===
+      `
+      const expected = heredoc`
+      | Col A | Col B |
+      | --- | --- |
+      | A1 | B1 |
+      | A2 | B2 |
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert table with jagged rows', () => {
+      const input = heredoc`
+      |===
+      | Col A | Col B | Col C
+      | A1 | B1
+      | C1 | A2 | B2
+      | C2
+      |===
+      `
+      const expected = heredoc`
+      | Col A | Col B | Col C |
+      | --- | --- | --- |
+      | A1 | B1 | C1 |
+      | A2 | B2 | C2 |
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should end table at closing delimiter', () => {
+      const input = heredoc`
+      before
+
+      |===
+      | Name | Description
+
+      | dryRun
+      | Report what actions will be taken without doing them.
+      |===
+
+      after | not a table cell
+      `
+      const expected = heredoc`
+      before
+
+      | Name | Description |
+      | --- | --- |
+      | dryRun | Report what actions will be taken without doing them. |
+
+      after | not a table cell
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert table with header with explicit cols as repeater', () => {
+      const input = heredoc`
+      [cols=2*d]
+      |===
+      | Col A | Col B
+
+      | A1
+      | B1
+      |===
+      `
+      const expected = heredoc`
+      | Col A | Col B |
+      | --- | --- |
+      | A1 | B1 |
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert table with header with explicit cols with comma separator', () => {
+      const input = heredoc`
+      [cols="1,.^2"]
+      |===
+      | Col A | Col B
+
+      | A1
+      | B1
+      |===
+      `
+      const expected = heredoc`
+      | Col A | Col B |
+      | --- | --- |
+      | A1 | B1 |
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert table with header with explicit cols with semi-colon separator', () => {
+      const input = heredoc`
+      [cols=1;2d]
+      |===
+      | Col A | Col B
+
+      | A1
+      | B1
+      |===
+      `
+      const expected = heredoc`
+      | Col A | Col B |
+      | --- | --- |
+      | A1 | B1 |
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should normalize space around cell text', () => {
+      const input = heredoc`
+      |===
+      |Col A |  Col B
+
+      |A1    |  B1
+
+      |   A2 |     B2
+      |===
+      `
+      const expected = heredoc`
+      | Col A | Col B |
+      | --- | --- |
+      | A1 | B1 |
+      | A2 | B2 |
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should create empty header row if first row has less columns than specified', () => {
+      const input = heredoc`
+      [cols=3*]
+      |===
+      |A1
+      |B1
+      |C1
+      |A2
+      |B2
+      |C2
+      |===
+      `
+      const expected = heredoc`
+      |     |     |     |
+      | --- | --- | --- |
+      | A1 | B1 | C1 |
+      | A2 | B2 | C2 |
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should use first row as header if no cols are specified and row only has a single column on first line', () => {
+      const input = heredoc`
+      |===
+      |A
+      |B
+      |C
+      |===
+      `
+      const expected = heredoc`
+      | A |
+      | --- |
+      | B |
+      | C |
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert block title on table', () => {
+      const input = heredoc`
+      .Table caption
+      |===
+      | foo | bar
+      | yin
+      | yang
+      |===
+      `
+      const expected = heredoc`
+      **Table caption**
+
+      | foo | bar |
+      | --- | --- |
+      | yin | yang |
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should not carry over block title on empty table to next adjacent block', () => {
+      const input = heredoc`
+      .Table caption
+      |===
+      |===
+      ----
+      verbatim
+      ----
+      `
+      const expected = heredoc`
+      \`\`\`
+      verbatim
+      \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert cell with wrapped text at start of row', () => {
+      const input = heredoc`
+      [cols=2*]
+      |===
+      | Feature | Description
+
+      | Autopilot
+      Only available on certain models.
+      Requires an autopilot subscription.
+      | Drives the vehicle automatically.
+
+      | Bluetooth audio
+      Available on all models.
+      | Plays music from an external device over bluetooth.
+      |===
+      `
+      const expected = heredoc`
+      | Feature | Description |
+      | --- | --- |
+      | Autopilot Only available on certain models. Requires an autopilot subscription. | Drives the vehicle automatically. |
+      | Bluetooth audio Available on all models. | Plays music from an external device over bluetooth. |
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert cell with wrapped text in subsequent column', () => {
+      const input = heredoc`
+      [cols=2*]
+      |===
+      | Feature | Description
+
+      | Autopilot
+      | Drives the vehicle automatically.
+      Only available on certain models.
+      Requires an autopilot subscription.
+
+      | Bluetooth audio
+      | Plays music from an external device over bluetooth.
+      Available on all models.
+      |===
+      `
+      const expected = heredoc`
+      | Feature | Description |
+      | --- | --- |
+      | Autopilot | Drives the vehicle automatically. Only available on certain models. Requires an autopilot subscription. |
+      | Bluetooth audio | Plays music from an external device over bluetooth. Available on all models. |
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert cells with text starting on separate line', () => {
+      const input = heredoc`
+      |===
+      | foo | bar
+
+      |
+      fizz
+      |
+      buzz
+      |===
+      `
+      const expected = heredoc`
+      | foo | bar |
+      | --- | --- |
+      | fizz | buzz |
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should apply substitutions to cells in header row', () => {
+      const input = heredoc`
+      |===
+      | _Emphasis_ | *Strong Emphasis* | https://example.org[Link]
+
+      | text formatting
+      | text formatting
+      | macro
+      |===
+      `
+      const expected = heredoc`
+      | _Emphasis_ | **Strong Emphasis** | [Link](https://example.org) |
+      | --- | --- | --- |
+      | text formatting | text formatting | macro |
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should apply substitutions to cells in body row', () => {
+      const input = heredoc`
+      |===
+      | Emphasis | Strong Emphasis | Link
+
+      | _emphasis_
+      | *strong emphasis*
+      *still strong*
+      | https://example.org[link]
+      https://example.com[another link]
+      |===
+      `
+      const expected = heredoc`
+      | Emphasis | Strong Emphasis | Link |
+      | --- | --- | --- |
+      | _emphasis_ | **strong emphasis** **still strong** | [link](https://example.org) [another link](https://example.com) |
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+  })
+
   describe('text formatting', () => {
     it('should convert bold formatting', () => {
       const input = heredoc`
@@ -3287,49 +3644,6 @@ describe('downdoc()', () => {
       # Title
 
       ## First Section
-      `
-      expect(downdoc(input)).to.equal(expected)
-    })
-
-    it('should skip table (for now)', () => {
-      const input = heredoc`
-      = Title
-
-      Here's a list of configuration options.
-
-      |===
-      | Name | Description
-
-      | dryRun
-      | Report what actions will be taken without doing them.
-      |===
-
-      That's all.
-      `
-      const expected = heredoc`
-      # Title
-
-      Here’s a list of configuration options.
-
-      That’s all.
-      `
-      expect(downdoc(input)).to.equal(expected)
-    })
-
-    it('should not carry over block title on table to next adjacent block', () => {
-      const input = heredoc`
-      .Table caption
-      |===
-      | foo | bar
-      |===
-      ----
-      verbatim
-      ----
-      `
-      const expected = heredoc`
-      \`\`\`
-      verbatim
-      \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
     })

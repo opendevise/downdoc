@@ -60,10 +60,10 @@ Here's a rough list of the syntax it current handles:
 * thematic breaks (Markdown-style, e.g., `---`)
 * hard line breaks
 * ifdef and ifndef preprocessor conditionals
+* tables (normal table cells only; no support for cell style)
 * collapsible blocks (set the `markdown-collapsible-variant` attribute to `spoiler` to generate Zulip-compatible spoiler block)
 * comment lines and blocks
 * delimited example and sidebar blocks (unwrapped)
-* tables (dropped)
 
 == Prerequisites
 
