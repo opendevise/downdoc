@@ -5,7 +5,7 @@ ifdef::env-github[]
 :toclevels: 1
 endif::[]
 
-> Hastily converts AsciiDoc to Markdown.
+> Rapidly converts AsciiDoc to Markdown.
 
 == What is downdoc?
 
