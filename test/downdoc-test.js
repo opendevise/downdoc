@@ -1968,9 +1968,25 @@ describe('downdoc()', () => {
       The \\https://example.org domain name is for tests, tutorials, and examples.
       `
       const expected = heredoc`
-      The site will be running at <span>http:</span>//localhost:8080/app.
+      The site will be running at <span>http://</span>localhost:8080/app.
 
-      The <span>https:</span>//example.org domain name is for tests, tutorials, and examples.
+      The <span>https://</span>example.org domain name is for tests, tutorials, and examples.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should hide scheme of URL if hide-uri-scheme attribute is set', () => {
+      const input = heredoc`
+      :hide-uri-scheme:
+
+      You can usually use https://google.com[] to find what you're looking for.
+
+      The http://example.org domain name is for tests, tutorials, and examples.
+      `
+      const expected = heredoc`
+      You can usually use [google.com](https://google.com) to find what you’re looking for.
+
+      The [example.org](http://example.org) domain name is for tests, tutorials, and examples.
       `
       expect(downdoc(input)).to.equal(expected)
     })
