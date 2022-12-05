@@ -2103,14 +2103,14 @@ describe('downdoc()', () => {
 
       Here's a screenshot of the application in action.
 
-      image::screenshot.png[Screenshot]
+      image::images/screenshot.png[]
       `
       const expected = heredoc`
       # Title
 
       Here’s a screenshot of the application in action.
 
-      ![Screenshot](screenshot.png)
+      ![screenshot.png](images/screenshot.png)
       `
       expect(downdoc(input)).to.equal(expected)
     })
