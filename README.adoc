@@ -44,7 +44,7 @@ Here's a rough list of the syntax that downdoc current handles:
 * nested ordered and unordered lists (marker must start at left margin; use `markdown-list-indent` attribute to control indent size)
 * description list (first level only)
 * list continuation (no support for ancestor attachment)
-* link and URL macros
+* link and URL macros (use `hide-uri-scheme` to hide URL scheme in visible URL)
 * escaped bare URLs
 * internal xrefs (honors value of `idprefix` and `idseparator` document attributes)
 * block IDs for document and section titles (only last block attribute line is consulted)
@@ -112,7 +112,7 @@ You can pass additional runtime AsciiDoc attributes using the `-a` (or `--attrib
 
 [,console]
 ----
-$ npx downdoc -a markdown-list-indent=4 -a product-name="ACME Enterprise" README.adoc
+$ npx downdoc -a hide-uri-scheme -a markdown-list-indent=4 README.adoc
 ----
 
 To print a usage statement that includes a complete list of available options, pass the `-h` option.
