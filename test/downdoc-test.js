@@ -1421,6 +1421,16 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should leave escaped bold formatting escaped', () => {
+      const input = heredoc`
+      Use the syntax \\*phrase here* to render text in bold.
+
+      \\*a becomes b*
+      `
+      const expected = input
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert bold formatting in unordered list item', () => {
       const input = '* be *bold*'
       const expected = '* be **bold**'
@@ -1438,6 +1448,16 @@ describe('downdoc()', () => {
 
       The _ is _so_ incredibly _useful_ when making snake_case.
       `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should leave escaped italic formatting escaped', () => {
+      const input = heredoc`
+      Use the syntax \\_phrase here_ to render text in italic.
+
+      \\_layouts or layouts_ contain the layout files.
+      `
+      const expected = input
       expect(downdoc(input)).to.equal(expected)
     })
 
@@ -1501,6 +1521,16 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should leave escaped marked phrase escaped', () => {
+      const input = heredoc`
+      Use the syntax \\#phrase here# to highlight text.
+
+      \\#hashtag is a tag or a URL anchor, but not a phone#
+      `
+      const expected = input
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert phrase with line-through role', () => {
       const input = heredoc`
       = Title
@@ -1539,21 +1569,6 @@ describe('downdoc()', () => {
       # Title
 
       Use downdoc to convert _README.adoc_ to _README.md_ **before** publishing.
-      `
-      expect(downdoc(input)).to.equal(expected)
-    })
-
-    it('should convert formatted text before replacing attribute references', () => {
-      const input = heredoc`
-      = Title
-      :bold: *not actually bold*
-
-      {bold}
-      `
-      const expected = heredoc`
-      # Title
-
-      *not actually bold*
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -1608,6 +1623,21 @@ describe('downdoc()', () => {
       Ruby 2.6’s endless range operator is a useful addition.
 
       Qu’est ce qu’AsciiDoc ?
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert formatted text before replacing attribute references', () => {
+      const input = heredoc`
+      = Title
+      :bold: *not actually bold*
+
+      {bold}
+      `
+      const expected = heredoc`
+      # Title
+
+      *not actually bold*
       `
       expect(downdoc(input)).to.equal(expected)
     })
