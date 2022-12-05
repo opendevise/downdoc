@@ -4,6 +4,6 @@
 This document provides a summary of all notable changes to downdoc by release.
 For a detailed view of what's changed, refer to the {url-repo}/commits[commit history] of this project.
 
-== Unreleased
+== 1.0.0-beta.1 (2022-12-05)
 
 _Initial prerelease._
