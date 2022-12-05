@@ -9,29 +9,29 @@ endif::[]
 
 == What is downdoc?
 
-The downdoc package provides a JavaScript function and CLI (command: `downdoc`) to down-convert AsciiDoc to Markdown.
-But why, you may ask?
+The downdoc package provides a CLI (command: `downdoc`) and JavaScript function (`downdoc`) to down-convert AsciiDoc to Markdown.
+"`But why,`" you may ask?
 
 The reality is, the AsciiDoc format isn't supported everywhere.
 For instance, npm package repositories such as https://npmjs.com and https://yarnpkg.com assume the README for a package is in Markdown.
 But you're a sensible developer who wants to maintain your README in AsciiDoc.
 Enter downdoc.
 
-This project initially started out with the goal to transpile an AsciiDoc README to the Markdown format for npm packaging.
+This project initially started out with a goal to transpile an AsciiDoc README to the Markdown format for npm packaging.
 In that regard, it was designed to be just good enough to get the job done.
 
 Over time, downdoc has proven to have broader application.
-With downdoc, you can draft content in AsciiDoc even for places where only Markdown is accepted, such as in an issue tracker or chat application.
-To post in Markdown, run the content through downdoc and paste the result.
+With downdoc, you can draft content in AsciiDoc even for places where only Markdown is accepted, such as an issue tracker or chat application.
+To post in Markdown, run the content through downdoc then paste the result.
 downdoc handles the context switch to Markdown so your brain doesn't have to.
 
 == How does it work?
 
-downdoc employs a rather crude approach to map the AsciiDoc syntax to Markdown that does not use an AsciiDoc processor.
-Therefore, it does not support the full AsciiDoc syntax.
-It's intended to be used with simple README files.
+downdoc employs a minimal approach to map the AsciiDoc syntax to Markdown that does not make use of Asciidoctor.
+While this gives it the advantage of having no dependencies and being exceptionally fast, it does not support the full AsciiDoc syntax.
+It's intended to be used with AsciiDoc documents that were written with this conversion in mind, as a Markdown frontend.
 
-Here's a rough list of the syntax it current handles:
+Here's a rough list of the syntax that downdoc current handles:
 
 * document title
 * author info and revision lines in document header
@@ -47,7 +47,7 @@ Here's a rough list of the syntax it current handles:
 * link and URL macros
 * escaped bare URLs
 * internal xrefs (honors value of `idprefix` and `idseparator` document attributes)
-* block IDs for document and section titles
+* block IDs for document and section titles (only last block attribute line is consulted)
 * auto-generated text for internal xrefs (honoring `reftext` attribute, if specified)
 * block and inline image macros
 * listing and source blocks with optional source language
@@ -65,9 +65,11 @@ Here's a rough list of the syntax it current handles:
 * comment lines and blocks
 * delimited example and sidebar blocks (unwrapped)
 
+Additional syntax may be supported in the future.
+
 == Prerequisites
 
-In order to use this extension, you need Node.js 16.17.0 or higher.
+In order to use this extension, you must have Node.js 16.17.0 or higher installed on your machine.
 
 == Install
 
@@ -90,7 +92,7 @@ $ npx downdoc README.adoc
 ----
 
 The `downdoc` command automatically generates a Markdown file.
-By default, the Markdown file has the same name as the AsciiDoc file with the file extension changed to `.md`.
+By default, the Markdown file has the same name as the AsciiDoc file with the file extension changed to `.md` (e.g., `README.md`).
 
 You can instruct the command to write to a different file using the `-o` (or `--output`) option.
 
@@ -106,11 +108,11 @@ If the value of the `-o` option is `-`, the command will write the output to the
 $ npx downdoc -o - README.adoc
 ----
 
-You can pass additional runtime AsciiDoc attributes using the `-a` option.
+You can pass additional runtime AsciiDoc attributes using the `-a` (or `--attribute`) option.
 
 [,console]
 ----
-$ npx downdoc -a markdown-list-indent=4 README.adoc
+$ npx downdoc -a markdown-list-indent=4 -a product-name="ACME Enterprise" README.adoc
 ----
 
 To print a usage statement that includes a complete list of available options, pass the `-h` option.
@@ -144,7 +146,7 @@ ifndef::env-npm[]
 The prime focus of this tool is to convert an AsciiDoc README to Markdown for npm packaging.
 This switch is done by leveraging the pre and post lifecycle hooks of the `publish` task.
 In the pre hook, you convert the README to Markdown and hide the AsciiDoc README.
-The main `publish` task will then discover the Markdown README and include it in the package.
+The npm `publish` task will then discover the Markdown README and include it in the package.
 In the post hook, you remove the Markdown README and restore the AsciiDoc README.
 
 Using this technique, the published npm package ends up with a Markdown README, but the README in your repository remains in AsciiDoc.
