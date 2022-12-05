@@ -940,6 +940,28 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should start open if open option is set', () => {
+      const input = heredoc`
+      = Title
+
+      .Spoiler, sorry, not sorry
+      [%collapsible%open]
+      ====
+      They made it out alive.
+      ====
+      `
+      const expected = heredoc`
+      # Title
+
+      <details open>
+      <summary>Spoiler, sorry, not sorry</summary>
+
+      They made it out alive.
+      </details>
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert collapsible block to spoiler variant if markdown-collapsible-variant is spoiler', () => {
       const input = heredoc`
       = Title
