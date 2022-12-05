@@ -78,7 +78,7 @@ Use the following command to install the downdoc package into your project:
 $ npm i downdoc
 ----
 
-Alternately, you can defer installation and invoke the CLI using npx.
+Alternately, you can defer installation and invoke the CLI using the `npx` command.
 
 == Usage
 
@@ -106,6 +106,15 @@ If the value of the `-o` option is `-`, the command will write the output to the
 $ npx downdoc -o - README.adoc
 ----
 
+You can pass additional runtime AsciiDoc attributes using the `-a` option.
+
+[,console]
+----
+$ npx downdoc -a markdown-list-indent=4 README.adoc
+----
+
+To print a usage statement that includes a complete list of available options, pass the `-h` option.
+
 === API
 
 [,js]
@@ -119,6 +128,15 @@ const fsp = require('node:fs/promises')
     .then((asciidoc) => fsp.writeFile('README.md', downdoc(asciidoc) + '\n', 'utf8'))
 })()
 ----
+
+The `downdoc` function accepts an object (i.e., map) of options as the second argument.
+
+[,js]
+----
+downdoc(asciidoc, { attributes: { 'markdown-list-indent': 4 } })
+----
+
+Currently the only supported option in the API is `attributes`, which is an object (i.e., map) of runtime AsciiDoc attributes.
 
 ifndef::env-npm[]
 === npm publish
