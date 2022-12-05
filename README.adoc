@@ -34,16 +34,16 @@ It's intended to be used with simple README files.
 Here's a rough list of the syntax it current handles:
 
 * document title
-* author info line in document header
-* document attribute entries (single-line only)
+* author info and revision lines in document header
+* document attribute entries (single-line only; no support for pass macro)
 * document attribute references
 * part/chapter/section titles
 * block titles
-* formatted text (bold, italic, monospace, double curly quotes, curly apostrophe)
+* formatted text (bold, italic, monospace, highlight/marked, double curly quotes, curly apostrophe)
 * ordered, unordered, and callout lists (1-9)
 * nested ordered and unordered lists (marker must start at left margin; use `markdown-list-indent` attribute to control indent size)
 * description list (first level only)
-* list continuation (basic support)
+* list continuation (no support for ancestor attachment)
 * link and URL macros
 * escaped bare URLs
 * internal xrefs (honors value of `idprefix` and `idseparator` document attributes)
