@@ -2440,6 +2440,60 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should convert implicit source block with language and role', () => {
+      const input = heredoc`
+      [.hide-imports,java]
+      ----
+      import java.util.*;
+
+      public class Example {
+        public static void main (String[] args) {
+          System.out.println(Arrays.asList(args));
+        }
+      }
+      ----
+      `
+      const expected = heredoc`
+      \`\`\`java
+      import java.util.*;
+
+      public class Example {
+        public static void main (String[] args) {
+          System.out.println(Arrays.asList(args));
+        }
+      }
+      \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert explicit source block with language and role', () => {
+      const input = heredoc`
+      [source.hide-imports,java]
+      ----
+      import java.util.*;
+
+      public class Example {
+        public static void main (String[] args) {
+          System.out.println(Arrays.asList(args));
+        }
+      }
+      ----
+      `
+      const expected = heredoc`
+      \`\`\`java
+      import java.util.*;
+
+      public class Example {
+        public static void main (String[] args) {
+          System.out.println(Arrays.asList(args));
+        }
+      }
+      \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert source block with language set on document', () => {
       const input = heredoc`
       = Title
