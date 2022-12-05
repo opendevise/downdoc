@@ -37,7 +37,7 @@ Here's a rough list of the syntax it current handles:
 * author info and revision lines in document header
 * document attribute entries (single-line only; no support for pass macro)
 * document attribute references
-* part/chapter/section titles
+* part/chapter/section titles (atx-style only)
 * block titles
 * formatted text (bold, italic, monospace, highlight/marked, phrase with line-through role, double curly quotes, curly apostrophe)
 * ordered, unordered, and callout lists (1-9)
