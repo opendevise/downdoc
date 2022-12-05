@@ -1501,6 +1501,20 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should convert phrase with line-through role', () => {
+      const input = heredoc`
+      = Title
+
+      [.line-through]#strike it#, that was incorrect.
+      `
+      const expected = heredoc`
+      # Title
+
+      ~~strike it~~, that was incorrect.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert generic phrase with role', () => {
       const input = heredoc`
       = Title

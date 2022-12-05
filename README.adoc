@@ -39,7 +39,7 @@ Here's a rough list of the syntax it current handles:
 * document attribute references
 * part/chapter/section titles
 * block titles
-* formatted text (bold, italic, monospace, highlight/marked, double curly quotes, curly apostrophe)
+* formatted text (bold, italic, monospace, highlight/marked, phrase with line-through role, double curly quotes, curly apostrophe)
 * ordered, unordered, and callout lists (1-9)
 * nested ordered and unordered lists (marker must start at left margin; use `markdown-list-indent` attribute to control indent size)
 * description list (first level only)
