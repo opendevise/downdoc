@@ -989,6 +989,7 @@ describe('downdoc()', () => {
     it('should convert collapsible block without title to spoiler', () => {
       const input = heredoc`
       = Title
+      :markdown-collapsible-variant: spoiler
 
       [%collapsible]
       ====
@@ -1002,7 +1003,7 @@ describe('downdoc()', () => {
       This is the spoiler.
       \`\`\`
       `
-      expect(downdoc(input, { attributes: { 'markdown-collapsible-variant': 'spoiler' } })).to.equal(expected)
+      expect(downdoc(input)).to.equal(expected)
     })
   })
 
@@ -2907,6 +2908,8 @@ describe('downdoc()', () => {
 
     it('should honor markdown-list-indent when converting nested ordered lists', () => {
       const input = heredoc`
+      :markdown-list-indent: 4
+
       . foo
       .. bar
       ... baz
@@ -2920,7 +2923,7 @@ describe('downdoc()', () => {
           2. bar
       2. foo
       `
-      expect(downdoc(input, { attributes: { 'markdown-list-indent': '4' } })).to.equal(expected)
+      expect(downdoc(input)).to.equal(expected)
     })
 
     it('should convert mixed nested lists', () => {
