@@ -1275,6 +1275,11 @@ describe('downdoc()', () => {
     it('should convert table header with wrapped text in final cell', () => {
       const input = heredoc`
       |===
+      | A
+      and no more
+      |===
+
+      |===
       | A | B
       more
       | A1
@@ -1282,6 +1287,9 @@ describe('downdoc()', () => {
       |===
       `
       const expected = heredoc`
+      | A and no more |
+      | --- |
+
       | A | B more |
       | --- | --- |
       | A1 | B1 |
