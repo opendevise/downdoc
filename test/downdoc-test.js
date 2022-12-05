@@ -2097,6 +2097,25 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should prepend value of imagesdir attribute to target of inline image', () => {
+      const input = heredoc`
+      = Title
+      :imagesdir: images
+
+      When you see image:green-bar.png[green bar], you know the tests have passed!
+
+      When you see image:red-bar.png[], something has gone wrong.
+      `
+      const expected = heredoc`
+      # Title
+
+      When you see ![green bar](images/green-bar.png), you know the tests have passed!
+
+      When you see ![red-bar.png](images/red-bar.png), something has gone wrong.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert local block image', () => {
       const input = heredoc`
       = Title
@@ -2125,6 +2144,25 @@ describe('downdoc()', () => {
       # Title
 
       ![fr](https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit/Assets/PNG/FR.png)
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should prepend value of imagesdir attribute to target of block image', () => {
+      const input = heredoc`
+      = Title
+      :imagesdir: images
+
+      Here's a screenshot of the application in action.
+
+      image::screenshot.png[]
+      `
+      const expected = heredoc`
+      # Title
+
+      Here’s a screenshot of the application in action.
+
+      ![screenshot.png](images/screenshot.png)
       `
       expect(downdoc(input)).to.equal(expected)
     })
