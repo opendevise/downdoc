@@ -1,9 +1,9 @@
 = downdoc Changelog
-:url-repo: https://github.com/mojavelinux/downdoc
+:url-repo: https://github.com/opendevise/downdoc
 
 This document provides a summary of all notable changes to downdoc by release.
 For a detailed view of what's changed, refer to the {url-repo}/commits[commit history] of this project.
 
 == Unreleased
 
-_Initial release._
+_Initial prerelease._

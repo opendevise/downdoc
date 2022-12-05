@@ -7,9 +7,9 @@
   "contributors": [
     "Dan Allen <dan@opendevise.com>"
   ],
-  "repository": "https://github.com/mojavelinux/downdoc",
+  "repository": "https://github.com/opendevise/downdoc",
   "bugs": {
-    "url": "https://github.com/mojavelinux/downdoc/issues"
+    "url": "https://github.com/opendevise/downdoc/issues"
   },
   "engines": {
     "node": ">=16.17.0"
