@@ -1272,6 +1272,23 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should convert table header with wrapped text in final cell', () => {
+      const input = heredoc`
+      |===
+      | A | B
+      more
+      | A1
+      | B1
+      |===
+      `
+      const expected = heredoc`
+      | A | B more |
+      | --- | --- |
+      | A1 | B1 |
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert cell with wrapped text at start of row', () => {
       const input = heredoc`
       [cols=2*]
