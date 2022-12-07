@@ -2961,6 +2961,22 @@ describe('downdoc()', () => {
       expect(downdoc(input, { attributes: { 'markdown-list-indent': '4' } })).to.equal(expected)
     })
 
+    it('should not indent empty line in nested list', () => {
+      const input = heredoc`
+      * foo
+      ** bar
+      {empty}
+      baz
+      `
+      const expected = heredoc`
+      * foo
+        * bar
+
+        baz
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should support - as unordered list marker', () => {
       const input = heredoc`
       * Do
