@@ -3849,6 +3849,15 @@ describe('downdoc()', () => {
       const expected = 'Visible content.'
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should trim leading blank lines after applying subs', () => {
+      const input = heredoc`
+      {empty}
+      Visible content.
+      `
+      const expected = 'Visible content.'
+      expect(downdoc(input)).to.equal(expected)
+    })
   })
 
   describe('unsupported', () => {
