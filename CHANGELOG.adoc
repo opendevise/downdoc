@@ -9,6 +9,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 === Changed
 
 * Remove leading line if blank after applying subs
+* Don't indent empty line
 
 == 1.0.0-beta.1 (2022-12-05)
 
