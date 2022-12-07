@@ -696,7 +696,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(input)
     })
 
-    it('should not process list indented line within a paragragh', () => {
+    it('should not process indented line within a paragragh', () => {
       const input = heredoc`
       Let the paragraph begin.
         This paragraph uses a hanging indent.
