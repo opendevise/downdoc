@@ -11,6 +11,10 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 * Remove leading line if blank after applying subs
 * Don't indent empty line
 
+=== Fixed
+
+* Reset subs when entering a verbatim block without block metadata
+
 == 1.0.0-beta.1 (2022-12-05)
 
 _Initial prerelease._

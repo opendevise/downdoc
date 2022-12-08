@@ -2682,7 +2682,34 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should not substitute text in a verbatim block', () => {
+    it('should not substitute text in a verbatim block without block metadata', () => {
+      const input = heredoc`
+      = Title
+      :project-name: ACME
+
+      The name of the project is {project-name}.
+
+      ----
+      {project-name}
+      ----
+
+      {project-name} is awesome.
+      `
+      const expected = heredoc`
+      # Title
+
+      The name of the project is ACME.
+
+      \`\`\`
+      {project-name}
+      \`\`\`
+
+      ACME is awesome.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should not substitute text in a verbatim block with block metadata', () => {
       const input = heredoc`
       = Title
       :project-name: ACME
