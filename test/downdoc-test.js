@@ -846,6 +846,10 @@ describe('downdoc()', () => {
       verbatim content
       ....
       ====
+
+      == Following Section
+
+      content
       `
       const expected = heredoc`
       # Title
@@ -853,6 +857,10 @@ describe('downdoc()', () => {
       \`\`\`
       verbatim content
       \`\`\`
+
+      ## Following Section
+
+      content
       `
       expect(downdoc(input)).to.equal(expected)
     })

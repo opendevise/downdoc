@@ -17,6 +17,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 * Clear block attributes after processing section title
 * Place title on promoted console literal paragraph above instead of inside block
 * Drop open in blank window hint from link text
+* Pop container when exiting verbatim block
 
 == 1.0.0-beta.1 (2022-12-05)
 
