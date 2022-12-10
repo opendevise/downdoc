@@ -2397,6 +2397,29 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should support title on promoted console literal paragraph', () => {
+      const input = heredoc`
+      = Document Title
+
+      .Install
+       $ npm i downdoc
+
+      All set.
+      `
+      const expected = heredoc`
+      # Document Title
+
+      **Install**
+
+      \`\`\`console
+      $ npm i downdoc
+      \`\`\`
+
+      All set.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should close implicit console code block at end of document after trimming trailing newline', () => {
       const input = heredoc`
       = Document Title
