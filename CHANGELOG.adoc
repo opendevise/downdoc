@@ -16,6 +16,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 * Reset subs when entering a verbatim block without block metadata
 * Clear block attributes after processing section title
 * Place title on promoted console literal paragraph above instead of inside block
+* Drop open in blank window hint from link text
 
 == 1.0.0-beta.1 (2022-12-05)
 

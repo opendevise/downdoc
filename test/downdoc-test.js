@@ -2009,6 +2009,20 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should remove open in blank window hint from end of link text', () => {
+      const input = heredoc`
+      = Title
+
+      These tests are run using https://mochajs.org[Mocha^].
+      `
+      const expected = heredoc`
+      # Title
+
+      These tests are run using [Mocha](https://mochajs.org).
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should not process non-escaped bare URL', () => {
       const input = heredoc`
       Navigate to http://localhost:8080/app to view your application.
