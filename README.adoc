@@ -178,6 +178,14 @@ Let's have a look at where these entries go when we step back and look at a comp
 }
 ----
 
+If you don't want to declare a dependency on the downdoc package in your project, prepend the call to `downdoc` with `npx -y`:
+
+[,json]
+----
+"postpublish": "npx -y downdoc --postpublish",
+"prepublishOnly": "npx -y downdoc --prepublish",
+----
+
 When an AsciiDoc file is converted using the `--prepublish` CLI option, both the `env=npm` and `env-npm` document attributes are set.
 This allows you to show or hide content in the README that is displayed in the npm package registry.
 
