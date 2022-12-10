@@ -8,8 +8,12 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 === Changed
 
-* Remove leading line if blank after applying subs
+* Remove leading line if empty after applying subs
 * Don't indent empty line
+* Implement callouts replacement as a named substitution
+* Read closing delimiter for verbatim block from cap property on inContainer object
+* Rename convertInline variable to substitutors to better reflect its purpose
+* Skip applying subs if no special characters are detected
 
 === Fixed
 
