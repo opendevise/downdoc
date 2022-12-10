@@ -524,6 +524,23 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should clear block attributes after processing section title', () => {
+      const input = heredoc`
+      [,java]
+      == Section Title
+      ----
+      plain listing block
+      ----
+      `
+      const expected = heredoc`
+      ## Section Title
+      \`\`\`
+      plain listing block
+      \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
   })
 
   describe('block titles', () => {
