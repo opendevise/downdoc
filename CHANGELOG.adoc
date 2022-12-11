@@ -4,6 +4,16 @@
 This document provides a summary of all notable changes to downdoc by release.
 For a detailed view of what's changed, refer to the {url-repo}/commits[commit history] of this project.
 
+== Unreleased
+
+=== Added
+
+* Support autonumbering for colist items (e.g., `<.>` syntax)
+
+=== Changed
+
+* Process colist as a list instead of ad-hoc lines
+
 == 1.0.0-beta.2 (2022-12-10)
 
 === Changed

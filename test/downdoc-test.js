@@ -3324,11 +3324,29 @@ describe('downdoc()', () => {
       = Document Title
 
       <1> Prints the number 1.
+      <2> Exits the program.
       `
       const expected = heredoc`
       # Document Title
 
       1. Prints the number 1.
+      2. Exits the program.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert colist with autonumbering to numbered list', () => {
+      const input = heredoc`
+      = Document Title
+
+      <.> Prints the number 1.
+      <.> Exits the program.
+      `
+      const expected = heredoc`
+      # Document Title
+
+      1. Prints the number 1.
+      2. Exits the program.
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -3391,6 +3409,26 @@ describe('downdoc()', () => {
         \`\`\`console
         $ npx downdoc README.adoc
         \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should indent block following a list continuation on colist item', () => {
+      const input = heredoc`
+      = Document Title
+
+      <.> Prints the number 1.
+      <.> Exits the program.
+      +
+      This happens automatically when all statements have been exhausted.
+      `
+      const expected = heredoc`
+      # Document Title
+
+      1. Prints the number 1.
+      2. Exits the program.
+
+         This happens automatically when all statements have been exhausted.
       `
       expect(downdoc(input)).to.equal(expected)
     })
