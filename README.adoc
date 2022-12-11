@@ -40,7 +40,7 @@ Here's a rough list of the syntax that downdoc current handles:
 * part/chapter/section titles (atx-style only)
 * block titles
 * formatted text (within line; bold, italic, monospace, highlight, phrase w/ line-through role, double curly quotes, curly apostrophe)
-* ordered, unordered, and callout lists (1-9)
+* ordered, unordered, and callout lists (1-9 or .)
 * nested ordered and unordered lists (marker must start at left margin; use `markdown-list-indent` attribute to control indent size)
 * description list (first level only)
 * list continuation (no support for ancestor continuation)
@@ -52,7 +52,7 @@ Here's a rough list of the syntax that downdoc current handles:
 * block and inline image macros
 * listing and source blocks with optional source language
 * diagram blocks (literal block with diagram dialect)
-* callout numbers (1-9) in verbatim blocks (one per line)
+* callout numbers (1-9 or .) in verbatim blocks (one per line)
 * attribute references in verbatim blocks (when subs=attributes+ or subs=+attributes is enabled)
 * literal paragraphs (auto-detects command prompt and promotes to command code block)
 * admonition paragraphs
