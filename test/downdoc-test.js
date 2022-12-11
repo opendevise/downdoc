@@ -3503,6 +3503,62 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should interpret literal paragraph in list as having an implicit list continuation', () => {
+      const input = heredoc`
+      * Query the version of the app that is installed:
+
+       $ app -v
+
+      * Look for the following output:
+
+       v1.0.0
+       [node: v16]
+
+      * Now you are ready to go.
+      `
+      const expected = heredoc`
+      * Query the version of the app that is installed:
+
+        \`\`\`console
+        $ app -v
+        \`\`\`
+      * Look for the following output:
+
+            v1.0.0
+            [node: v16]
+      * Now you are ready to go.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should end list if literal paragraph in list item has block attributes', () => {
+      const input = heredoc`
+      * Query the version of the app that is installed:
+
+       $ app -v
+
+      * Look for the following output:
+
+      [.output]
+       v1.0.0
+
+      Now you are ready to go.
+      `
+      const expected = heredoc`
+      * Query the version of the app that is installed:
+
+        \`\`\`console
+        $ app -v
+        \`\`\`
+      * Look for the following output:
+
+          v1.0.0
+
+      Now you are ready to go.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should interpret block title following list continuation', () => {
       const input = heredoc`
       * Say hello
