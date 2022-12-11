@@ -39,22 +39,22 @@ Here's a rough list of the syntax that downdoc current handles:
 * document attribute references
 * part/chapter/section titles (atx-style only)
 * block titles
-* formatted text (bold, italic, monospace, highlight/marked, phrase with line-through role, double curly quotes, curly apostrophe)
+* formatted text (within line; bold, italic, monospace, highlight, phrase w/ line-through role, double curly quotes, curly apostrophe)
 * ordered, unordered, and callout lists (1-9)
 * nested ordered and unordered lists (marker must start at left margin; use `markdown-list-indent` attribute to control indent size)
 * description list (first level only)
-* list continuation (no support for ancestor attachment)
+* list continuation (no support for ancestor continuation)
 * link and URL macros (use `hide-uri-scheme` to hide URL scheme in visible URL)
 * escaped bare URLs
-* internal xrefs (honors value of `idprefix` and `idseparator` document attributes)
+* internal xrefs (honors value of `idprefix` and `idseparator` document attributes; no support for natural xref)
 * block IDs for document and section titles (only last block attribute line is consulted)
 * auto-generated text for internal xrefs (honoring `reftext` attribute, if specified)
 * block and inline image macros
 * listing and source blocks with optional source language
-* diagram blocks (listing block with diagram dialect)
-* callout numbers (1-9) in verbatim blocks
-* attribute references in verbatim blocks (when attributes sub is enabled)
-* literal paragraphs (auto-detects command prompt and promotes to code block)
+* diagram blocks (literal block with diagram dialect)
+* callout numbers (1-9) in verbatim blocks (one per line)
+* attribute references in verbatim blocks (when subs=attributes+ or subs=+attributes is enabled)
+* literal paragraphs (auto-detects command prompt and promotes to command code block)
 * admonition paragraphs
 * Markdown-style blockquotes
 * thematic breaks (Markdown-style, e.g., `---`)
@@ -65,7 +65,7 @@ Here's a rough list of the syntax that downdoc current handles:
 * comment lines and blocks
 * delimited example and sidebar blocks (unwrapped)
 
-Additional syntax may be supported in the future.
+Support for additional syntax may be added in the future.
 
 == Prerequisites
 
