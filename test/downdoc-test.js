@@ -2943,6 +2943,50 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should replace autonumbered conumms in source block', () => {
+      const input = heredoc`
+      = Title
+
+      [,js]
+      ----
+      'use strict' // <.>
+
+      const fs = require('node:fs') // <.>
+      ----
+      <.> Enables strict mode.
+      <.> Requires the built-in fs module.
+
+      [,ruby]
+      ----
+      # frozen_string_literal: true # <.>
+
+      File.write('bar', 'foo.txt') # <.>
+      ----
+      <.> Prevents strings from being mutable.
+      <.> The File API is part of the stdlib.
+      `
+      const expected = heredoc`
+      # Title
+
+      \`\`\`js
+      'use strict' // ❶
+
+      const fs = require('node:fs') // ❷
+      \`\`\`
+      1. Enables strict mode.
+      2. Requires the built-in fs module.
+
+      \`\`\`ruby
+      # frozen_string_literal: true # ❶
+
+      File.write('bar', 'foo.txt') # ❷
+      \`\`\`
+      1. Prevents strings from being mutable.
+      2. The File API is part of the stdlib.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should replace conum at start of otherwise blank line', () => {
       const input = heredoc`
       ....

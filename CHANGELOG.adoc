@@ -8,7 +8,8 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 === Added
 
-* Support autonumbering for colist items (e.g., `<.>` syntax)
+* Support autonumbering of colist items (i.e., `<.>` syntax)
+* Support autonumbering of conums in verbatim block (i.e., `<.>` syntax)
 
 === Changed
 
