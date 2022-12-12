@@ -1615,7 +1615,7 @@ describe('downdoc()', () => {
       const input = heredoc`
       Use the syntax \\#phrase here# to highlight text.
 
-      \\#hashtag is a tag or a URL anchor, but not a phone#
+      \\#hashtag is a tag or a URL fragment, but not a phone#
       `
       const expected = input
       expect(downdoc(input)).to.equal(expected)
