@@ -63,7 +63,8 @@ Here's a rough list of the syntax that downdoc current handles:
 * tables (normal table cells only; no support for cell style)
 * collapsible blocks (set the `markdown-collapsible-variant` attribute to `spoiler` to generate Zulip-compatible spoiler block)
 * comment lines and blocks
-* delimited example and sidebar blocks (unwrapped)
+* passthrough blocks
+* delimited example and sidebar blocks (delimiter lines removed)
 
 Support for additional syntax may be added in the future.
 
