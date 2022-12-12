@@ -799,6 +799,71 @@ describe('downdoc()', () => {
       const expected = input
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should pass through content of pass block as is', () => {
+      const input = heredoc`
+      ++++
+      <table>
+      <tr>
+      <td>cell</td>
+      </tr>
+      </table>
+      ++++
+      `
+      const expected = heredoc`
+      <table>
+      <tr>
+      <td>cell</td>
+      </tr>
+      </table>
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should support pass block inside another block', () => {
+      const input = heredoc`
+      .Click to show supporting data
+      [%collapsible]
+      ====
+      ++++
+      <table>
+      <tr>
+      <td>cell</td>
+      </tr>
+      </table>
+      ++++
+      ====
+      `
+      const expected = heredoc`
+      <details>
+      <summary>Click to show supporting data</summary>
+
+      <table>
+      <tr>
+      <td>cell</td>
+      </tr>
+      </table>
+      </details>
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should ignore block title on pass block', () => {
+      const input = heredoc`
+      .ignored
+      ++++
+      <aside>
+      <p>just an aside</p>
+      </aside>
+      ++++
+      `
+      const expected = heredoc`
+      <aside>
+      <p>just an aside</p>
+      </aside>
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
   })
 
   describe('delimited blocks', () => {

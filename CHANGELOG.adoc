@@ -8,6 +8,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 === Added
 
+* Pass through contents of pass block
 * Support autonumbering of colist items (i.e., `<.>` syntax)
 * Support autonumbering of conums in verbatim block (i.e., `<.>` syntax)
 * Support implicit list continuation above literal paragraph inside list item
