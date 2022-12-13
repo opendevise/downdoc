@@ -832,7 +832,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should pass through content of pass block as is', () => {
+    it('should pass through content of passthough block as is', () => {
       const input = heredoc`
       ++++
       <table>
@@ -852,7 +852,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should support pass block inside another block', () => {
+    it('should support passthough block inside another block', () => {
       const input = heredoc`
       .Click to show supporting data
       [%collapsible]
@@ -880,7 +880,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should ignore block title on pass block', () => {
+    it('should ignore block title on passthrough block', () => {
       const input = heredoc`
       .ignored
       ++++
@@ -893,6 +893,21 @@ describe('downdoc()', () => {
       <aside>
       <p>just an aside</p>
       </aside>
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert passthrough block with stem style to display (block) match', () => {
+      const input = heredoc`
+      [stem]
+      ++++
+      a^2 = b^2 + c^2
+      ++++
+      `
+      const expected = heredoc`
+      \`\`\`math
+      a^2 = b^2 + c^2
+      \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
     })
