@@ -37,7 +37,7 @@ Here's a rough list of the syntax that downdoc current handles:
 * author info and revision lines in document header
 * document attribute entries (single-line only; no support for pass macro)
 * document attribute references
-* part/chapter/section titles (atx-style only)
+* part/chapter/section titles and discrete headings (atx-style only)
 * block titles
 * formatted text (within line; bold, italic, monospace, highlight, phrase w/ line-through role, double curly quotes, curly apostrophe)
 * ordered, unordered, and callout lists (1-9 or .)

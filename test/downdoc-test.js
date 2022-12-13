@@ -464,6 +464,38 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should process document that starts with discrete heading', () => {
+      const input = heredoc`
+      [discrete#tagline]
+      == Your Way
+
+      When we say <<tagline>>, we mean it.
+      `
+      const expected = heredoc`
+      ## Your Way
+
+      When we say [Your Way](#your-way), we mean it.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should not treat level-0 discrete heading at top of document as document title', () => {
+      const input = heredoc`
+      [discrete]
+      = Heading
+      Author Name
+
+      {doctitle}
+      `
+      const expected = heredoc`
+      # Heading
+      Author Name
+
+      {doctitle}
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert part titles', () => {
       const input = heredoc`
       = Title
@@ -942,6 +974,27 @@ describe('downdoc()', () => {
       # Title
 
       == Not a Section Title
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert discrete heading inside delimited block', () => {
+      const input = heredoc`
+      = Title
+
+      ====
+      [discrete]
+      == Heading
+
+      Explain this example here.
+      ====
+      `
+      const expected = heredoc`
+      # Title
+
+      ## Heading
+
+      Explain this example here.
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -2003,6 +2056,26 @@ describe('downdoc()', () => {
       # Title
 
       Refer to [webserver-instructions](#webserver-instructions) to set up your webserver.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should generate and rewrite ID for discrete heading', () => {
+      const input = heredoc`
+      = Title
+      :idseparator: -
+
+      [discrete]
+      == Discrete Heading
+
+      We can refer to a <<_discrete-heading>> using an xref.
+      `
+      const expected = heredoc`
+      # Title
+
+      ## Discrete Heading
+
+      We can refer to a [Discrete Heading](#discrete-heading) using an xref.
       `
       expect(downdoc(input)).to.equal(expected)
     })
