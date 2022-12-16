@@ -52,7 +52,7 @@ Here's a rough list of the syntax that downdoc current handles:
 * block and inline image macros
 * listing and source blocks with optional source language
 * diagram blocks (literal block with diagram dialect)
-* callout numbers (1-9 or .) in verbatim blocks (one per line)
+* callout numbers (i.e., conums) (1-9 or .) in verbatim blocks
 * attribute references in verbatim blocks (when subs=attributes+ or subs=+attributes is enabled)
 * literal paragraphs (auto-detects command prompt and promotes to command code block)
 * admonition paragraphs

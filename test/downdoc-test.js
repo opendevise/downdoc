@@ -3159,6 +3159,32 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should substitute all conums on same line in verbatim block', () => {
+      const input = heredoc`
+      ----
+      const Asciidoctor = require('asciidoctor')() <.> <.>
+
+      const doc = Asciidoctor.loadFile('doc.adoc', { safe: 'safe' }) <.> <4>
+      ----
+      <.> Requires the Asciidoctor.js library.
+      <.> Instantiates the Asciidoctor object.
+      <.> Parses the AsciiDoc file into a Document object.
+      <.> Sets the safe mode from the default of secure to safe.
+      `
+      const expected = heredoc`
+      \`\`\`
+      const Asciidoctor = require('asciidoctor')() ❶ ❷
+
+      const doc = Asciidoctor.loadFile('doc.adoc', { safe: 'safe' }) ❸ ❹
+      \`\`\`
+      1. Requires the Asciidoctor.js library.
+      2. Instantiates the Asciidoctor object.
+      3. Parses the AsciiDoc file into a Document object.
+      4. Sets the safe mode from the default of secure to safe.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
   })
 
   describe('lists', () => {
