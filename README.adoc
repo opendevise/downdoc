@@ -50,7 +50,7 @@ Here's a rough list of the syntax that downdoc current handles:
 * block IDs for document and section titles (only last block attribute line is consulted)
 * auto-generated text for internal xrefs (honoring `reftext` attribute, if specified)
 * block and inline image macros
-* listing and source blocks with optional source language
+* literal blocks, listing blocks, and source blocks with optional source language
 * diagram blocks (literal block with diagram dialect)
 * callout numbers (i.e., conums) (1-9 or .) in verbatim blocks
 * attribute references in verbatim blocks (when subs=attributes+ or subs=+attributes is enabled)
