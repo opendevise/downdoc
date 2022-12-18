@@ -1443,6 +1443,69 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should support table with empty lines attached to list item', () => {
+      const input = heredoc`
+      * list item
+      +
+      .Table caption
+      |===
+      | A | B
+
+      | A1
+      | B1
+
+      | A2 | B2
+      |===
+
+      after
+      `
+      const expected = heredoc`
+      * list item
+
+        **Table caption**
+
+        | A | B |
+        | --- | --- |
+        | A1 | B1 |
+        | A2 | B2 |
+
+      after
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should support table with explicit cols and ragged first row attached to list item', () => {
+      const input = heredoc`
+      * list item
+      +
+      [cols=3*]
+      |===
+      | A | B
+      | C
+
+      | A1
+      | B1 | C1
+
+      | A2 | B2
+      | C2
+      |===
+
+      after
+      `
+      const expected = heredoc`
+      * list item
+
+        |     |     |     |
+        | --- | --- | --- |
+        | A | B | C |
+        | A1 | B1 | C1 |
+        | A2 | B2 | C2 |
+
+      after
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should not carry over block title on empty table to next adjacent block', () => {
       const input = heredoc`
       .Table caption
@@ -3878,6 +3941,104 @@ describe('downdoc()', () => {
         \`\`\`
 
       all done
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should continue list item thorughout attached container', () => {
+      const input = heredoc`
+      * list item
+      +
+      --
+      attached
+
+      keep it going
+
+      not done yet
+      --
+
+      done now
+      `
+      const expected = heredoc`
+      * list item
+
+        attached
+
+        keep it going
+
+        not done yet
+
+      done now
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should continue list item thorughout attached container with nested container', () => {
+      const input = heredoc`
+      * list item
+      +
+      --
+      attached
+
+      ====
+      keep it going
+
+      still going
+      ====
+
+      not done yet
+      --
+
+      done now
+      `
+      const expected = heredoc`
+      * list item
+
+        attached
+
+        keep it going
+
+        still going
+
+        not done yet
+
+      done now
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should continue list item thorughout attached container with nested verbatim block', () => {
+      const input = heredoc`
+      * list item
+      +
+      --
+      attached
+
+      ....
+      keep it going
+
+      still going
+      ....
+
+      not done yet
+      --
+
+      done now
+      `
+      const expected = heredoc`
+      * list item
+
+        attached
+
+        \`\`\`
+        keep it going
+
+        still going
+        \`\`\`
+
+        not done yet
+
+      done now
       `
       expect(downdoc(input)).to.equal(expected)
     })

@@ -43,7 +43,7 @@ Here's a rough list of the syntax that downdoc current handles:
 * ordered, unordered, and callout lists (1-9 or .)
 * nested ordered and unordered lists (marker must start at left margin; use `markdown-list-indent` attribute to control indent size)
 * description list (first level only)
-* list continuation (no support for ancestor continuation)
+* list continuation (no support for ancestor continuation or list inside attached delimited block)
 * link and URL macros (use `hide-uri-scheme` to hide URL scheme in visible URL)
 * escaped bare URLs
 * internal xrefs (honors value of `idprefix` and `idseparator` document attributes; no support for natural xref)
@@ -65,7 +65,7 @@ Here's a rough list of the syntax that downdoc current handles:
 * comment lines and blocks
 * passthrough blocks
 * stem blocks (i.e., display math)
-* delimited example and sidebar blocks (delimiter lines removed)
+* delimited example, open, and sidebar blocks (delimiter lines removed)
 
 Support for additional syntax may be added in the future.
 

@@ -15,6 +15,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 * Support autonumbering of conums in verbatim block (i.e., `<.>` syntax)
 * Process all conums per line in verbatim block
 * Support implicit list continuation above literal paragraph inside list item
+* Track stack of containers attached to list item; don't end list item at empty line inside attached container
 
 === Changed
 
