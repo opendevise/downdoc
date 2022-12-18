@@ -58,11 +58,14 @@
     "prettier-eslint": "~15.0"
   },
   "nyc": {
-    "cache": true,
+    "all": true,
+    "branches": 100,
     "cacheDir": "node_modules/.cache/nyc",
+    "checkCoverage": true,
     "include": [
       "lib/*.js"
     ],
+    "lines": 100,
     "reporter": [
       "cobertura",
       "lcov",

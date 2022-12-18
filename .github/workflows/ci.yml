@@ -40,5 +40,5 @@ jobs:
           echo 'Detected pending code style changes'
           exit 1
         fi
-    - name: Run tests
+    - name: Run tests with coverage
       run: npm run coverage
