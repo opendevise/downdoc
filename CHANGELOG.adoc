@@ -19,6 +19,10 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 * Process colist as a list instead of ad-hoc lines
 
+=== Fixed
+
+* Indent table header delimiter line when table is inside list
+
 == 1.0.0-beta.2 (2022-12-10)
 
 === Changed

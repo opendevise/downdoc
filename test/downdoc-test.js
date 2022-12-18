@@ -1414,6 +1414,35 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should support table with no empty lines attached to list item', () => {
+      const input = heredoc`
+      * list item
+      +
+      .Table caption
+      |===
+      | A | B
+      | A1
+      | B1
+      | A2 | B2
+      |===
+
+      after
+      `
+      const expected = heredoc`
+      * list item
+
+        **Table caption**
+
+        | A | B |
+        | --- | --- |
+        | A1 | B1 |
+        | A2 | B2 |
+
+      after
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should not carry over block title on empty table to next adjacent block', () => {
       const input = heredoc`
       .Table caption
