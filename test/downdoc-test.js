@@ -3810,7 +3810,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should indent verabtim blocks in list item', () => {
+    it('should indent verbatim blocks in list item', () => {
       const input = heredoc`
       * run this:
       +
@@ -3823,7 +3823,11 @@ describe('downdoc()', () => {
       .code
       ----
       listing
+
+      another line
       ----
+
+      all done
       `
       const expected = heredoc`
       * run this:
@@ -3840,7 +3844,11 @@ describe('downdoc()', () => {
 
         \`\`\`
         listing
+
+        another line
         \`\`\`
+
+      all done
       `
       expect(downdoc(input)).to.equal(expected)
     })
