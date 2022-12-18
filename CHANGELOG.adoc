@@ -13,6 +13,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 * Support discrete headings, including inside delimited block and at start of document
 * Support autonumbering of colist items (i.e., `<.>` syntax)
 * Support autonumbering of conums in verbatim block (i.e., `<.>` syntax)
+* Process all conums per line in verbatim block
 * Support implicit list continuation above literal paragraph inside list item
 
 === Changed
