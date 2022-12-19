@@ -1771,6 +1771,26 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should not convert marked phrase inside a word', () => {
+      const input = heredoc`
+      #foo#bar
+
+      foo[.role]#bar#
+      `
+      const expected = input
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should not convert character reference as marked phrase', () => {
+      const input = heredoc`
+      &#169; and &#174; are trademark symbols
+
+      [.role]#&169; and [.role]&#174; should be left as is.
+      `
+      const expected = input
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should leave escaped marked phrase escaped', () => {
       const input = heredoc`
       Use the syntax \\#phrase here# to highlight text.
