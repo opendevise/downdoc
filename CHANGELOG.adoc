@@ -6,6 +6,10 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 == Unreleased
 
+=== Added
+
+* Honor subs attribute on verbatim paragraph (attributes only)
+
 === Changed
 
 * Don't process marked (highlight) phrase within a word

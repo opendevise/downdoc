@@ -2684,6 +2684,46 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should honor subs attribute on all lines of literal paragraph', () => {
+      const input = heredoc`
+      :install-prefix: /usr/local
+
+      installing
+
+      [subs=attributes+]
+       {install-prefix}/bin/downdoc
+       {install-prefix}/lib/downdoc/index.js
+
+      installed
+      `
+      const expected = heredoc`
+      installing
+
+          /usr/local/bin/downdoc
+          /usr/local/lib/downdoc/index.js
+
+      installed
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should honor subs attribute on all lines of literal paragraph promoted to a console code block', () => {
+      const input = heredoc`
+      :version-downdoc: 1.0.0
+
+      [subs=attributes+]
+       $ npx downdoc@{version-downdoc} -v
+       #=> {version-downdoc}
+      `
+      const expected = heredoc`
+      \`\`\`console
+      $ npx downdoc@1.0.0 -v
+      #=> 1.0.0
+      \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should support title on promoted console literal paragraph', () => {
       const input = heredoc`
       = Document Title
