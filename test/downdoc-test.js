@@ -3292,6 +3292,16 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should support conums up to 10', () => {
+      const input = `----\n${[...new Array(10)].map((_, i) => '<' + (i + 1) + '>').join('\n')}\n----`
+      expect(downdoc(input)).to.include('❿')
+    })
+
+    it('should support autonumbered conums up to 10', () => {
+      const input = `----\n${new Array(10).fill('<.>').join('\n')}\n----`
+      expect(downdoc(input)).to.include('❿')
+    })
+
     it('should replace conum at start of otherwise blank line', () => {
       const input = heredoc`
       ....
