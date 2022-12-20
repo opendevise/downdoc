@@ -15,6 +15,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 * Don't process marked (highlight) phrase within a word
 * Extend supported conums range to numbers 1-19
+* Rename ADMONITION_ICONS constant to ADMONS; switch value to Map
 
 === Fixed
 
