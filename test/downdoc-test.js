@@ -3238,9 +3238,9 @@ describe('downdoc()', () => {
       # Title
 
       \`\`\`js
-      'use strict' // ❶
+      'use strict' // ①
 
-      const fs = require('node:fs') // ❷
+      const fs = require('node:fs') // ②
       \`\`\`
       1. Enables strict mode.
       2. Requires the built-in fs module.
@@ -3274,17 +3274,17 @@ describe('downdoc()', () => {
       # Title
 
       \`\`\`js
-      'use strict' // ❶
+      'use strict' // ①
 
-      const fs = require('node:fs') // ❷
+      const fs = require('node:fs') // ②
       \`\`\`
       1. Enables strict mode.
       2. Requires the built-in fs module.
 
       \`\`\`ruby
-      # frozen_string_literal: true # ❶
+      # frozen_string_literal: true # ①
 
-      File.write('bar', 'foo.txt') # ❷
+      File.write('bar', 'foo.txt') # ②
       \`\`\`
       1. Prevents strings from being mutable.
       2. The File API is part of the stdlib.
@@ -3294,12 +3294,12 @@ describe('downdoc()', () => {
 
     it('should support conums up to 10', () => {
       const input = `----\n${[...new Array(10)].map((_, i) => '<' + (i + 1) + '>').join('\n')}\n----`
-      expect(downdoc(input)).to.include('❿')
+      expect(downdoc(input)).to.include('⑩')
     })
 
     it('should support autonumbered conums up to 10', () => {
       const input = `----\n${new Array(10).fill('<.>').join('\n')}\n----`
-      expect(downdoc(input)).to.include('❿')
+      expect(downdoc(input)).to.include('⑩')
     })
 
     it('should replace conum at start of otherwise blank line', () => {
@@ -3314,7 +3314,7 @@ describe('downdoc()', () => {
       const expected = heredoc`
       \`\`\`
       first line
-      ❶
+      ①
       last line
       \`\`\`
       1. blank line
@@ -3336,9 +3336,9 @@ describe('downdoc()', () => {
       `
       const expected = heredoc`
       \`\`\`
-      const Asciidoctor = require('asciidoctor')() ❶ ❷
+      const Asciidoctor = require('asciidoctor')() ① ②
 
-      const doc = Asciidoctor.loadFile('doc.adoc', { safe: 'safe' }) ❸ ❹
+      const doc = Asciidoctor.loadFile('doc.adoc', { safe: 'safe' }) ③ ④
       \`\`\`
       1. Requires the Asciidoctor.js library.
       2. Instantiates the Asciidoctor object.

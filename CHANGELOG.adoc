@@ -9,11 +9,12 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 === Added
 
 * Honor subs attribute on verbatim paragraph (attributes only)
-* Add support for conum 10
+* Switch from filled to circled conums (to extend the range)
 
 === Changed
 
 * Don't process marked (highlight) phrase within a word
+* Extend supported conums range to numbers 1-19
 
 === Fixed
 
