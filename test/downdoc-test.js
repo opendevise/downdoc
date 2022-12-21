@@ -914,7 +914,7 @@ describe('downdoc()', () => {
   })
 
   describe('delimited blocks', () => {
-    it('should drop block delimiters', () => {
+    it('should drop block delimiters for example and sidebar blocks', () => {
       const input = heredoc`
       = Title
 
@@ -1010,6 +1010,51 @@ describe('downdoc()', () => {
       ## Heading
 
       Explain this example here.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert admonition block', () => {
+      const input = heredoc`
+      = Title
+
+      [WARNING]
+      ====
+      Beware of dog.
+
+      Oh, and watch out for zombies too.
+      ====
+      `
+      const expected = heredoc`
+      # Title
+
+      <dl><dt><strong>⚠️ WARNING</strong></dt><dd>
+
+      Beware of dog.
+
+      Oh, and watch out for zombies too.
+      </dd></dl>
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should ignore unknown admonition type', () => {
+      const input = heredoc`
+      = Title
+
+      [INFO]
+      ====
+      Not a valid admonition type.
+
+      You will just see paragraphs.
+      ====
+      `
+      const expected = heredoc`
+      # Title
+
+      Not a valid admonition type.
+
+      You will just see paragraphs.
       `
       expect(downdoc(input)).to.equal(expected)
     })
