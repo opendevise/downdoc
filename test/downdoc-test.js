@@ -1138,7 +1138,7 @@ describe('downdoc()', () => {
       \`\`\`spoiler Always visible text
       This text won’t be visible until the user clicks the always visible text.
 
-      💡 **TIP:** Click the **always visible text** to hide this text again.
+      **💡 TIP** Click the **always visible text** to hide this text again.
       \`\`\`
       `
       expect(downdoc(input, { attributes: { 'markdown-collapsible-variant': 'spoiler' } })).to.equal(expected)
@@ -2551,15 +2551,15 @@ describe('downdoc()', () => {
       const expected = heredoc`
       # Title
 
-      📌 **NOTE:** Remember the oat milk.
+      **📌 NOTE** Remember the oat milk.
 
-      ❗ **IMPORTANT:** Don’t forget the children!
+      **❗ IMPORTANT** Don’t forget the children!
 
-      💡 **TIP:** Look for the [warp](https://en.wikipedia.org/wiki/Warp_(video_games)) under the bridge.
+      **💡 TIP** Look for the [warp](https://en.wikipedia.org/wiki/Warp_(video_games)) under the bridge.
 
-      🔥 **CAUTION:** Slippery when wet.
+      **🔥 CAUTION** Slippery when wet.
 
-      ⚠️ **WARNING:** The software you’re about to use has **not** been tested.
+      **⚠️ WARNING** The software you’re about to use has **not** been tested.
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -2575,7 +2575,7 @@ describe('downdoc()', () => {
       const expected = heredoc`
       # Title
 
-      💡 **TIP:** Look
+      **💡 TIP** Look
       for the
       NOTE: prefix.
       `
