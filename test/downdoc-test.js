@@ -818,17 +818,21 @@ describe('downdoc()', () => {
       expect(downdoc(input, { attributes: { empty: '' } })).to.equal(expected)
     })
 
-    it('should not convert Markdown-style thematic break', () => {
+    it('should convert thematic breaks', () => {
       const input = heredoc`
+      '''
+
       ---
 
       ***
-
-      - - -
-
-      * * *
       `
-      const expected = input
+      const expected = heredoc`
+      ---
+
+      ---
+
+      ---
+      `
       expect(downdoc(input)).to.equal(expected)
     })
 
@@ -4640,7 +4644,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should remove toc macro', () => {
+    it('should drop toc macro', () => {
       const input = heredoc`
       = Title
 
@@ -4652,6 +4656,22 @@ describe('downdoc()', () => {
       # Title
 
       ## First Section
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should drop page break', () => {
+      const input = heredoc`
+      first page
+
+      <<<
+
+      second page
+      `
+      const expected = heredoc`
+      first page
+
+      second page
       `
       expect(downdoc(input)).to.equal(expected)
     })
