@@ -1366,7 +1366,24 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should convert table with explicit cols defined in attribute sandwiched between other attributes', () => {
+    it('should convert table with explicit cols defined in attribute followed by other attributes with quotes', () => {
+      const input = heredoc`
+      [%header,cols="20,20a",width="75%"]
+      |===
+      | A | B
+      | A1
+      | B1
+      |===
+      `
+      const expected = heredoc`
+      | A | B |
+      | --- | --- |
+      | A1 | B1 |
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert table with explicit cols defined in attribute followed by other attributes without quotes', () => {
       const input = heredoc`
       [%header,cols=>1;2d,width=75%,frame=none,grid=cols]
       |===
