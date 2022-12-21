@@ -4088,6 +4088,34 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should restore indent after literal paragraph inside block attached to list item', () => {
+      const input = heredoc`
+      * list item
+      +
+      --
+      attached
+
+       literal paragraph
+
+      still attached
+      --
+
+      not attached
+      `
+      const expected = heredoc`
+      * list item
+
+        attached
+
+            literal paragraph
+
+        still attached
+
+      not attached
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should continue list item thorughout attached container with nested container', () => {
       const input = heredoc`
       * list item
