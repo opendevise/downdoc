@@ -3728,7 +3728,7 @@ describe('downdoc()', () => {
     it('should continue numbering after list item with attached block followed by blank line', () => {
       const input = heredoc`
       . one
-      +
+
        literal paragraph
       +
       paragraph
@@ -3934,6 +3934,38 @@ describe('downdoc()', () => {
             v1.0.0
             [node: v16]
       * Now you are ready to go.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should restore indent after literal paragraph attached to block attached to list item', () => {
+      const input = heredoc`
+      * top-level list
+      ** nested list
+
+       attached literal paragraph
+      +
+      attached paragraph
+
+       attached literal paragraph
+      +
+      attached paragraph
+
+      after list
+      `
+      const expected = heredoc`
+      * top-level list
+        * nested list
+
+              attached literal paragraph
+
+          attached paragraph
+
+              attached literal paragraph
+
+          attached paragraph
+
+      after list
       `
       expect(downdoc(input)).to.equal(expected)
     })
