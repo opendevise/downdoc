@@ -3970,6 +3970,34 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should close promoted console code block at list continuation', () => {
+      const input = heredoc`
+      * li
+      +
+      para
+
+       $ cmd
+      +
+      para
+
+      after list
+      `
+      const expected = heredoc`
+      * li
+
+        para
+
+        \`\`\`console
+        $ cmd
+        \`\`\`
+
+        para
+
+      after list
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should end list if literal paragraph in list item has block attributes', () => {
       const input = heredoc`
       * Query the version of the app that is installed:

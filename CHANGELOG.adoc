@@ -24,6 +24,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 * Don't interpret multiple character references on line as marked (highlight) phrase
 * Restore indent after literal paragraph inside delimited block attached to list item
 * Fix overgreedy match in block attribute parsing when attribute values are quoted
+* Close promoted console code block at list continuation
 
 == 1.0.0-beta.4 (2022-12-19)
 
