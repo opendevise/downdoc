@@ -4008,6 +4008,8 @@ describe('downdoc()', () => {
 
     it('should close promoted console code block at list continuation', () => {
       const input = heredoc`
+      :foo: bar
+
       * li
       +
       para
@@ -4015,6 +4017,7 @@ describe('downdoc()', () => {
        $ cmd
       +
       para
+       {foo}
 
       after list
       `
@@ -4028,6 +4031,7 @@ describe('downdoc()', () => {
         \`\`\`
 
         para
+         bar
 
       after list
       `
@@ -4118,10 +4122,13 @@ describe('downdoc()', () => {
 
     it('should close implicit console listing before starting next list item', () => {
       const input = heredoc`
+      :foo: bar
+
       . Run this:
       +
        $ cmd
       . Follow the instructions in the console.
+       {foo}
       `
       const expected = heredoc`
       1. Run this:
@@ -4130,6 +4137,7 @@ describe('downdoc()', () => {
          $ cmd
          \`\`\`
       2. Follow the instructions in the console.
+       bar
       `
       expect(downdoc(input)).to.equal(expected)
     })
