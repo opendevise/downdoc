@@ -1219,6 +1219,7 @@ describe('downdoc()', () => {
       const input = heredoc`
       |===
       | Col A | Col B
+
       | A1
       | B1
       | A2
@@ -1260,6 +1261,7 @@ describe('downdoc()', () => {
       const input = heredoc`
       |===
       | Col A | Col B
+
       | A1 | B1
       | A2 | B2
       |===
@@ -1277,6 +1279,7 @@ describe('downdoc()', () => {
       const input = heredoc`
       |===
       | Col A | Col B | Col C
+
       | A1 | B1
       | C1 | A2 | B2
       | C2
@@ -1312,6 +1315,23 @@ describe('downdoc()', () => {
       | dryRun | Report what actions will be taken without doing them. |
 
       after | not a table cell
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert table with explicit header', () => {
+      const input = heredoc`
+      [%header]
+      |===
+      | Col A | Col B
+      | A1
+      | B1
+      |===
+      `
+      const expected = heredoc`
+      | Col A | Col B |
+      | --- | --- |
+      | A1 | B1 |
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -1444,19 +1464,16 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should use first row as header if no cols are specified and row only has a single column on first line', () => {
+    it('should use first row to determine number of columns without creating header', () => {
       const input = heredoc`
       |===
       |A
-      |B
-      |C
       |===
       `
       const expected = heredoc`
-      | A |
+      |     |
       | --- |
-      | B |
-      | C |
+      | A |
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -1466,6 +1483,7 @@ describe('downdoc()', () => {
       .Table caption
       |===
       | foo | bar
+
       | yin
       | yang
       |===
@@ -1487,6 +1505,7 @@ describe('downdoc()', () => {
       .Table caption
       |===
       | A | B
+
       | A1
       | B1
       | A2 | B2
@@ -1591,11 +1610,13 @@ describe('downdoc()', () => {
 
     it('should convert table header with wrapped text in final cell', () => {
       const input = heredoc`
+      [%header]
       |===
       | A
       and no more
       |===
 
+      [%header]
       |===
       | A | B
       more
