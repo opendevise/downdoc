@@ -1720,6 +1720,42 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should convert hardbreak character at end wrapped line in table cell', () => {
+      const input = heredoc`
+      [cols=2*]
+      |===
+      | A +
+      1
+      | B +
+      1
+      |===
+      `
+      const expected = heredoc`
+      |     |     |
+      | --- | --- |
+      | A<br> 1 | B<br> 1 |
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should not convert hardbreak character at end of table cell', () => {
+      const input = heredoc`
+      [cols=2*]
+      |===
+      | A
+      1 +
+      | B
+      1 +
+      |===
+      `
+      const expected = heredoc`
+      |     |     |
+      | --- | --- |
+      | A 1 + | B 1 + |
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
   })
 
   describe('text formatting', () => {

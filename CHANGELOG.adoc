@@ -11,6 +11,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 * Add support for delimited admonition block
 * Honor subs attribute on verbatim paragraph (attributes only)
 * Switch from filled to circled conums (to extend the range)
+* Honor hardbreak at end of wrapped line in table cell
 
 === Changed
 
