@@ -2038,6 +2038,46 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should replace inline anchor with anchor tag', () => {
+      const input = heredoc`
+      You can learn about <<foo,foo>>, <<bar,bar>>, and <<baz,baz>>.
+
+      [[foo]]all about foo
+
+      * [[bar]]all about bar
+
+      |===
+      |[[baz]]all about baz
+      |===
+      `
+      const expected = heredoc`
+      You can learn about [foo](#foo), [bar](#bar), and [baz](#baz).
+
+      <a name="foo"></a>all about foo
+
+      * <a name="bar"></a>all about bar
+
+      |     |
+      | --- |
+      | <a name="baz"></a>all about baz |
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should ignore inline anchor with invalid syntax', () => {
+      const input = heredoc`
+      = Title
+
+      [[text inside]]text outside
+      `
+      const expected = heredoc`
+      # Title
+
+      [[text inside]]text outside
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
   })
 
   describe('xrefs', () => {

@@ -6,6 +6,10 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 == Unreleased
 
+=== Added
+
+* Add support for inline anchor (shorthand syntax only, no reftext)
+
 === Fixed
 
 * Don't mangle single quote enclosed in monospaced formatting pair
