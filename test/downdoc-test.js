@@ -400,7 +400,7 @@ describe('downdoc()', () => {
 
       Add it to the _{empty}_layouts_ folder.
 
-      Insert a \`{sp}\` character
+      Insert a \`{sp}\` character.
       `
       const expected = heredoc`
       Valid responses: y | yes | n | no
@@ -409,7 +409,7 @@ describe('downdoc()', () => {
 
       Add it to the __layouts_ folder.
 
-      Insert a \` \` character
+      Insert a \` \` character.
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -1994,7 +1994,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should substitute smart apostrophe', () => {
+    it('should substitute curly apostrophe', () => {
       const input = heredoc`
       That\`'s probably not going to work.
 
@@ -2005,6 +2005,8 @@ describe('downdoc()', () => {
       Ruby 2.6's endless range operator is a useful addition.
 
       Qu'est ce qu'AsciiDoc ?
+
+      Enclose the value in single quotes (\`'\`) to apply normal substitutions to it.
       `
       const expected = heredoc`
       That’s probably not going to work.
@@ -2016,6 +2018,8 @@ describe('downdoc()', () => {
       Ruby 2.6’s endless range operator is a useful addition.
 
       Qu’est ce qu’AsciiDoc ?
+
+      Enclose the value in single quotes (\`'\`) to apply normal substitutions to it.
       `
       expect(downdoc(input)).to.equal(expected)
     })
