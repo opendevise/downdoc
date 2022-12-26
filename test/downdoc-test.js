@@ -1890,6 +1890,68 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should remove passthrough formatting marks in literal monospace phrase', () => {
+      const input = heredoc`
+      = Title
+
+      Formatting is not interpretted within a \`+literal monospace+\` phrase.
+
+      The target of an inline macro is preceded by \`+:+\` and followed by an attrlist enclosed in \`+[]+\`.
+      `
+      const expected = heredoc`
+      # Title
+
+      Formatting is not interpretted within a \`literal monospace\` phrase.
+
+      The target of an inline macro is preceded by \`:\` and followed by an attrlist enclosed in \`[]\`.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should automatically escape attribute references in literal monospace phrase', () => {
+      const input = heredoc`
+      = Title
+      :owner: opendevise
+      :repo: downdoc
+
+      Use the endpoint \`+/{owner}/{repo}+\` to get information about the repository.
+      `
+      const expected = heredoc`
+      # Title
+
+      Use the endpoint \`/{owner}/{repo}\` to get information about the repository.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should not try to escape lone { in literal monospace phrase', () => {
+      const input = heredoc`
+      = Title
+
+      An attribute reference is an attribute name surrounded by \`+{+\` and \`+}+\`.
+      `
+      const expected = heredoc`
+      # Title
+
+      An attribute reference is an attribute name surrounded by \`{\` and \`}\`.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should not try to escape { not followed by attribute name in literal monospace phrase', () => {
+      const input = heredoc`
+      = Title
+
+      The range \`+{1..9}+\` represents all non-zero numbers.
+      `
+      const expected = heredoc`
+      # Title
+
+      The range \`{1..9}\` represents all non-zero numbers.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert marked phrase', () => {
       const input = heredoc`
       = Title

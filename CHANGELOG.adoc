@@ -9,6 +9,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 === Added
 
 * Add support for inline anchor (shorthand syntax only, no reftext)
+* Implement rudimentary support for literal monospace
 
 === Changed
 
