@@ -366,14 +366,16 @@ describe('downdoc()', () => {
       const input = heredoc`
       = Title
 
-      Use \`\\{nbsp}\` to insert a no-break space.
+      Use \`\\{nbsp}\` to insert a no-break space (\`{nbsp}\`).
+      Use \`\\\\{nbsp}\` to display an escaped attribute reference.
 
       Use the endpoint \`/repos/\\{owner}/\\{repo}\` to retrieve information about a repository.
       `
       const expected = heredoc`
       # Title
 
-      Use \`{nbsp}\` to insert a no-break space.
+      Use \`{nbsp}\` to insert a no-break space (\`&#160;\`).
+      Use \`\\{nbsp}\` to display an escaped attribute reference.
 
       Use the endpoint \`/repos/{owner}/{repo}\` to retrieve information about a repository.
       `
