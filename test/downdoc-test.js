@@ -366,10 +366,14 @@ describe('downdoc()', () => {
       const input = heredoc`
       = Title
 
+      Use \`\\{nbsp}\` to insert a no-break space.
+
       Use the endpoint \`/repos/\\{owner}/\\{repo}\` to retrieve information about a repository.
       `
       const expected = heredoc`
       # Title
+
+      Use \`{nbsp}\` to insert a no-break space.
 
       Use the endpoint \`/repos/{owner}/{repo}\` to retrieve information about a repository.
       `
@@ -1862,7 +1866,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should drop backslashes in monospace phrase', () => {
+    it('should remove backslash at start of monospaced phrase', () => {
       const input = heredoc`
       = Title
 

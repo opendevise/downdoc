@@ -17,6 +17,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 === Fixed
 
 * Don't mangle single quote enclosed in monospaced formatting pair
+* Don't attempt to substitute escaped attribute reference at start of monospaced phrase
 
 == 1.0.0-beta.5 (2022-12-23)
 
