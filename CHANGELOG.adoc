@@ -18,6 +18,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 * Don't mangle single quote enclosed in monospaced formatting pair
 * Don't attempt to substitute escaped attribute reference at start of monospaced phrase
+* Replace backslashes in monospaced phrase when no backslash on the line immediately follows a backtick
 
 == 1.0.0-beta.5 (2022-12-23)
 

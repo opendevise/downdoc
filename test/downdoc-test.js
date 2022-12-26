@@ -1872,14 +1872,18 @@ describe('downdoc()', () => {
 
       Visit \`\\http://localhost:8080\` or \`\\http://127.0.0.1:8080\` in your browser to see a preview.
 
-      The text is replaced with \`\\...yada\\...\`.
+      The text \`lorem ipsum\\...\` will be replaced with the real content.
+
+      All I hear is \`\\...yada, yada, yada\\...\`.
       `
       const expected = heredoc`
       # Title
 
       Visit \`http://localhost:8080\` or \`http://127.0.0.1:8080\` in your browser to see a preview.
 
-      The text is replaced with \`...yada...\`.
+      The text \`lorem ipsum...\` will be replaced with the real content.
+
+      All I hear is \`...yada, yada, yada...\`.
       `
       expect(downdoc(input)).to.equal(expected)
     })
