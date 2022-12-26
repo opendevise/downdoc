@@ -1866,7 +1866,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should remove backslash at start of monospaced phrase', () => {
+    it('should remove backslashes in monospaced phrase', () => {
       const input = heredoc`
       = Title
 
