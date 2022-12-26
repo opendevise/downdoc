@@ -231,12 +231,27 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should permit underscore as attribute name', () => {
+      const input = heredoc`
+      = Title
+      :_: {sp}
+
+      one{_}two{_}three
+      `
+      const expected = heredoc`
+      # Title
+
+      one two three
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should set value of attribute entry to empty string if value is not specified', () => {
       const input = heredoc`
       = Title
-      :empty-string:
+      :empty:
 
-      foo{empty-string}bar
+      foo{empty}bar
       `
       const expected = heredoc`
       # Title
@@ -293,6 +308,21 @@ describe('downdoc()', () => {
       # Title
 
       The name of this project is ACME.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should permit all unicode letter characters in referenced attribute name', () => {
+      const input = heredoc`
+      = Le Titre
+      :dépôt-git: opendevise/downdoc
+
+      Vous pouvez aussi récupérer les sources via le dépôt Git à {dépôt-git}.
+      `
+      const expected = heredoc`
+      # Le Titre
+
+      Vous pouvez aussi récupérer les sources via le dépôt Git à opendevise/downdoc.
       `
       expect(downdoc(input)).to.equal(expected)
     })
