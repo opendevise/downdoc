@@ -732,6 +732,63 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should add anchor to verbatim block with title and ID', () => {
+      const input = heredoc`
+      = Title
+
+      .Configuration Example
+      [#ex1]
+      ----
+      key: value
+      ----
+
+      * list item
+      +
+      .Configuration Example In List
+      [#ex2]
+      ----
+      key: value
+      ----
+      `
+      const expected = heredoc`
+      # Title
+
+      <a name="ex1"></a>**Configuration Example**
+
+      \`\`\`
+      key: value
+      \`\`\`
+
+      * list item
+
+        <a name="ex2"></a>**Configuration Example In List**
+
+        \`\`\`
+        key: value
+        \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should not add anchor to verbatim block with only ID', () => {
+      const input = heredoc`
+      = Title
+
+      [#ex1]
+      ----
+      key: value
+      ----
+      `
+      const expected = heredoc`
+      # Title
+
+      \`\`\`
+      key: value
+      \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should not process . on a line by itself as a block title', () => {
       const input = heredoc`
       before
@@ -2488,6 +2545,85 @@ describe('downdoc()', () => {
 
       Please refer to the [contributing guide](contributing.adoc).
       The [contribution guide](contribution.adoc) will teach you how to [build the project](contribution.adoc#build-project).
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should rewrite xref to verbatim block with title and ID', () => {
+      const input = heredoc`
+      = Title
+
+      See <<ex1>>.
+
+      .Configuration Example
+      [#ex1]
+      ----
+      key: value
+      ----
+      `
+      const expected = heredoc`
+      # Title
+
+      See [Configuration Example](#ex1).
+
+      <a name="ex1"></a>**Configuration Example**
+
+      \`\`\`
+      key: value
+      \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should not rewrite xref with explicit text to verbatim block with title and ID', () => {
+      const input = heredoc`
+      = Title
+
+      See <<ex1,Example 1>>.
+
+      .Configuration Example
+      [#ex1]
+      ----
+      key: value
+      ----
+      `
+      const expected = heredoc`
+      # Title
+
+      See [Example 1](#ex1).
+
+      <a name="ex1"></a>**Configuration Example**
+
+      \`\`\`
+      key: value
+      \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should apply subs to title of block in xref', () => {
+      const input = heredoc`
+      = Title
+      :product-name: ACME
+
+      See <<ex1>>.
+
+      .{product-name} _Config_
+      [#ex1]
+      ----
+      key: value
+      ----
+      `
+      const expected = heredoc`
+      # Title
+
+      See [ACME _Config_](#ex1).
+
+      <a name="ex1"></a>**ACME _Config_**
+
+      \`\`\`
+      key: value
+      \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
     })

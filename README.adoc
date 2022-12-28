@@ -48,7 +48,7 @@ Here's a rough list of the syntax that downdoc current handles:
 * escaped bare URLs
 * internal xrefs (honors value of `idprefix` and `idseparator` document attributes; no support for natural xref)
 * block IDs for document and section titles (only last block attribute line is consulted)
-* auto-generated text for internal xrefs (honoring `reftext` attribute, if specified)
+* auto-generated text for internal xrefs (section and verbatim blocks only) (honoring `reftext` attribute on section, if specified)
 * inline anchor (shorthand syntax only, no reftext)
 * block and inline image macros
 * literal blocks, listing blocks, and source blocks with optional source language

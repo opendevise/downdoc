@@ -4,6 +4,12 @@
 This document provides a summary of all notable changes to downdoc by release.
 For a detailed view of what's changed, refer to the {url-repo}/commits[commit history] of this project.
 
+== Unreleased
+
+=== Added
+
+* Support xref to verbatim block with ID and title
+
 == 1.0.0-beta.6 (2022-12-27)
 
 === Added
