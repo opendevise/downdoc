@@ -1443,7 +1443,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should convert table with explicit cols defined in attribute followed by other attributes without quotes', () => {
+    it('should convert table with cols attribute followed by other attributes without quotes', () => {
       const input = heredoc`
       [%header,cols=>1;2d,width=75%,frame=none,grid=cols]
       |===
