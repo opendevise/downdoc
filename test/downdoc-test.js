@@ -1955,6 +1955,15 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should not escape < inside monospace phrase', () => {
+      const input = heredoc`
+      The name of an XML tag is enclosed in \`<\` and \`>\` characters, such as \`<root>\`.
+
+      An inline macro follows the format \`<name>:<target>[<attrlist>]\`.
+      `
+      expect(downdoc(input)).to.equal(input)
+    })
+
     it('should remove backslashes in monospaced phrase', () => {
       const input = heredoc`
       = Title
@@ -2237,6 +2246,24 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should escape < outside of monospaced phrase', () => {
+      const input = heredoc`
+      = Title
+
+      a < b < c
+
+      * List<Object>
+      `
+      const expected = heredoc`
+      # Title
+
+      a &lt; b &lt; c
+
+      * List&lt;Object>
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
   })
 
   describe('xrefs', () => {
@@ -2289,7 +2316,30 @@ describe('downdoc()', () => {
 
       The target of a shorthand xref is enclosed in \`<< >>\`.
 
-      << and >> are the ASCII equivalent of double quotes in French.
+      &lt;&lt; and >> are the ASCII equivalent of double quotes in French.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should match shorthand xref inside monospaced phrase', () => {
+      const input = heredoc`
+      = Title
+
+      Use the \`<<replace>>\` method to replace characters in a string.
+
+      [#replace]
+      == replace
+
+      All about the replace method.
+      `
+      const expected = heredoc`
+      # Title
+
+      Use the \`[replace](#replace)\` method to replace characters in a string.
+
+      ## replace
+
+      All about the replace method.
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -3807,7 +3857,7 @@ describe('downdoc()', () => {
       One more for the road.
       <1> is a callout list marker and conum.
       `
-      expect(downdoc(input)).to.equal(input)
+      expect(downdoc(input)).to.equal(input.replace(/</g, '&lt;'))
     })
 
     it('should retain unordered list', () => {
