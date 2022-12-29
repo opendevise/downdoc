@@ -2276,6 +2276,24 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should not match xref shorthand if ID contains space characters', () => {
+      const input = heredoc`
+      = Title
+
+      The target of a shorthand xref is enclosed in \`<< >>\`.
+
+      << and >> are the ASCII equivalent of double quotes in French.
+      `
+      const expected = heredoc`
+      # Title
+
+      The target of a shorthand xref is enclosed in \`<< >>\`.
+
+      << and >> are the ASCII equivalent of double quotes in French.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should fill in text for backward xref', () => {
       const input = heredoc`
       = HOWTO

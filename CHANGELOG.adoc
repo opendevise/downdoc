@@ -10,6 +10,10 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 * Support xref to verbatim block with ID and title
 
+=== Fixed
+
+* Don't interpret text enclosed in << and >> that contains spaces as an xref shorthand
+
 == 1.0.0-beta.6 (2022-12-27)
 
 === Added
