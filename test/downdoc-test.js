@@ -2755,6 +2755,25 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should not match link: prefix followed by colon', () => {
+      const input = heredoc`
+      = Title
+
+      See <<docname:image-xref-and-link:::>> to learn more.
+
+      [#docname:image-xref-and-link:::]
+      == Link to Resource from Image
+      `
+      const expected = heredoc`
+      # Title
+
+      See [Link to Resource from Image](#link-to-resource-from-image) to learn more.
+
+      ## Link to Resource from Image
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should remove open in blank window hint from end of link text', () => {
       const input = heredoc`
       = Title
