@@ -42,7 +42,7 @@ Here's a rough list of the syntax that downdoc current handles:
 * formatted text (same line; bold, italic, monospace, literal monospace, highlight, phrase w/ line-through role, double curly quotes, curly apostrophe)
 * ordered, unordered, and callout lists (1-19 or .)
 * nested ordered and unordered lists (marker must start at left margin; use `markdown-list-indent` attribute to control indent size)
-* description list (first level only)
+* description and qanda list (first level only)
 * list continuation (no support for ancestor continuation or list inside attached delimited block)
 * link and URL macros (use `hide-uri-scheme` to hide URL scheme in visible URL)
 * escaped bare URLs

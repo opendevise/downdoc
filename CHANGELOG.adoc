@@ -9,6 +9,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 === Added
 
 * Support xref to verbatim block with ID and title
+* Add rudimentary support for qanda list
 
 === Changed
 

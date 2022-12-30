@@ -4173,6 +4173,23 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should convert qanda list', () => {
+      const input = heredoc`
+      [qanda]
+      What's the answer to the ultimate question?:: 47
+
+      What's a group of lemurs called?::
+      A conspiracy.
+      `
+      const expected = heredoc`
+      1. _What’s the answer to the ultimate question?_\\
+      47
+      2. _What’s a group of lemurs called?_\\
+      A conspiracy.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should continue numbering after list item with attached block followed by blank line', () => {
       const input = heredoc`
       . one
