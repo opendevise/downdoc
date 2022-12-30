@@ -625,6 +625,52 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should convert block title with ID above literal paragraph', () => {
+      const input = heredoc`
+      .Usage
+      [#usage]
+       downdoc [OPTION]... FILE
+      `
+      const expected = heredoc`
+      <a name="usage"></a>**Usage**
+
+          downdoc [OPTION]... FILE
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert block title with ID above verbatim block', () => {
+      const input = heredoc`
+      .Hello, World!
+      [source#hello,ruby]
+      ----
+      puts 'Hello, World!'
+      ----
+      `
+      const expected = heredoc`
+      <a name="hello"></a>**Hello, World!**
+
+      \`\`\`ruby
+      puts 'Hello, World!'
+      \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert block title with ID above block image', () => {
+      const input = heredoc`
+      .Package Explorer
+      [#package-explorer]
+      image::package-explorer-screenshot.png[Package Explorer]
+      `
+      const expected = heredoc`
+      <a name="package-explorer"></a>**Package Explorer**
+
+      ![Package Explorer](package-explorer-screenshot.png)
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert block title that begins with .', () => {
       const input = heredoc`
       ..npmrc
@@ -2664,6 +2710,30 @@ describe('downdoc()', () => {
 
       \`\`\`
       key: value
+      \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should rewrite xref to promoted console block with title and ID', () => {
+      const input = heredoc`
+      = Title
+
+      To begin, let's <<clone>>.
+
+      .Clone the repository
+      [#clone]
+       $ git clone https://github.com/opendevise/downdoc
+      `
+      const expected = heredoc`
+      # Title
+
+      To begin, let’s [Clone the repository](#clone).
+
+      <a name="clone"></a>**Clone the repository**
+
+      \`\`\`console
+      $ git clone https://github.com/opendevise/downdoc
       \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)

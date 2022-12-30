@@ -10,6 +10,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 * Support xref to verbatim block with ID and title
 * Add rudimentary support for qanda list
+* Add support for ID on literal paragraphs (including promoted console blocks) and block images
 
 === Changed
 
