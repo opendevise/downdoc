@@ -4684,7 +4684,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should continue list item thorughout attached container', () => {
+    it('should continue list item throughout attached container', () => {
       const input = heredoc`
       * list item
       +
