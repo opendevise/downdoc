@@ -18,6 +18,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 === Fixed
 
+* Clear list context (inList and listStack) at start of non-attached delimited block
 * Don't interpret text enclosed in << and >> that contains spaces as an xref shorthand
 * Don't process link: followed by colon
 

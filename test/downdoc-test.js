@@ -4537,6 +4537,28 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should end list when followed by non-attached delimited block', () => {
+      const input = heredoc`
+      . list item
+      ** list item
+
+      ----
+      verbatim stuff
+      ----
+      . list item
+      `
+      const expected = heredoc`
+      1. list item
+         * list item
+
+      \`\`\`
+      verbatim stuff
+      \`\`\`
+      1. list item
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should end list if literal paragraph in list item has block attributes', () => {
       const input = heredoc`
       * Query the version of the app that is installed:
