@@ -65,6 +65,7 @@ Here's a rough list of the syntax that downdoc current handles:
 * collapsible blocks (set the `markdown-collapsible-variant` attribute to `spoiler` to generate Zulip-compatible spoiler block)
 * comment lines and blocks
 * passthrough blocks
+* quote blocks with optional attribution
 * stem blocks (i.e., display math)
 * delimited example, open, and sidebar blocks (delimiter lines removed)
 

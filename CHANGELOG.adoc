@@ -4,6 +4,12 @@
 This document provides a summary of all notable changes to downdoc by release.
 For a detailed view of what's changed, refer to the {url-repo}/commits[commit history] of this project.
 
+== Unreleased
+
+=== Added
+
+* Support delimited quote block
+
 == 1.0.0-beta.7 (2023-01-03)
 
 === Added

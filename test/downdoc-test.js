@@ -3171,6 +3171,41 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should convert quote block', () => {
+      const input = heredoc`
+      = Title
+
+      [,Doc Brown]
+      ____
+      Roads?
+
+      Where we're going, we don't need _roads_!
+      ____
+
+      The rest is...the future!
+
+      ____
+      . Fasten seatbelt
+      . And away we go!
+      ____
+      `
+      const expected = heredoc`
+      # Title
+
+      > Roads?
+      >
+      > Where we’re going, we don’t need _roads_!
+      >
+      > — Doc Brown
+
+      The rest is...the future!
+
+      > 1. Fasten seatbelt
+      > 2. And away we go!
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
   })
 
   describe('code blocks', () => {
