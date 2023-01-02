@@ -11,6 +11,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 * Support xref to verbatim block with ID and title
 * Add rudimentary support for qanda list
 * Add support for ID on literal paragraphs (including promoted console blocks) and block images
+* Isolate lists inside a delimited block from those outside while still maintaining current indentation
 
 === Changed
 
@@ -18,7 +19,8 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 === Fixed
 
-* Clear list context (inList and listStack) at start of non-attached delimited block
+* Clear list context (inList and listStack) at start of non-attached delimited block (adjacent or non-adjacent)
+* Reset indent when clearing list context at start of delimited block
 * Don't interpret text enclosed in << and >> that contains spaces as an xref shorthand
 * Don't process link: followed by colon
 
