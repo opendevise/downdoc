@@ -4213,7 +4213,7 @@ describe('downdoc()', () => {
       const input = heredoc`
       term::
       * foo
-        * bar
+      ** bar
       * baz
       another term::
       `
