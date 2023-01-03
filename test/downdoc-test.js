@@ -4293,7 +4293,7 @@ describe('downdoc()', () => {
       const input = heredoc`
       * first list item
       == not a section title
-        * nested list item
+      ** nested list item
       * last list item
       `
       const expected = heredoc`
