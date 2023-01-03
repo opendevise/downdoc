@@ -3220,6 +3220,27 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should end literal paragraph at start of delimited block', () => {
+      const input = heredoc`
+      = Title
+
+       literal paragraph
+      ----
+      literal block
+      ----
+      `
+      const expected = heredoc`
+      # Title
+
+          literal paragraph
+      \`\`\`
+      literal block
+      \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+      
+    })
+
     it('should promote literal paragraph that starts with command prompt to a console code block', () => {
       const input = heredoc`
       Example:
