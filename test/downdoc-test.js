@@ -3220,7 +3220,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should end literal paragraph at start of delimited block', () => {
+    it('should terminate literal paragraph at start of delimited block', () => {
       const input = heredoc`
       = Title
 
