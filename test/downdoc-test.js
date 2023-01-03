@@ -1054,6 +1054,19 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should end block at next block attribute list', () => {
+      const input = heredoc`
+      The paragraph before <<idname>>.
+      [#idname]
+      == Section Title
+      `
+      const expected = heredoc`
+      The paragraph before [Section Title](#section-title).
+      ## Section Title
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
   })
 
   describe('delimited blocks', () => {
@@ -2472,19 +2485,6 @@ describe('downdoc()', () => {
       ## Usage
 
       Let’s get started.
-      `
-      expect(downdoc(input)).to.equal(expected)
-    })
-
-    it('should end block at next block attribute list', () => {
-      const input = heredoc`
-      The paragraph before <<idname>>.
-      [#idname]
-      == Section Title
-      `
-      const expected = heredoc`
-      The paragraph before [Section Title](#section-title).
-      ## Section Title
       `
       expect(downdoc(input)).to.equal(expected)
     })
