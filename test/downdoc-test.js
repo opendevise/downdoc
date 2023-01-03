@@ -3238,7 +3238,6 @@ describe('downdoc()', () => {
       \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
-      
     })
 
     it('should promote literal paragraph that starts with command prompt to a console code block', () => {
