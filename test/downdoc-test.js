@@ -1055,7 +1055,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should end block at next block attribute list', () => {
+    it('should end block at next block attribute line', () => {
       const input = heredoc`
       The paragraph before <<idname>>.
       [#idname]
