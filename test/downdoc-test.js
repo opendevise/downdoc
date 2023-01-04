@@ -2765,6 +2765,24 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should not match xref: prefix followed by colon', () => {
+      const input = heredoc`
+      = Title
+
+      See <<docname:xref:::link-text>>.
+
+      [[docname:xref:::link-text]][link text] is the part where you specify the text of the link.
+      `
+      const expected = heredoc`
+      # Title
+
+      See [docname:xref:::link-text](#docname:xref:::link-text).
+
+      <a name="docname:xref:::link-text"></a>[link text] is the part where you specify the text of the link.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
   })
 
   describe('link and URL macros', () => {

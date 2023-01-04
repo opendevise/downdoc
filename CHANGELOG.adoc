@@ -13,6 +13,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 === Fixed
 
 * Don't interpret double colon at start of line or embedded inside term as description list entry marker
+* Don't process xref macro if target starts with colon
 
 == 1.0.0-beta.7 (2023-01-03)
 
@@ -32,7 +33,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 * Clear list context (inList and listStack) at start of non-attached delimited block (adjacent or non-adjacent)
 * Reset indent when clearing list context at start of delimited block
 * Don't interpret text enclosed in << and >> that contains spaces as an xref shorthand
-* Don't process link: followed by colon
+* Don't process link macro if target starts with colon
 
 == 1.0.0-beta.6 (2022-12-27)
 
