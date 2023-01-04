@@ -13,6 +13,7 @@
       "code": 120,
       "ignoreTemplateLiterals": true
     }],
+    "one-var": ["error", { "let": "consecutive", "const": "never" }],
     "prefer-regex-literals": "off",
     "spaced-comment": "off",
     "radix": ["error", "always"]

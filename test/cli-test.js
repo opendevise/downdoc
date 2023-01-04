@@ -11,9 +11,7 @@ const WORK_DIR = ospath.join(__dirname, 'work')
 
 describe('downdoc', () => {
   const oldcwd = process.cwd()
-  let stdout
-  let stderr
-  let example
+  let stdout, stderr, example
 
   before(async () => {
     await cleanDir(WORK_DIR, { create: true })
