@@ -4249,6 +4249,32 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should not match double colon embedded in description list term', () => {
+      const input = heredoc`
+      foo::bar:: baz
+
+      ::foo::
+      bar
+      `
+      const expected = heredoc`
+      * **foo::bar**\\
+      baz
+      * **::foo**\\
+      bar
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should not match line with only double colon at start of line as description list entry', () => {
+      const input = heredoc`
+      ::
+
+      ::foo
+      `
+      const expected = input
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert description list nested in unordered list', () => {
       const input = heredoc`
       * foo
