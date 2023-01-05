@@ -1085,6 +1085,20 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should unescape escaped xref macro', () => {
+      const input = heredoc`
+      = Title
+
+      Use the syntax \\xref:page.adoc#fragment[] to link to a fragment in another page.
+      `
+      const expected = heredoc`
+      # Title
+
+      Use the syntax xref:page.adoc#fragment[] to link to a fragment in another page.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should end block at next block attribute line', () => {
       const input = heredoc`
       The paragraph before <<idname>>.
