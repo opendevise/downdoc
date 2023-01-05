@@ -50,6 +50,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 === Changed
 
 * Dramatically improve parsing performance by guarding use of regular expressions
+* Make xref macro parsing more accurate
 
 === Fixed
 
