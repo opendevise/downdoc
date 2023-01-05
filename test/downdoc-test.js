@@ -1299,12 +1299,35 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should start open if open option is set', () => {
+    it('should start collapsible block open if open option is set', () => {
       const input = heredoc`
       = Title
 
       .Spoiler, sorry, not sorry
       [%collapsible%open]
+      ====
+      They made it out alive.
+      ====
+      `
+      const expected = heredoc`
+      # Title
+
+      <details open>
+      <summary>Spoiler, sorry, not sorry</summary>
+
+      They made it out alive.
+      </details>
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should process options on separate lines', () => {
+      const input = heredoc`
+      = Title
+
+      .Spoiler, sorry, not sorry
+      [%collapsible]
+      [%open]
       ====
       They made it out alive.
       ====
@@ -2545,6 +2568,30 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should support both forms of block attribute line on same section title', () => {
+      const input = heredoc`
+      = HOWTO
+
+      You'll learn how to xref:deploy[].
+
+      [[deploy,Deploy]]
+      [reftext=Go Live]
+      == Deploy Your Site
+
+      Instructions go here.
+      `
+      const expected = heredoc`
+      # HOWTO
+
+      You’ll learn how to [Go Live](#deploy-your-site).
+
+      ## Deploy Your Site
+
+      Instructions go here.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should preserve escaped square brackets in xref text', () => {
       const input = heredoc`
       = Title
@@ -3472,6 +3519,34 @@ describe('downdoc()', () => {
     it('should convert explicit source block with language and role', () => {
       const input = heredoc`
       [source.hide-imports,java]
+      ----
+      import java.util.*;
+
+      public class Example {
+        public static void main (String[] args) {
+          System.out.println(Arrays.asList(args));
+        }
+      }
+      ----
+      `
+      const expected = heredoc`
+      \`\`\`java
+      import java.util.*;
+
+      public class Example {
+        public static void main (String[] args) {
+          System.out.println(Arrays.asList(args));
+        }
+      }
+      \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert source block with language and role set on separate lines', () => {
+      const input = heredoc`
+      [,java]
+      [.hide-imports]
       ----
       import java.util.*;
 

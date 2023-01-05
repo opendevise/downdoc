@@ -47,7 +47,7 @@ Here's a rough list of the syntax that downdoc current handles:
 * link and URL macros (use `hide-uri-scheme` to hide URL scheme in visible URL)
 * escaped bare URLs
 * internal xrefs (honors value of `idprefix` and `idseparator` document attributes; no support for natural xref)
-* block IDs for document and section titles (only last block attribute line is consulted)
+* block IDs for document and section titles
 * auto-generated text for internal xrefs (section and verbatim blocks only) (honoring `reftext` attribute on section, if specified)
 * inline anchor (shorthand syntax only, no reftext)
 * block and inline image macros

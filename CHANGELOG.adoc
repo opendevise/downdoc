@@ -10,6 +10,10 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 * Support delimited quote block
 
+=== Changed
+
+* Process all block attribute lines above a block rather than just the last one
+
 === Fixed
 
 * Don't interpret double colon at start of line or embedded inside term as description list entry marker
