@@ -4171,6 +4171,23 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should start new list at block attribute line with empty attrlist', () => {
+      const input = heredoc`
+      . one
+      . two
+
+      []
+      . one
+      `
+      const expected = heredoc`
+      1. one
+      2. two
+
+      1. one
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert nested ordered lists', () => {
       const input = heredoc`
       . foo
