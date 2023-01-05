@@ -902,6 +902,36 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(input)
     })
 
+    it('should promote ID on paragraph to inline anchor', () => {
+      const input = heredoc`
+      = Title
+
+      [#p-1]
+      This is the first paragraph.
+      `
+      const expected = heredoc`
+      # Title
+
+      <a name="p-1"></a>This is the first paragraph.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should ignore role on paragraph', () => {
+      const input = heredoc`
+      = Title
+
+      [.lead]
+      This is the lead paragraph.
+      `
+      const expected = heredoc`
+      # Title
+
+      This is the lead paragraph.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert hard line break in paragraph', () => {
       const input = heredoc`
       roses are red, +

@@ -9,6 +9,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 === Added
 
 * Support delimited quote block
+* Promote ID on paragraph to inline anchor
 
 === Changed
 
