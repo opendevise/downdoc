@@ -593,6 +593,18 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should convert line with heading marker only as paragraph text', () => {
+      const input = '=='
+      const expected = input
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert line with heading marker followed by multiple spaces as paragraph text', () => {
+      const input = '==  Not a Heading'
+      const expected = input
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should clear block attributes after processing section title', () => {
       const input = heredoc`
       [,java]
