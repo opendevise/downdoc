@@ -1687,8 +1687,27 @@ describe('downdoc()', () => {
       `
       const expected = heredoc`
       | A | B |
-      | --- | --- |
+      | --: | --- |
       | A1 | B1 |
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should honor horizontal column alignments in value of cols attribute', () => {
+      const input = heredoc`
+      [%header,cols=2*^.>10;>40;.^40]
+      |===
+      | A | B | C | D
+      | A1
+      | B1
+      | C1
+      | D1
+      |===
+      `
+      const expected = heredoc`
+      | A | B | C | D |
+      | :-: | :-: | --: | --- |
+      | A1 | B1 | C1 | D1 |
       `
       expect(downdoc(input)).to.equal(expected)
     })
