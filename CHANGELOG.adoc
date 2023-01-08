@@ -11,6 +11,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 * Support delimited quote block
 * Promote ID on paragraph to inline anchor
 * Unescape and skip escaped xref macro
+* Define `zwsp` as intrinsic attribute
 
 === Changed
 

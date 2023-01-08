@@ -428,11 +428,11 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should resolve all default attributes', () => {
+    it('should resolve all intrinsic attributes', () => {
       const input = heredoc`
       Valid responses: y {vbar} yes {vbar} n {vbar} no
 
-      Part{nbsp}number
+      Part{nbsp}number—{zwsp}(PN)
 
       Add it to the _{empty}_layouts_ folder.
 
@@ -441,7 +441,7 @@ describe('downdoc()', () => {
       const expected = heredoc`
       Valid responses: y | yes | n | no
 
-      Part&#160;number
+      Part&#160;number—&#8203;(PN)
 
       Add it to the __layouts_ folder.
 
