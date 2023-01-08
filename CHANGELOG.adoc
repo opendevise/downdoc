@@ -20,6 +20,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 * Don't interpret double colon at start of line or embedded inside term as description list entry marker
 * Don't process xref macro if target starts with colon
+* Correctly process cols attribute that contains both repeating and non-repeating col specs
 
 == 1.0.0-beta.7 (2023-01-03)
 

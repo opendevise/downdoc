@@ -1621,6 +1621,44 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should convert table with explicit cols containing repeater and columns separated by comma', () => {
+      const input = heredoc`
+      [cols="2*d,1"]
+      |===
+      | Col A | Col B | Col C
+
+      | A1
+      | B1
+      | C1
+      |===
+      `
+      const expected = heredoc`
+      | Col A | Col B | Col C |
+      | --- | --- | --- |
+      | A1 | B1 | C1 |
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert table with explicit cols containing repeater and columns separated by semi-colon', () => {
+      const input = heredoc`
+      [cols="2*d;2"]
+      |===
+      | Col A | Col B | Col C
+
+      | A1
+      | B1
+      | C1
+      |===
+      `
+      const expected = heredoc`
+      | Col A | Col B | Col C |
+      | --- | --- | --- |
+      | A1 | B1 | C1 |
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert table with explicit cols defined in attribute followed by other attributes with quotes', () => {
       const input = heredoc`
       [%header,cols="20,20a",width="75%"]
