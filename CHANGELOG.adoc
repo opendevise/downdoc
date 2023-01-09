@@ -4,6 +4,12 @@
 This document provides a summary of all notable changes to downdoc by release.
 For a detailed view of what's changed, refer to the {url-repo}/commits[commit history] of this project.
 
+== Unreleased
+
+=== Added
+
+* Support indented list items
+
 == 1.0.0-beta.8 (2023-01-08)
 
 === Added
@@ -13,7 +19,6 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 * Unescape and skip escaped xref macro
 * Define `zwsp` as intrinsic attribute
 * Honor horizontal column alignments specifed in cols attribute on table
-* Support indented list items
 
 === Changed
 
