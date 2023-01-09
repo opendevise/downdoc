@@ -4249,6 +4249,24 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should convert nested unordered lists if they are indented', () => {
+      const input = heredoc`
+      * foo
+       ** bar
+        *** baz
+       ** bar
+      * foo
+      `
+      const expected = heredoc`
+      * foo
+        * bar
+          * baz
+        * bar
+      * foo
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should honor markdown-list-indent when converting nested unordered lists', () => {
       const input = heredoc`
       * foo
@@ -4381,6 +4399,24 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should convert nested ordered lists if they are indented', () => {
+      const input = heredoc`
+      . foo
+       .. bar
+        ... baz
+       .. bar
+      . foo
+      `
+      const expected = heredoc`
+      1. foo
+         1. bar
+            1. baz
+         2. bar
+      2. foo
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should honor markdown-list-indent when converting nested ordered lists', () => {
       const input = heredoc`
       :markdown-list-indent: 4
@@ -4404,9 +4440,9 @@ describe('downdoc()', () => {
     it('should convert mixed nested lists', () => {
       const input = heredoc`
       * unordered
-      . ordered
-      ** unordered
-      . ordered
+       .. ordered
+        *** unordered
+       .. ordered
       * unordered
       `
       const expected = heredoc`
@@ -4489,6 +4525,23 @@ describe('downdoc()', () => {
       const input = heredoc`
       * foo
       term:: desc
+      * bar
+      `
+      const expected = heredoc`
+      * foo
+        * **term**\\
+      desc
+      * bar
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert description list nested in unordered list and indented', () => {
+      const input = heredoc`
+      * foo
+
+        term:: desc
+
       * bar
       `
       const expected = heredoc`
