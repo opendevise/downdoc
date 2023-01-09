@@ -392,7 +392,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should unescape escaped attribute references in a monospaced phrase', () => {
+    it('should unescape escaped attribute references in monospace phrase', () => {
       const input = heredoc`
       = Title
 
@@ -790,20 +790,14 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should add anchor to verbatim block with title and ID', () => {
+    it('should add anchor to block with title and ID attached to list item', () => {
       const input = heredoc`
       = Title
-
-      .Configuration Example
-      [#ex1]
-      ----
-      key: value
-      ----
 
       * list item
       +
       .Configuration Example In List
-      [#ex2]
+      [#ex-in-list]
       ----
       key: value
       ----
@@ -811,15 +805,9 @@ describe('downdoc()', () => {
       const expected = heredoc`
       # Title
 
-      <a name="ex1"></a>**Configuration Example**
-
-      \`\`\`
-      key: value
-      \`\`\`
-
       * list item
 
-        <a name="ex2"></a>**Configuration Example In List**
+        <a name="ex-in-list"></a>**Configuration Example In List**
 
         \`\`\`
         key: value
@@ -871,7 +859,7 @@ describe('downdoc()', () => {
     })
   })
 
-  describe('blocks', () => {
+  describe('paragraphs', () => {
     it('should not process section title within a paragraph', () => {
       const input = heredoc`
       Let the paragraph begin.
@@ -896,7 +884,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(input)
     })
 
-    it('should not process indented line within a paragragh', () => {
+    it('should not process indented line within a paragraph', () => {
       const input = heredoc`
       Let the paragraph begin.
         This paragraph uses a hanging indent.
@@ -904,7 +892,25 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(input)
     })
 
-    it('should not process toc::[] macro within a paragragh', () => {
+    it('should not replace admonition label within a paragraph', () => {
+      const input = heredoc`
+      = Title
+
+      Look
+      for the
+      NOTE: prefix.
+      `
+      const expected = heredoc`
+      # Title
+
+      Look
+      for the
+      NOTE: prefix.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should not process toc::[] macro within a paragraph', () => {
       const input = heredoc`
       Let the paragraph begin.
       When you see this line outside a paragraph:
@@ -912,6 +918,37 @@ describe('downdoc()', () => {
       it will be replaced with the table of contents.
       `
       expect(downdoc(input)).to.equal(input)
+    })
+
+    it('should convert paragraph prefixed with admonition label', () => {
+      const input = heredoc`
+      = Title
+      :milk-type: oat
+
+      NOTE: Remember the {milk-type} milk.
+
+      IMPORTANT: Don't forget the children!
+
+      TIP: Look for the https://en.wikipedia.org/wiki/Warp_(video_games)[warp] under the bridge.
+
+      CAUTION: Slippery when wet.
+
+      WARNING: The software you're about to use has *not* been tested.
+      `
+      const expected = heredoc`
+      # Title
+
+      **📌 NOTE** Remember the oat milk.
+
+      **❗ IMPORTANT** Don’t forget the children!
+
+      **💡 TIP** Look for the [warp](https://en.wikipedia.org/wiki/Warp_(video_games)) under the bridge.
+
+      **🔥 CAUTION** Slippery when wet.
+
+      **⚠️ WARNING** The software you’re about to use has **not** been tested.
+      `
+      expect(downdoc(input)).to.equal(expected)
     })
 
     it('should promote ID on paragraph to inline anchor', () => {
@@ -944,7 +981,22 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should convert hard line break in paragraph', () => {
+    it('should end paragraph at next block attribute line', () => {
+      const input = heredoc`
+      The paragraph before <<idname>>.
+      [#idname]
+      == Section Title
+      `
+      const expected = heredoc`
+      The paragraph before [Section Title](#section-title).
+      ## Section Title
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+  })
+
+  describe('breaks', () => {
+    it('should convert hard line break in a paragraph', () => {
       const input = heredoc`
       roses are red, +
       violets are blue.
@@ -956,7 +1008,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should convert hard line break on line by itsef', () => {
+    it('should convert hard line break on line by itself', () => {
       const input = heredoc`
       foo
        +
@@ -970,7 +1022,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should not convert hard line break in block title', () => {
+    it('should not convert hard line break in a block title', () => {
       const input = heredoc`
       .what color? +
       red
@@ -998,7 +1050,6 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input, { attributes: { empty: '' } })).to.equal(expected)
     })
-
     it('should convert thematic breaks', () => {
       const input = heredoc`
       '''
@@ -1013,113 +1064,6 @@ describe('downdoc()', () => {
       ---
 
       ---
-      `
-      expect(downdoc(input)).to.equal(expected)
-    })
-
-    it('should pass through content of passthough block as is', () => {
-      const input = heredoc`
-      ++++
-      <table>
-      <tr>
-      <td>cell</td>
-      </tr>
-      </table>
-      ++++
-      `
-      const expected = heredoc`
-      <table>
-      <tr>
-      <td>cell</td>
-      </tr>
-      </table>
-      `
-      expect(downdoc(input)).to.equal(expected)
-    })
-
-    it('should support passthough block inside another block', () => {
-      const input = heredoc`
-      .Click to show supporting data
-      [%collapsible]
-      ====
-      ++++
-      <table>
-      <tr>
-      <td>cell</td>
-      </tr>
-      </table>
-      ++++
-      ====
-      `
-      const expected = heredoc`
-      <details>
-      <summary>Click to show supporting data</summary>
-
-      <table>
-      <tr>
-      <td>cell</td>
-      </tr>
-      </table>
-      </details>
-      `
-      expect(downdoc(input)).to.equal(expected)
-    })
-
-    it('should ignore block title on passthrough block', () => {
-      const input = heredoc`
-      .ignored
-      ++++
-      <aside>
-      <p>just an aside</p>
-      </aside>
-      ++++
-      `
-      const expected = heredoc`
-      <aside>
-      <p>just an aside</p>
-      </aside>
-      `
-      expect(downdoc(input)).to.equal(expected)
-    })
-
-    it('should convert passthrough block with stem style to display (block) match', () => {
-      const input = heredoc`
-      [stem]
-      ++++
-      a^2 = b^2 + c^2
-      ++++
-      `
-      const expected = heredoc`
-      \`\`\`math
-      a^2 = b^2 + c^2
-      \`\`\`
-      `
-      expect(downdoc(input)).to.equal(expected)
-    })
-
-    it('should unescape escaped xref macro', () => {
-      const input = heredoc`
-      = Title
-
-      Use the syntax \\xref:page.adoc#fragment[] to link to a fragment in another page.
-      `
-      const expected = heredoc`
-      # Title
-
-      Use the syntax xref:page.adoc#fragment[] to link to a fragment in another page.
-      `
-      expect(downdoc(input)).to.equal(expected)
-    })
-
-    it('should end block at next block attribute line', () => {
-      const input = heredoc`
-      The paragraph before <<idname>>.
-      [#idname]
-      == Section Title
-      `
-      const expected = heredoc`
-      The paragraph before [Section Title](#section-title).
-      ## Section Title
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -1439,6 +1383,86 @@ describe('downdoc()', () => {
 
       \`\`\`spoiler
       This is the spoiler.
+      \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should pass through content of passthrough block as is', () => {
+      const input = heredoc`
+      ++++
+      <table>
+      <tr>
+      <td>cell</td>
+      </tr>
+      </table>
+      ++++
+      `
+      const expected = heredoc`
+      <table>
+      <tr>
+      <td>cell</td>
+      </tr>
+      </table>
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should support passthrough block inside another block', () => {
+      const input = heredoc`
+      .Click to show supporting data
+      [%collapsible]
+      ====
+      ++++
+      <table>
+      <tr>
+      <td>cell</td>
+      </tr>
+      </table>
+      ++++
+      ====
+      `
+      const expected = heredoc`
+      <details>
+      <summary>Click to show supporting data</summary>
+
+      <table>
+      <tr>
+      <td>cell</td>
+      </tr>
+      </table>
+      </details>
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should ignore block title on passthrough block', () => {
+      const input = heredoc`
+      .ignored
+      ++++
+      <aside>
+      <p>just an aside</p>
+      </aside>
+      ++++
+      `
+      const expected = heredoc`
+      <aside>
+      <p>just an aside</p>
+      </aside>
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert passthrough block with stem style to display (block) match', () => {
+      const input = heredoc`
+      [stem]
+      ++++
+      a^2 = b^2 + c^2
+      ++++
+      `
+      const expected = heredoc`
+      \`\`\`math
+      a^2 = b^2 + c^2
       \`\`\`
       `
       expect(downdoc(input)).to.equal(expected)
@@ -2159,7 +2183,25 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(input)
     })
 
-    it('should remove backslashes in monospaced phrase', () => {
+    it('should escape < outside of monospace phrase', () => {
+      const input = heredoc`
+      = Title
+
+      a < b < c
+
+      * List<Object>
+      `
+      const expected = heredoc`
+      # Title
+
+      a &lt; b &lt; c
+
+      * List&lt;Object>
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should remove backslashes in monospace phrase', () => {
       const input = heredoc`
       = Title
 
@@ -2441,24 +2483,6 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
-
-    it('should escape < outside of monospaced phrase', () => {
-      const input = heredoc`
-      = Title
-
-      a < b < c
-
-      * List<Object>
-      `
-      const expected = heredoc`
-      # Title
-
-      a &lt; b &lt; c
-
-      * List&lt;Object>
-      `
-      expect(downdoc(input)).to.equal(expected)
-    })
   })
 
   describe('xrefs', () => {
@@ -2498,6 +2522,20 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should unescape escaped xref macro', () => {
+      const input = heredoc`
+      = Title
+
+      Use the syntax \\xref:page.adoc#fragment[] to link to a fragment in another page.
+      `
+      const expected = heredoc`
+      # Title
+
+      Use the syntax xref:page.adoc#fragment[] to link to a fragment in another page.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should not match xref shorthand if ID contains space characters', () => {
       const input = heredoc`
       = Title
@@ -2516,7 +2554,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should match shorthand xref inside monospaced phrase', () => {
+    it('should match shorthand xref inside monospace phrase', () => {
       const input = heredoc`
       = Title
 
@@ -3267,57 +3305,6 @@ describe('downdoc()', () => {
       ## Image macro
 
       Similar to the xref:\\[\\] macro, but for images. The text between [ and ] is the alt text.
-      `
-      expect(downdoc(input)).to.equal(expected)
-    })
-  })
-
-  describe('admonitions', () => {
-    it('should convert admonitions', () => {
-      const input = heredoc`
-      = Title
-      :milk-type: oat
-
-      NOTE: Remember the {milk-type} milk.
-
-      IMPORTANT: Don't forget the children!
-
-      TIP: Look for the https://en.wikipedia.org/wiki/Warp_(video_games)[warp] under the bridge.
-
-      CAUTION: Slippery when wet.
-
-      WARNING: The software you're about to use has *not* been tested.
-      `
-      const expected = heredoc`
-      # Title
-
-      **📌 NOTE** Remember the oat milk.
-
-      **❗ IMPORTANT** Don’t forget the children!
-
-      **💡 TIP** Look for the [warp](https://en.wikipedia.org/wiki/Warp_(video_games)) under the bridge.
-
-      **🔥 CAUTION** Slippery when wet.
-
-      **⚠️ WARNING** The software you’re about to use has **not** been tested.
-      `
-      expect(downdoc(input)).to.equal(expected)
-    })
-
-    it('should only replace admonition label at start of paragraph', () => {
-      const input = heredoc`
-      = Title
-
-      TIP: Look
-      for the
-      NOTE: prefix.
-      `
-      const expected = heredoc`
-      # Title
-
-      **💡 TIP** Look
-      for the
-      NOTE: prefix.
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -4448,7 +4435,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should convert description list into unorderd list with bold first line', () => {
+    it('should convert description list into unordered list with bold first line', () => {
       const input = heredoc`
       term:: desc
 
@@ -5108,7 +5095,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should continue list item thorughout attached container with nested container', () => {
+    it('should continue list item throughout attached container with nested container', () => {
       const input = heredoc`
       * list item
       +
@@ -5142,7 +5129,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should continue list item thorughout attached container with nested verbatim block', () => {
+    it('should continue list item throughout attached container with nested verbatim block', () => {
       const input = heredoc`
       * list item
       +
@@ -5533,7 +5520,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(input)
     })
 
-    it('should not remove unmatched endif::[] directive after single-line conditional directive', () => {
+    it('should not remove unmatched endif::[] directive following single-line conditional directive', () => {
       const input = heredoc`
       ifndef::not-set[before]
       endif::[]
@@ -5600,17 +5587,16 @@ describe('downdoc()', () => {
   })
 
   describe('unsupported', () => {
-    it('should drop block attribute list', () => {
+    it('should not convert inline stem macro', () => {
       const input = heredoc`
       = Title
 
-      [.lead]
-      Lead paragraph.
+      The solution is stem:[x^2 + y^2].
       `
       const expected = heredoc`
       # Title
 
-      Lead paragraph.
+      The solution is stem:[x^2 + y^2].
       `
       expect(downdoc(input)).to.equal(expected)
     })
