@@ -4553,6 +4553,38 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should convert description list nested in ordered list', () => {
+      const input = heredoc`
+      . foo
+      term:: desc
+      . bar
+      `
+      const expected = heredoc`
+      1. foo
+         * **term**\\
+      desc
+      2. bar
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert description list nested in ordered list and indented', () => {
+      const input = heredoc`
+      . foo
+
+        term:: desc
+
+      . bar
+      `
+      const expected = heredoc`
+      1. foo
+         * **term**\\
+      desc
+      2. bar
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert unordered list nested in description list', () => {
       const input = heredoc`
       term::

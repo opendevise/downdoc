@@ -10,6 +10,10 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 * Support indented list items
 
+=== Fixed
+
+* Track dlist type to avoid confusing qanda item with regular ordered list item
+
 == 1.0.0-beta.8 (2023-01-08)
 
 === Added
