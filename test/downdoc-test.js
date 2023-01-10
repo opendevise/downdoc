@@ -5618,6 +5618,28 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should unescape escaped preprocessor directive in verbatim block', () => {
+      const input = heredoc`
+      ----
+      \\image::banner.png[]
+
+      \\ifndef::show-notice[]
+      \\include::notice.adoc[]
+      \\endif::[]
+      ----
+      `
+      const expected = heredoc`
+      \`\`\`
+      \\image::banner.png[]
+
+      ifndef::show-notice[]
+      include::notice.adoc[]
+      endif::[]
+      \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
   })
 
   describe('output', () => {
