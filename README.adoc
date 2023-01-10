@@ -35,6 +35,7 @@ Here's a rough list of the syntax that downdoc current handles:
 
 * document title
 * author info and revision lines in document header
+* select intrinsic attributes (empty, idprefix, idseparator, nbsp, sp, vbar, zwsp)
 * document attribute entries (single-line only; no support for pass macro)
 * document attribute references
 * part/chapter/section titles and discrete headings (atx-style only)
@@ -44,7 +45,7 @@ Here's a rough list of the syntax that downdoc current handles:
 * nested ordered and unordered lists (use `markdown-list-indent` attribute to control indent size of output)
 * description and qanda list (first level only)
 * list continuation (no support for ancestor continuation or list inside attached delimited block)
-* link and URL macros (use `hide-uri-scheme` to hide URL scheme in visible URL)
+* link and URL macros (honors `hide-uri-scheme` attribute to hide URL scheme in visible URL)
 * escaped bare URLs
 * internal xrefs (honors value of `idprefix` and `idseparator` document attributes; no support for natural xref)
 * block IDs for document and section titles
