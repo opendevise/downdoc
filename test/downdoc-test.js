@@ -2399,6 +2399,22 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should allow double smarts quotes replacement to be controlled by quotes attribute', () => {
+      const input = heredoc`
+      :quotes: “ ”
+
+      Before you say "\`no way\`", I say "\`try before you deny\`".
+
+      That "\`bug\`" is actually a feature of the software.
+      `
+      const expected = heredoc`
+      Before you say “no way”, I say “try before you deny”.
+
+      That “bug” is actually a feature of the software.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should substitute curly apostrophe', () => {
       const input = heredoc`
       That\`'s probably not going to work.

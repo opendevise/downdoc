@@ -10,6 +10,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 * Support indented list items
 * Unescape escaped preprocessor conditional inside verbatim block
+* Allow replacement characters for double smart quotes to be controlled using `quotes` attribute
 
 === Fixed
 
