@@ -72,6 +72,10 @@ Here's a rough list of the syntax that downdoc current handles:
 * stem blocks (i.e., display math)
 * delimited example, open, and sidebar blocks (delimiter lines removed)
 
+Currently, include directives are not processed.
+However, you can first run the document through https://github.com/asciidoctor/asciidoctor-reducer[Asciidoctor Reducer] to fold in the content from any included files.
+If you then run downdoc on the output of that step, it will convert the entire document, includes and all.
+
 Support for additional syntax may be added in the future.
 
 == Prerequisites
