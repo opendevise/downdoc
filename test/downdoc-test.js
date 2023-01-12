@@ -5755,5 +5755,25 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should not process preprocessor conditionals inside verbatim block', () => {
+      const input = heredoc`
+      :foo: bar
+
+      ----
+      ifdef::foo[]
+      foo is set
+      endif::[]
+      ----
+      `
+      const expected = heredoc`
+      \`\`\`
+      ifdef::foo[]
+      foo is set
+      endif::[]
+      \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
   })
 })

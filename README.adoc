@@ -63,7 +63,7 @@ Here's a rough list of the syntax that downdoc current handles:
 * Markdown-style blockquotes
 * thematic breaks (including Markdown-style, e.g., `---`)
 * hard line breaks
-* ifdef and ifndef preprocessor conditionals
+* ifdef and ifndef preprocessor conditionals (except inside verbatim block)
 * tables (cols attribute with optional horizontal alignments; no support for cell style; cell spec ignored)
 * collapsible blocks (set the `markdown-collapsible-variant` attribute to `spoiler` to generate Zulip-compatible spoiler block)
 * comment lines and blocks
