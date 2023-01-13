@@ -993,6 +993,44 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should end literal paragraph at next block attribute line', () => {
+      const input = heredoc`
+       literal
+       paragraph
+      []
+      paragraph
+      `
+      const expected = heredoc`
+          literal
+          paragraph
+      paragraph
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should end list and literal paragraph in list at next block attribute line', () => {
+      const input = heredoc`
+      . yin
+
+       foo
+      []
+      bar
+      . baz
+
+      . yang
+      `
+      const expected = heredoc`
+      1. yin
+
+             foo
+      bar
+      . baz
+
+      1. yang
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
   })
 
   describe('breaks', () => {
