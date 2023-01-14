@@ -2239,24 +2239,32 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should remove backslashes in monospace phrase', () => {
+    it('should remove backslashes in front of URL or ellipsis in monospace phrase', () => {
       const input = heredoc`
       = Title
+
+      Use the \`\\\` character to escape special syntax.
 
       Visit \`\\http://localhost:8080\` or \`\\http://127.0.0.1:8080\` in your browser to see a preview.
 
       The text \`lorem ipsum\\...\` will be replaced with the real content.
 
       All I hear is \`\\...yada, yada, yada\\...\`.
+
+      Use \`\\xref:page.adoc#fragment[]\` to link to a fragment in another page.
       `
       const expected = heredoc`
       # Title
+
+      Use the \`\\\` character to escape special syntax.
 
       Visit \`http://localhost:8080\` or \`http://127.0.0.1:8080\` in your browser to see a preview.
 
       The text \`lorem ipsum...\` will be replaced with the real content.
 
       All I hear is \`...yada, yada, yada...\`.
+
+      Use \`xref:page.adoc#fragment[]\` to link to a fragment in another page.
       `
       expect(downdoc(input)).to.equal(expected)
     })
