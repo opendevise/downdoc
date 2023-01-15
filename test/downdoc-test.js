@@ -2409,12 +2409,16 @@ describe('downdoc()', () => {
       const input = heredoc`
       = Title
 
-      Use downdoc to convert [.path]_README.adoc_ to [.path]_README.md_ *before* publishing.
+      Use downdoc to convert [.path]_README.adoc_ to [.path]_README.md_ *before* publishing [.path]_downdoc.tgz_.
+
+      [x]_foo_bar
       `
       const expected = heredoc`
       # Title
 
-      Use downdoc to convert _README.adoc_ to _README.md_ **before** publishing.
+      Use downdoc to convert _README.adoc_ to _README.md_ **before** publishing _downdoc.tgz_.
+
+      [x]_foo_bar
       `
       expect(downdoc(input)).to.equal(expected)
     })
