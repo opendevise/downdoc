@@ -2350,6 +2350,8 @@ describe('downdoc()', () => {
       #foo#bar
 
       foo[.role]#bar#
+
+      #_foo or #_bar
       `
       const expected = input
       expect(downdoc(input)).to.equal(expected)
@@ -2580,6 +2582,28 @@ describe('downdoc()', () => {
       ## Fin
 
       The end.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert internal xrefs when using default idprefix and idseparator', () => {
+      const input = heredoc`
+      = Title
+
+      See <<#_foo_bar,Bar>> or xref:#_foo_baz[Baz].
+
+      == Foo Bar
+
+      == Foo Baz
+      `
+      const expected = heredoc`
+      # Title
+
+      See [Bar](#foo-bar) or [Baz](#foo-baz).
+
+      ## Foo Bar
+
+      ## Foo Baz
       `
       expect(downdoc(input)).to.equal(expected)
     })
