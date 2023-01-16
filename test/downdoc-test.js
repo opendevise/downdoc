@@ -2194,7 +2194,7 @@ describe('downdoc()', () => {
 
     it('should leave escaped italic formatting escaped', () => {
       const input = heredoc`
-      Use the syntax \\_phrase here_ to render text in italic.
+      Use the syntax [.example]\\_phrase here_ to render text in italic.
 
       \\_layouts or layouts_ contain the layout files.
       `
