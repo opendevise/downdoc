@@ -2144,6 +2144,24 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should not convert marked phrase inside a word', () => {
+      const input = heredoc`
+      *foo*bar
+
+      foo[.role]*bar*
+
+      *_foo or *_bar
+      `
+      const expected = heredoc`
+      *foo*bar
+
+      foo[.role]**bar**
+
+      *_foo or *_bar
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should leave escaped bold formatting escaped', () => {
       const input = heredoc`
       Use the syntax \\*phrase here* to render text in bold.
@@ -2184,16 +2202,16 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should convert bold italic formatting in either order', () => {
+    it('should convert bold italic formatting in specific order', () => {
       const input = heredoc`
       = Title
 
-      If you really want to put some *_emphasis_* on it, use _*bold italic*_.
+      If you really want to put some _*emphasis*_ on it, use *_bold italic_*.
       `
       const expected = heredoc`
       # Title
 
-      If you really want to put some **_emphasis_** on it, use _**bold italic**_.
+      If you really want to put some _*emphasis*_ on it, use **_bold italic_**.
       `
       expect(downdoc(input)).to.equal(expected)
     })

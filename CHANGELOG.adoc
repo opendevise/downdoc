@@ -12,6 +12,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 * Prevent xref rewriter from matching square brackets elsewhere in the line
 * Honor escaped xref macro inside monospace phrase
 * Treat underscore as word character when converting marked phrase
+* Apply constrained formatting rules when converting bold or italic phrase
 
 == 1.0.0-beta.9 (2023-01-11)
 
