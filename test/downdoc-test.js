@@ -2371,7 +2371,13 @@ describe('downdoc()', () => {
 
       #_foo or #_bar
       `
-      const expected = input
+      const expected = heredoc`
+      #foo#bar
+
+      foo[.role]<mark>bar</mark>
+
+      #_foo or #_bar
+      `
       expect(downdoc(input)).to.equal(expected)
     })
 
