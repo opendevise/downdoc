@@ -2188,12 +2188,12 @@ describe('downdoc()', () => {
       const input = heredoc`
       = Title
 
-      If you really want to be some *_emphasis_* on it, use _*bold italic*_.
+      If you really want to put some *_emphasis_* on it, use _*bold italic*_.
       `
       const expected = heredoc`
       # Title
 
-      If you really want to be some **_emphasis_** on it, use _**bold italic**_.
+      If you really want to put some **_emphasis_** on it, use _**bold italic**_.
       `
       expect(downdoc(input)).to.equal(expected)
     })
