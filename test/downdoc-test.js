@@ -2423,6 +2423,32 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should convert formatted text with single character', () => {
+      const input = heredoc`
+      *b*
+
+      [.path]_._
+
+      \`<\`
+
+      "\`q\`"
+
+      #h#
+      `
+      const expected = heredoc`
+      **b**
+
+      _._
+
+      \`<\`
+
+      <q>q</q>
+
+      <mark>h</mark>
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should not drop line that starts with formatting text with attribute list', () => {
       const input = heredoc`
       = Title
