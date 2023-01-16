@@ -595,14 +595,12 @@ describe('downdoc()', () => {
 
     it('should convert line with heading marker only as paragraph text', () => {
       const input = '=='
-      const expected = input
-      expect(downdoc(input)).to.equal(expected)
+      expect(downdoc(input)).to.equal(input)
     })
 
     it('should convert line with heading marker followed by multiple spaces as paragraph text', () => {
       const input = '==  Not a Heading'
-      const expected = input
-      expect(downdoc(input)).to.equal(expected)
+      expect(downdoc(input)).to.equal(input)
     })
 
     it('should clear block attributes after processing section title', () => {
@@ -2168,8 +2166,7 @@ describe('downdoc()', () => {
 
       \\*a becomes b*
       `
-      const expected = input
-      expect(downdoc(input)).to.equal(expected)
+      expect(downdoc(input)).to.equal(input)
     })
 
     it('should convert bold formatting in unordered list item', () => {
@@ -2198,8 +2195,7 @@ describe('downdoc()', () => {
 
       \\_layouts or layouts_ contain the layout files.
       `
-      const expected = input
-      expect(downdoc(input)).to.equal(expected)
+      expect(downdoc(input)).to.equal(input)
     })
 
     it('should convert bold italic formatting in specific order', () => {
@@ -2387,8 +2383,7 @@ describe('downdoc()', () => {
 
       [.role]#&169; and [.role]&#174; should be left as is.
       `
-      const expected = input
-      expect(downdoc(input)).to.equal(expected)
+      expect(downdoc(input)).to.equal(input)
     })
 
     it('should leave escaped marked phrase escaped', () => {
@@ -2397,8 +2392,7 @@ describe('downdoc()', () => {
 
       \\#hashtag is a tag or a URL fragment, but not a phone#
       `
-      const expected = input
-      expect(downdoc(input)).to.equal(expected)
+      expect(downdoc(input)).to.equal(input)
     })
 
     it('should convert phrase with line-through role', () => {
@@ -4657,8 +4651,7 @@ describe('downdoc()', () => {
 
       ::foo
       `
-      const expected = input
-      expect(downdoc(input)).to.equal(expected)
+      expect(downdoc(input)).to.equal(input)
     })
 
     it('should convert description list nested in unordered list', () => {
