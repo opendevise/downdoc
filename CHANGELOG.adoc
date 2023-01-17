@@ -6,6 +6,10 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 == Unreleased
 
+=== Added
+
+* Use title on paragraph with ID as automatic text (xreftext) for internal ref
+
 === Fixed
 
 * End literal paragraph (and enclosing list, if relevant) at directly adjacent block attribute line

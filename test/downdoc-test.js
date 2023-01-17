@@ -2582,6 +2582,24 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should put inline anchor in block title if paragraph has ID and block title', () => {
+      const input = heredoc`
+      To learn more, come <<chat>>
+
+      .Chat with us!
+      [#chat]
+      You can communicate with project members and fellow users in the community chat.
+      `
+      const expected = heredoc`
+      To learn more, come [Chat with us!](#chat)
+
+      <a name="chat"></a>**Chat with us!**
+
+      You can communicate with project members and fellow users in the community chat.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should ignore inline anchor with invalid syntax', () => {
       const input = heredoc`
       = Title
