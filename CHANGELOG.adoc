@@ -8,6 +8,8 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 === Added
 
+* Support natural xrefs (xref that identifies target ref by title)
+* Support xref macro when target path contains spaces
 * Use title on paragraph with ID as automatic text (xreftext) for internal ref
 * Support reading input from stdin when input path is `-`
 

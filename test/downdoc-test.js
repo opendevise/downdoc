@@ -2729,6 +2729,52 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should convert natural xref', () => {
+      const input = heredoc`
+      = Title
+
+      <<Install>> <<Section Title with Spaces>>
+
+      == Install
+
+      == Section Title with Spaces
+      `
+      const expected = heredoc`
+      # Title
+
+      [Install](#install) [Section Title with Spaces](#section-title-with-spaces)
+
+      ## Install
+
+      ## Section Title with Spaces
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should match natural xref against first occurrence of title', () => {
+      const input = heredoc`
+      = Title
+
+      <<Get Started>>
+
+      [#get-started-1]
+      == Get Started
+
+      [#get-started-2]
+      == Get Started
+      `
+      const expected = heredoc`
+      # Title
+
+      [Get Started](#get-started)
+
+      ## Get Started
+
+      ## Get Started
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should fill in text for backward xref', () => {
       const input = heredoc`
       = HOWTO
@@ -3288,13 +3334,29 @@ describe('downdoc()', () => {
       const input = heredoc`
       link:not processed.html[]
 
-      xref:not processed.adoc[]
-
       image:not processed.png[]
 
       https://example.org/not processed.html[]
       `
       expect(downdoc(input)).to.equal(input)
+    })
+
+    it('should process xref macro if target has non-leading space', () => {
+      const input = heredoc`
+      = Title
+
+      xref:is processed.adoc[is processed]
+
+      xref: not processed.adoc[not processed]
+      `
+      const expected = heredoc`
+      # Title
+
+      [is processed](is processed.adoc)
+
+      xref: not processed.adoc[not processed]
+      `
+      expect(downdoc(input)).to.equal(expected)
     })
   })
 
