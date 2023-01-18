@@ -5,6 +5,7 @@ const { cleanDir, expect, heredoc, StringIO } = require('./harness')
 const downdoc = require('#cli')
 const fsp = require('node:fs/promises')
 const ospath = require('node:path')
+const { Readable } = require('node:stream')
 const { version } = require('downdoc/package.json')
 
 const WORK_DIR = ospath.join(__dirname, 'work')
@@ -164,7 +165,16 @@ describe('downdoc', () => {
     })
   })
 
-  describe('invalid input', () => {
+  describe('input', () => {
+    it('should allow input to be specified from stdin by passing - as input path', async () => {
+      const args = ['-']
+      const expected = '**foo** and _bar_\n'
+      const stdin = Readable.from('*foo* and _bar_')
+      const p = { args, stdout, stdin }
+      await downdoc(p)
+      expect(stdout.string).to.equal(expected)
+    })
+
     it('should print message to stderr and set exit code when FILE is missing', async () => {
       const args = ['no-such-file.adoc']
       const p = { args, stderr }

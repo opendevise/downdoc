@@ -119,6 +119,13 @@ If the value of the `-o` option is `-`, the command will write the output to the
 $ npx downdoc -o - README.adoc
 ----
 
+You can pipe from input and output by using `-` as the input path.
+
+[,console]
+----
+$ cat README.adoc | npx downdoc -
+----
+
 You can pass additional runtime AsciiDoc attributes using the `-a` (or `--attribute`) option.
 
 [,console]

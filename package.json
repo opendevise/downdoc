@@ -63,7 +63,7 @@
     "cacheDir": "node_modules/.cache/nyc",
     "checkCoverage": true,
     "include": [
-      "lib/*.js"
+      "lib/**/*.js"
     ],
     "lines": 100,
     "reporter": [

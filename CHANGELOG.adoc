@@ -9,6 +9,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 === Added
 
 * Use title on paragraph with ID as automatic text (xreftext) for internal ref
+* Support reading input from stdin when input path is `-`
 
 === Fixed
 
