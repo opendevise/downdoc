@@ -3715,6 +3715,25 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should not apply subs to literal paragraph by default', () => {
+      const input = heredoc`
+      = Title
+      :foo: bar
+
+       *{foo}*
+
+      fin
+      `
+      const expected = heredoc`
+      # Title
+
+          *{foo}*
+
+      fin
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should honor subs attribute on all lines of literal paragraph', () => {
       const input = heredoc`
       :install-prefix: /usr/local
