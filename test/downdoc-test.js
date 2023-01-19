@@ -2941,6 +2941,41 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should not match block anchor with invalid characters', () => {
+      const input = heredoc`
+      See <<-not-valid>>, <<.not.valid>>, <<$not-valid>>, <<0>>, or <<vérite>>.
+
+      [[-not-valid]]
+      == Nope
+
+      [[.not.valid]]
+      == Nope Again
+
+      [[$not-valid]]
+      == Still Nope
+
+      [[0]]
+      == Again Nope
+
+      [[vérite]]
+      == Yep
+      `
+      const expected = heredoc`
+      See [-not-valid](#-not-valid), [.not.valid](#.not.valid), [$not-valid](#$not-valid), [0](#0), or [Yep](#yep).
+
+      ## Nope
+
+      ## Nope Again
+
+      ## Still Nope
+
+      ## Again Nope
+
+      ## Yep
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should preserve escaped square brackets in xref text', () => {
       const input = heredoc`
       = Title

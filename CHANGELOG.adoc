@@ -21,6 +21,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 * Treat underscore as word character when converting marked phrase
 * Apply constrained formatting rules when converting bold or italic phrase
 * Align constrained formatting rules for marked phrase with those for bold and italic
+* Make match for block anchor more accurate
 
 == 1.0.0-beta.9 (2023-01-11)
 
