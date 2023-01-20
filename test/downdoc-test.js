@@ -4583,6 +4583,15 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should convert checklist', () => {
+      const input = heredoc`
+      * [x] done
+      * [ ] not done
+      * nothing special
+      `
+      expect(downdoc(input)).to.equal(input)
+    })
+
     it('should convert ordered list to numbered list', () => {
       const input = heredoc`
       = Title
