@@ -28,10 +28,10 @@ downdoc handles the context switch to Markdown so your brain doesn't have to.
 == How does it work?
 
 downdoc employs a minimal approach to map the AsciiDoc syntax to Markdown that does not make use of Asciidoctor.
-While this gives it the advantage of having no dependencies and being exceptionally fast, it does not support the full AsciiDoc syntax.
-It's intended to be used with AsciiDoc documents that were written with this conversion in mind, as a Markdown frontend.
+While this gives downdoc the advantage of having no dependencies and being exceptionally fast, it does not support the full AsciiDoc syntax.
+Rather, it's intended to be used on AsciiDoc documents that are written with conversion to Markdown in mind.
 
-Here's a rough list of the syntax that downdoc current handles:
+Here's a rough list of the AsciiDoc syntax that downdoc current handles:
 
 * document title
 * author info and revision lines in document header
@@ -40,17 +40,18 @@ Here's a rough list of the syntax that downdoc current handles:
 * document attribute references
 * part/chapter/section titles and discrete headings (atx-style only)
 * block titles
-* formatted text (restricted to same line)
+* formatted text (restricted to boundaries of a single line)
  ** bold, italic, monospace, literal monospace, highlight, phrase w/ line-through role, double curly quotes, curly apostrophe
- ** use `quotes` attribute to control space-separated characters used for double curly quotes (e.g., `“ ”`)
-* ordered, unordered, and callout lists (1-19 or .)
+ ** literal monospace only escapes attribute references
+ ** define `quotes` attribute to control space-separated characters used for double curly quotes (e.g., `“ ”`)
+* ordered, unordered (including checklists), and callout lists (1-19 or .)
 * nested ordered and unordered lists (use `markdown-list-indent` attribute to control indent size of output)
 * description and qanda list (first level only)
-* list continuation (no support for ancestor continuation or list inside attached delimited block)
+* list continuation (for current list item only; no support for ancestor list continuation)
 * link and URL macros (honors `hide-uri-scheme` attribute to hide URL scheme in visible URL)
 * escaped bare URLs
-* internal xrefs (honors value of `idprefix` and `idseparator` document attributes; no support for natural xref)
-* block IDs for document and section titles
+* internal xrefs (honors value of `idprefix` and `idseparator` document attributes)
+* block IDs for document, sections, and paragraphs
 * auto-generated text for internal xrefs (section and verbatim blocks only) (honoring `reftext` attribute on section, if specified)
 * inline anchor (shorthand syntax only, no reftext)
 * block and inline image macros
@@ -58,8 +59,9 @@ Here's a rough list of the syntax that downdoc current handles:
 * diagram blocks (literal block with diagram dialect)
 * literal paragraphs (auto-detects command prompt and promotes to command code block)
 * callout numbers (i.e., conums) (1-19 or .) in verbatim blocks
-* attribute references in literal paragraphs and verbatim blocks (when subs=attributes+ or subs=+attributes is enabled)
+* attribute references in literal paragraphs and verbatim blocks when subs=attributes+ or subs=+attributes is enabled
 * admonition paragraphs and blocks
+* quote blocks with optional attribution
 * Markdown-style blockquotes
 * thematic breaks (including Markdown-style, e.g., `---`)
 * hard line breaks
@@ -68,7 +70,6 @@ Here's a rough list of the syntax that downdoc current handles:
 * collapsible blocks (set the `markdown-collapsible-variant` attribute to `spoiler` to generate Zulip-compatible spoiler block)
 * comment lines and blocks
 * passthrough blocks
-* quote blocks with optional attribution
 * stem blocks (i.e., display math)
 * delimited example, open, and sidebar blocks (delimiter lines removed)
 
