@@ -4261,6 +4261,53 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should outdent contents of verbatim block if indent=0 attribute is set', () => {
+      const input = heredoc`
+      [indent=0]
+      ----
+        key-1:
+          - |
+            val
+
+            val
+        key-2: ~
+      ----
+
+      [indent=0]
+      ----
+          foo
+        bar
+      &
+      baz
+      ----
+
+      [indent=0]
+      ----
+      ----
+      `
+      const expected = heredoc`
+      \`\`\`
+      key-1:
+        - |
+          val
+
+          val
+      key-2: ~
+      \`\`\`
+
+      \`\`\`
+          foo
+        bar
+      &
+      baz
+      \`\`\`
+
+      \`\`\`
+      \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should honor subs=+attributes on source block', () => {
       const input = heredoc`
       = Title
