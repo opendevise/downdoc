@@ -327,6 +327,20 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should not recognize attribute reference that begins with -', () => {
+      const input = heredoc`
+      = Title
+
+      {-foo} is not a valid attribute reference.
+      `
+      const expected = heredoc`
+      # Title
+
+      {-foo} is not a valid attribute reference.
+      `
+      expect(downdoc(input, { attributes: { '-foo': 'bar' } })).to.equal(expected)
+    })
+
     it('should substitute multiple attribute references in same line', () => {
       const input = heredoc`
       = Title
