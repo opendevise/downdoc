@@ -9,14 +9,14 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 === Added
 
 * Support indent=0 attribute on verbatim blocks
-* Support natural xrefs (xref that identifies target ref by title)
+* Support natural xrefs (xref that identifies target by title)
 * Support xref macro when target path contains spaces
 * Use title on paragraph with ID as automatic text (xreftext) for internal ref
 * Support reading input from stdin when input path is `-`
 
 === Fixed
 
-* End literal paragraph (and enclosing list, if relevant) at directly adjacent block attribute line
+* End literal paragraph (and enclosing list, if relevant) when djacent block attribute line is encountered
 * Prevent xref rewriter from matching square brackets elsewhere in the line
 * Honor escaped xref macro inside monospace phrase
 * Treat underscore as word character when converting marked phrase
