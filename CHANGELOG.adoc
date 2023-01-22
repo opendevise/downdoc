@@ -4,6 +4,12 @@
 This document provides a summary of all notable changes to downdoc by release.
 For a detailed view of what's changed, refer to the {url-repo}/commits[commit history] of this project.
 
+== Unreleased
+
+=== Fixed
+
+* Align match for inline anchor with match for block anchor
+
 == 1.0.0-beta.10 (2023-01-21)
 
 === Added
