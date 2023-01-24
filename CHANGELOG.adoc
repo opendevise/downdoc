@@ -11,6 +11,10 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 * Drop include directive lines
 * Unescape ifdef, ifndef, and include preprocessor directives
 
+=== Changed
+
+* Look for `+\p{L}+` instead of `+\p{Alpha}+` when scanning for curly apostrophe replacement
+
 === Fixed
 
 * Align match for inline anchor with match for block anchor
