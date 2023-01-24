@@ -5917,7 +5917,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should skip single line conditional directive if condition is false', () => {
+    it('should skip single-line conditional directive if condition is false', () => {
       const input = heredoc`
       = Title
 
@@ -5932,7 +5932,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should keep and process text from single line conditional directive if condition is true', () => {
+    it('should keep and process text from single-line conditional directive if condition is true', () => {
       const input = heredoc`
       = Title
       :foo: bar
@@ -5943,6 +5943,21 @@ describe('downdoc()', () => {
       # Title
 
       bar
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should allow single-line conditional directive to enclose block macro', () => {
+      const input = heredoc`
+      = Title
+      :imagesdir: img
+
+      ifdef::imagesdir[image::screenshot.png[Screenshot]]
+      `
+      const expected = heredoc`
+      # Title
+
+      ![Screenshot](img/screenshot.png)
       `
       expect(downdoc(input)).to.equal(expected)
     })
