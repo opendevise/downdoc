@@ -2437,7 +2437,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should drop attribute list in front of formatted text', () => {
+    it('should drop boxed attrlist in front of formatted text', () => {
       const input = heredoc`
       = Title
 
@@ -2451,6 +2451,20 @@ describe('downdoc()', () => {
       Use downdoc to convert _README.adoc_ to _README.md_ **before** publishing _downdoc.tgz_.
 
       [x]_foo_bar
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should not be greedy when matching boxed attrlist on formatted text', () => {
+      const input = heredoc`
+      = Title
+
+      key: [ "before [.redacted]#redacted# after" ]
+      `
+      const expected = heredoc`
+      # Title
+
+      key: [ "before redacted after" ]
       `
       expect(downdoc(input)).to.equal(expected)
     })
