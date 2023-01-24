@@ -5977,6 +5977,39 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should unescape escaped preprocessor directive outside verbatim block', () => {
+      const input = heredoc`
+      \\ifndef::show-notice[]
+      \\include::notice.adoc[]
+      \\endif::[]
+      `
+      const expected = heredoc`
+      ifndef::show-notice[]
+      include::notice.adoc[]
+      endif::[]
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should process preprocessor conditionals inside verbatim block', () => {
+      const input = heredoc`
+      :foo: bar
+
+      ----
+      ifdef::foo[]
+      foo is set
+      endif::[]
+      include::ignored.adoc[]
+      ----
+      `
+      const expected = heredoc`
+      \`\`\`
+      foo is set
+      \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
   })
 
   describe('output', () => {
@@ -6077,22 +6110,22 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should not process preprocessor conditionals inside verbatim block', () => {
+    it('should drop include directive', () => {
       const input = heredoc`
-      :foo: bar
+      = Title
 
-      ----
-      ifdef::foo[]
-      foo is set
-      endif::[]
-      ----
+      == Chapter A
+
+      include::chapter-b[]
+
+      == Chapter C
       `
       const expected = heredoc`
-      \`\`\`
-      ifdef::foo[]
-      foo is set
-      endif::[]
-      \`\`\`
+      # Title
+
+      ## Chapter A
+
+      ## Chapter C
       `
       expect(downdoc(input)).to.equal(expected)
     })

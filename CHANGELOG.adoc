@@ -6,9 +6,15 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 == Unreleased
 
+=== Added
+
+* Drop include directive lines
+* Unescape ifdef, ifndef, and include preprocessor directives
+
 === Fixed
 
 * Align match for inline anchor with match for block anchor
+* Give priority to preprocessor directive lines
 
 == 1.0.0-beta.10 (2023-01-21)
 
