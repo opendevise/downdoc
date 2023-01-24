@@ -2156,7 +2156,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should not convert marked phrase inside a word', () => {
+    it('should not convert bold phrase inside a word', () => {
       const input = heredoc`
       *foo*bar
 
