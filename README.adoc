@@ -60,6 +60,7 @@ Here's a rough list of the AsciiDoc syntax that downdoc current handles:
 * literal paragraphs (auto-detects command prompt and promotes to command code block)
 * callout numbers (i.e., conums) (1-19 or .) in verbatim blocks
 * attribute references in literal paragraphs and verbatim blocks when subs=attributes+ or subs=+attributes is enabled
+* indent=0 attribute on verbatim blocks
 * admonition paragraphs and blocks
 * quote blocks with optional attribution
 * Markdown-style blockquotes
