@@ -2437,6 +2437,24 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should convert directly adjacent marked phrases with or without role', () => {
+      const input = heredoc`
+      = Title
+
+      #no##footer#
+
+      [.basename]#script#[.ext]#.js#
+      `
+      const expected = heredoc`
+      # Title
+
+      <mark>no</mark><mark>footer</mark>
+
+      script.js
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should drop boxed attrlist in front of formatted text', () => {
       const input = heredoc`
       = Title
