@@ -2163,6 +2163,10 @@ describe('downdoc()', () => {
       foo[.role]*bar*
 
       *_foo or *_bar
+
+      *l'*élection
+
+      é*t*é
       `
       const expected = heredoc`
       *foo*bar
@@ -2170,6 +2174,10 @@ describe('downdoc()', () => {
       foo[.role]**bar**
 
       *_foo or *_bar
+
+      *l'*élection
+
+      é*t*é
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -2199,6 +2207,24 @@ describe('downdoc()', () => {
       # Title
 
       The _ is _so_ incredibly _useful_ when making snake_case.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should not convert italic phrase inside a word', () => {
+      const input = heredoc`
+      foo[.role]_bar_
+
+      [.conj]_l'_élection
+
+      é[.role]*t*é
+      `
+      const expected = heredoc`
+      foo[.role]_bar_
+
+      [.conj]_l'_élection
+
+      é[.role]*t*é
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -2380,6 +2406,10 @@ describe('downdoc()', () => {
       foo[.role]#bar#
 
       #_foo or #_bar
+
+      #l'#élection
+
+      é#t#é
       `
       const expected = heredoc`
       #foo#bar
@@ -2387,6 +2417,10 @@ describe('downdoc()', () => {
       foo[.role]<mark>bar</mark>
 
       #_foo or #_bar
+
+      #l'#élection
+
+      é#t#é
       `
       expect(downdoc(input)).to.equal(expected)
     })
