@@ -3387,6 +3387,21 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should remove open in blank window hint when used as link text', () => {
+      const input = heredoc`
+      = Title
+      :hide-uri-scheme:
+
+      These tests are run using https://mochajs.org[^].
+      `
+      const expected = heredoc`
+      # Title
+
+      These tests are run using [mochajs.org](https://mochajs.org).
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should not process non-escaped bare URL', () => {
       const input = heredoc`
       Navigate to http://localhost:8080/app to view your application.
