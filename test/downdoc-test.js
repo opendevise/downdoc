@@ -2512,11 +2512,23 @@ describe('downdoc()', () => {
       = Title
 
       key: [ "before [.redacted]#redacted# after" ]
+
+      [[bold]]*bold*
+
+      [[italic]]_italic_
+
+      [[marked]]#marked#
       `
       const expected = heredoc`
       # Title
 
       key: [ "before redacted after" ]
+
+      <a name="bold"></a>**bold**
+
+      <a name="italic"></a>_italic_
+
+      <a name="marked"></a><mark>marked</mark>
       `
       expect(downdoc(input)).to.equal(expected)
     })
