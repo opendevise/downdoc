@@ -6,13 +6,17 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 == Unreleased
 
+=== Added
+
+* Honor escaped link or URL macro (preceded with backslash)
+
 === Changed
 
-* consider all Unicode-defined letters when checking for constrained boundaries of formatted text
+* Consider all Unicode-defined letters when checking for constrained boundaries of formatted text
 
 === Fixed
 
-* don't match inline anchor that precedes formatted phrase as boxed attrlist
+* Don't match inline anchor that precedes formatted phrase as boxed attrlist
 
 == 1.0.0-beta.11 (2023-01-24)
 

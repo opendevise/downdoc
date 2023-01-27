@@ -3414,7 +3414,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should not process non-escaped bare URL', () => {
+    it('should not modify non-escaped bare URL', () => {
       const input = heredoc`
       Navigate to http://localhost:8080/app to view your application.
 
@@ -3428,7 +3428,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should hide escaped bare URL', () => {
+    it('should obscure escaped bare URL', () => {
       const input = heredoc`
       The site will be running at \\http://localhost:8080/app.
 
@@ -3438,6 +3438,35 @@ describe('downdoc()', () => {
       The site will be running at <span>http://</span>localhost:8080/app.
 
       The <span>https://</span>example.org domain name is for tests, tutorials, and examples.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should obscure escaped URL macro', () => {
+      const input = heredoc`
+      = Title
+
+      Use \\https://example.org[text] to add a link to text.
+      `
+      const expected = heredoc`
+      # Title
+
+      Use <span>https://</span>example.org[text] to add a link to text.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    // NOTE this does not handle case when URL macro is preceded by link:
+    it('should unescape escaped link macro', () => {
+      const input = heredoc`
+      = Title
+
+      Use \\link:file.ext[text] to link to a relative URL or local file.
+      `
+      const expected = heredoc`
+      # Title
+
+      Use link:file.ext[text] to link to a relative URL or local file.
       `
       expect(downdoc(input)).to.equal(expected)
     })
