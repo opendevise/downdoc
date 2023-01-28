@@ -4419,6 +4419,13 @@ describe('downdoc()', () => {
 
       [indent=0]
       ----
+      \tdef save record
+      \t\tthis.db.store(record)
+      \tend
+      ----
+
+      [indent=0]
+      ----
       ----
       `
       const expected = heredoc`
@@ -4436,6 +4443,12 @@ describe('downdoc()', () => {
         bar
       &
       baz
+      \`\`\`
+
+      \`\`\`
+      def save record
+      \tthis.db.store(record)
+      end
       \`\`\`
 
       \`\`\`
