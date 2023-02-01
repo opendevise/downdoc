@@ -2132,7 +2132,7 @@ describe('downdoc()', () => {
       const expected = heredoc`
       |     |     |
       | --- | --- |
-      | A<br> 1 | B<br> 1 |
+      | A<br>1 | B<br>1 |
       `
       expect(downdoc(input)).to.equal(expected)
     })

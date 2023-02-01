@@ -9,6 +9,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 === Changed
 
 * Add hard line break after label on admonition paragraph
+* Don't add space after hard line break in table cell
 
 == 1.0.0-beta.12 (2023-01-27)
 
