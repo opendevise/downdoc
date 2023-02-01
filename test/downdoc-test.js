@@ -872,6 +872,15 @@ describe('downdoc()', () => {
   })
 
   describe('paragraphs', () => {
+    it('should preserve line break in paragraph', () => {
+      const input = heredoc`
+      first line
+      second line
+      last line
+      `
+      expect(downdoc(input)).to.equal(input)
+    })
+
     it('should not process section title within a paragraph', () => {
       const input = heredoc`
       Let the paragraph begin.
