@@ -4,6 +4,12 @@
 This document provides a summary of all notable changes to downdoc by release.
 For a detailed view of what's changed, refer to the {url-repo}/commits[commit history] of this project.
 
+== Unreleased
+
+=== Changed
+
+* Add hard line break after label on admonition paragraph
+
 == 1.0.0-beta.12 (2023-01-27)
 
 === Added
