@@ -872,7 +872,7 @@ describe('downdoc()', () => {
   })
 
   describe('paragraphs', () => {
-    it('should preserve line break in paragraph', () => {
+    it('should preserve newlines in paragraph', () => {
       const input = heredoc`
       first line
       second line
