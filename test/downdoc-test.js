@@ -1099,7 +1099,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should not look for hardbreak if previous line is empty', () => {
+    it('should not look for hard line break if previous line is empty', () => {
       const input = heredoc`
       foo
 
