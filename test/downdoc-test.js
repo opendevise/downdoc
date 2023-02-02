@@ -5081,7 +5081,7 @@ describe('downdoc()', () => {
       * **terroir**\\
       A wine’s sense of place.
       * **complexity**\\
-      A wine's characteristic qualities. 
+      A wine’s characteristic qualities. 
       `
       expect(downdoc(input)).to.equal(expected)
     })
