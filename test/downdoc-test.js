@@ -1114,6 +1114,7 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input, { attributes: { empty: '' } })).to.equal(expected)
     })
+
     it('should convert thematic breaks', () => {
       const input = heredoc`
       '''
