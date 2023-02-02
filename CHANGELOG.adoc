@@ -15,6 +15,8 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 * Add hard line break after label on admonition paragraph
 * Don't add space after hard line break in table cell
 * Indent wrapped primary text of dlist entry
+* Don't add line break marker to description list term if primary description text is empty or resolves to empty
+* Don't add line break marker to admonition label if text resolves to empty
 
 == 1.0.0-beta.12 (2023-01-27)
 

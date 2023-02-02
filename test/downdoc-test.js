@@ -977,6 +977,20 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should not add hard line break mark to admonition label if text resolves to empty', () => {
+      const input = heredoc`
+      = Title
+
+      CAUTION: {empty}
+      `
+      const expected = heredoc`
+      # Title
+
+      **🔥 CAUTION**
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should allow hard line break mark for admonition to be configured using markdown-line-break attribute', () => {
       const input = heredoc`
       = Title
@@ -5005,6 +5019,36 @@ describe('downdoc()', () => {
         attached paragraph
       * **yet another term**\\
       desc
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should not add hard line break mark to description list term if description resolves to empty', () => {
+      const input = heredoc`
+      term::
+
+      separator
+
+      term:: {empty}
+
+      term::
+      {empty}
+
+      separator
+
+      term::
+      `
+      const expected = heredoc`
+      * **term**
+
+      separator
+
+      * **term**
+      * **term**\\
+
+      separator
+
+      * **term**
       `
       expect(downdoc(input)).to.equal(expected)
     })
