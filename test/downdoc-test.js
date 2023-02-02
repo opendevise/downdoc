@@ -5069,6 +5069,23 @@ describe('downdoc()', () => {
       expect(downdoc(input, { attributes: { 'markdown-line-break': '<br>' } })).to.equal(expected)
     })
 
+    it('should support block title on description list', () => {
+      const input = heredoc`
+      .Glossary
+      terroir:: A wine's sense of place.
+      complexity:: A wine's characteristic qualities.
+      `
+      const expected = heredoc`
+      **Glossary**
+
+      * **terroir**\\
+      A wine’s sense of place.
+      * **complexity**\\
+      A wine's characteristic qualities. 
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should not match double colon embedded in description list term', () => {
       const input = heredoc`
       foo::bar:: baz
