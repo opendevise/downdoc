@@ -977,6 +977,22 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should allow hard line break mark for admonition to be configured using markdown-line-break attribute', () => {
+      const input = heredoc`
+      = Title
+      :markdown-line-break:
+
+      CAUTION: Slippery when wet.
+      `
+      const expected = heredoc`
+      # Title
+
+      **🔥 CAUTION**
+      Slippery when wet.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should promote ID on paragraph to inline anchor', () => {
       const input = heredoc`
       = Title
@@ -1070,6 +1086,15 @@ describe('downdoc()', () => {
       violets are blue.
       `
       expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should allow hard line break mark for paragraph to be configured using markdown-line-break attribute', () => {
+      const input = heredoc`
+      roses are red, +
+      violets are blue.
+      `
+      const expected = 'roses are red,  \nviolets are blue.'
+      expect(downdoc(input, { attributes: { 'markdown-line-break': '  ' } })).to.equal(expected)
     })
 
     it('should convert hard line break on line by itself', () => {
@@ -4984,6 +5009,22 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should allow hard line break mark for dlist term to be configured using markdown-line-break attribute', () => {
+      const input = heredoc`
+      term:: desc
+
+      another term::
+      desc
+      `
+      const expected = heredoc`
+      * **term**<br>
+      desc
+      * **another term**<br>
+      desc
+      `
+      expect(downdoc(input, { attributes: { 'markdown-line-break': '<br>' } })).to.equal(expected)
+    })
+
     it('should not match double colon embedded in description list term', () => {
       const input = heredoc`
       foo::bar:: baz
@@ -5018,7 +5059,7 @@ describe('downdoc()', () => {
       const expected = heredoc`
       * foo
         * **term**\\
-      desc
+        desc
       * bar
       `
       expect(downdoc(input)).to.equal(expected)
@@ -5035,7 +5076,7 @@ describe('downdoc()', () => {
       const expected = heredoc`
       * foo
         * **term**\\
-      desc
+        desc
       * bar
       `
       expect(downdoc(input)).to.equal(expected)
@@ -5050,7 +5091,7 @@ describe('downdoc()', () => {
       const expected = heredoc`
       1. foo
          * **term**\\
-      desc
+         desc
       2. bar
       `
       expect(downdoc(input)).to.equal(expected)
@@ -5067,7 +5108,7 @@ describe('downdoc()', () => {
       const expected = heredoc`
       1. foo
          * **term**\\
-      desc
+         desc
       2. bar
       `
       expect(downdoc(input)).to.equal(expected)

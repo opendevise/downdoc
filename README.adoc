@@ -65,7 +65,7 @@ Here's a rough list of the AsciiDoc syntax that downdoc current handles:
 * quote blocks with optional attribution
 * Markdown-style blockquotes
 * thematic breaks (including Markdown-style, e.g., `---`)
-* hard line breaks
+* hard line breaks (uses backslash as line break character by default; use `markdown-line-break` document attribute to override)
 * ifdef and ifndef preprocessor conditionals
 * escaped ifdef, ifndef, and include preprocessor directives
 * tables (cols attribute with optional horizontal alignments; no support for cell style; cell spec ignored)

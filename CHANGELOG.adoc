@@ -6,10 +6,15 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 == Unreleased
 
+=== Added
+
+* Allow line break marker to be configured using `markdown-line-break` document attribute
+
 === Changed
 
 * Add hard line break after label on admonition paragraph
 * Don't add space after hard line break in table cell
+* Indent wrapped primary text of dlist entry
 
 == 1.0.0-beta.12 (2023-01-27)
 
