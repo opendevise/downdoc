@@ -2761,28 +2761,18 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should convert inline stem macro', () => {
+    it('should convert inline stem macro and unescape escaped closing square bracket', () => {
       const input = heredoc`
       = Title
 
       The solution is stem:[x^2 + y^2].
-      `
-      const expected = heredoc`
-      # Title
-
-      The solution is $x^2 + y^2$.
-      `
-      expect(downdoc(input)).to.equal(expected)
-    })
-
-    it('should unescape escaped square bracket in inline stem macro', () => {
-      const input = heredoc`
-      = Title
 
       We arrive at stem:[4 \\times [(3 + 2) \\times 6\\]].
       `
       const expected = heredoc`
       # Title
+
+      The solution is $x^2 + y^2$.
 
       We arrive at $4 \\times [(3 + 2) \\times 6]$.
       `
@@ -4862,6 +4852,24 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should support block title and ID on list', () => {
+      const input = heredoc`
+      [#staples]
+      .Staples
+      * Flour
+      * Sugar
+      * Oil
+      `
+      const expected = heredoc`
+      <a name="staples"></a>**Staples**
+
+      * Flour
+      * Sugar
+      * Oil
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert checklist', () => {
       const input = heredoc`
       * [x] done
@@ -5097,14 +5105,15 @@ describe('downdoc()', () => {
       expect(downdoc(input, { attributes: { 'markdown-line-break': '<br>' } })).to.equal(expected)
     })
 
-    it('should support block title on description list', () => {
+    it('should support block title and ID on description list', () => {
       const input = heredoc`
+      [#terms]
       .Glossary
       terroir:: A wine's sense of place.
       complexity:: A wine's characteristic qualities.
       `
       const expected = heredoc`
-      **Glossary**
+      <a name="terms"></a>**Glossary**
 
       * **terroir**\\
       A wine’s sense of place.

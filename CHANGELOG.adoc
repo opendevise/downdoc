@@ -10,6 +10,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 * Allow line break marker to be configured using `markdown-line-break` document attribute
 * Add basic support for inline stem macro
+* Support ID on lists and description lists
 
 === Changed
 
