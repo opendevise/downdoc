@@ -4267,6 +4267,31 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should not carry over block attributes from adjacent code block', () => {
+      const input = heredoc`
+      = Title
+
+      [,ruby]
+      ----
+      puts 1
+      ----
+      ----
+      puts 1
+      ----
+      `
+      const expected = heredoc`
+      # Title
+
+      \`\`\`ruby
+      puts 1
+      \`\`\`
+      \`\`\`
+      puts 1
+      \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert listing block', () => {
       const input = heredoc`
       = Title
