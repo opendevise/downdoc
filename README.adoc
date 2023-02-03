@@ -73,6 +73,7 @@ Here's a rough list of the AsciiDoc syntax that downdoc current handles:
 * comment lines and blocks
 * passthrough blocks
 * stem blocks (i.e., display math) (assumes latexmath notation)
+* inline stem macro (no passthrough semantics)
 * delimited example, open, and sidebar blocks (delimiter lines removed)
 
 Currently, include directives are not processed.
