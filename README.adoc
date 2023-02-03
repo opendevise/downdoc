@@ -51,7 +51,8 @@ Here's a rough list of the AsciiDoc syntax that downdoc current handles:
 * link and URL macros (honors `hide-uri-scheme` attribute to hide URL scheme in visible URL)
 * escaped bare URLs
 * internal xrefs (honors value of `idprefix` and `idseparator` document attributes)
-* block IDs for document, sections, and paragraphs
+* block IDs for document, sections, paragraphs
+* block IDs for certain blocks (listing, literal, list, etc) that have a title (anchor is placed in title)
 * auto-generated text for internal xrefs (section and verbatim blocks only) (honoring `reftext` attribute on section, if specified)
 * inline anchor (shorthand syntax only, no reftext)
 * block and inline image macros
