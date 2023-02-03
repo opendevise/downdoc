@@ -2760,6 +2760,34 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should convert inline stem macro', () => {
+      const input = heredoc`
+      = Title
+
+      The solution is stem:[x^2 + y^2].
+      `
+      const expected = heredoc`
+      # Title
+
+      The solution is $x^2 + y^2$.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should unescape escaped square bracket in inline stem macro', () => {
+      const input = heredoc`
+      = Title
+
+      We arrive at stem:[4 \\times [(3 + 2) \\times 6\\]].
+      `
+      const expected = heredoc`
+      # Title
+
+      We arrive at $4 \\times [(3 + 2) \\times 6]$.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
   })
 
   describe('xrefs', () => {
@@ -6332,20 +6360,6 @@ describe('downdoc()', () => {
   })
 
   describe('unsupported', () => {
-    it('should not convert inline stem macro', () => {
-      const input = heredoc`
-      = Title
-
-      The solution is stem:[x^2 + y^2].
-      `
-      const expected = heredoc`
-      # Title
-
-      The solution is stem:[x^2 + y^2].
-      `
-      expect(downdoc(input)).to.equal(expected)
-    })
-
     it('should drop toc macro', () => {
       const input = heredoc`
       = Title
