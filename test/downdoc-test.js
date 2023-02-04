@@ -1915,6 +1915,23 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should convert block title on table with no header', () => {
+      const input = heredoc`
+      .Table caption
+      |===
+      | foo | bar
+      |===
+      `
+      const expected = heredoc`
+      **Table caption**
+
+      |     |     |
+      | --- | --- |
+      | foo | bar |
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should support table with no empty lines attached to list item', () => {
       const input = heredoc`
       * list item

@@ -21,6 +21,10 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 * Don't add line break marker to admonition label if text resolves to empty
 * Replace newline that follows hard break in table cell with single space
 
+=== Fixed
+
+* Place block title above table when table has no header
+
 == 1.0.0-beta.12 (2023-01-27)
 
 === Added
