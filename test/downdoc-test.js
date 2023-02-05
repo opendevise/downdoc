@@ -1208,6 +1208,26 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should support block title with ID on example block', () => {
+      const input = heredoc`
+      = Title
+
+      .A paragraph
+      [#ex-p]
+      ====
+      This is a paragraph.
+      ====
+      `
+      const expected = heredoc`
+      # Title
+
+      <a name="ex-p"></a>**A paragraph**
+
+      This is a paragraph.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should unwrap verbatim block enclosed in example block', () => {
       const input = heredoc`
       = Title
