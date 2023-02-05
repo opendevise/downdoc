@@ -1298,6 +1298,31 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should support block title on admonition block', () => {
+      const input = heredoc`
+      = Title
+
+      .Key points to remember
+      [IMPORTANT]
+      ====
+      * Verify your sources.
+      * Cite your references.
+      * Proofread!
+      ====
+      `
+      const expected = heredoc`
+      # Title
+
+      <dl><dt><strong>❗ IMPORTANT: Key points to remember</strong></dt><dd>
+
+      * Verify your sources.
+      * Cite your references.
+      * Proofread!
+      </dd></dl>
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should ignore unknown admonition type', () => {
       const input = heredoc`
       = Title
