@@ -1228,12 +1228,13 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should unwrap verbatim block enclosed in example block', () => {
+    it('should unwrap example block with title that encloses verbatim block with title', () => {
       const input = heredoc`
       = Title
 
-      .Ignored
+      .Something like this
       ====
+      .Verbatim title
       ....
       verbatim content
       ....
@@ -1246,6 +1247,10 @@ describe('downdoc()', () => {
       const expected = heredoc`
       # Title
 
+      **Something like this**
+
+      **Verbatim title**
+
       \`\`\`
       verbatim content
       \`\`\`
@@ -1253,6 +1258,27 @@ describe('downdoc()', () => {
       ## Following Section
 
       content
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should support block title on sidebar block', () => {
+      const input = heredoc`
+      = Title
+
+      .Stuff you will skip
+      ====
+      If you saw this in a text book, you would likely skip it.
+      Or would you?
+      ====
+      `
+      const expected = heredoc`
+      # Title
+
+      **Stuff you will skip**
+
+      If you saw this in a text book, you would likely skip it.
+      Or would you?
       `
       expect(downdoc(input)).to.equal(expected)
     })

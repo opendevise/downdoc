@@ -13,6 +13,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 * Support ID on lists and description lists
 * Support title on admonition block; insert after label
 * Support title with ID on example block
+* Support title without ID on example and sidebar blocks
 
 === Changed
 
