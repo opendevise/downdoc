@@ -9,7 +9,7 @@ endif::[]
 
 == What is downdoc?
 
-The downdoc package provides a CLI (command: `downdoc`) and JavaScript function (`downdoc`) to down-convert AsciiDoc to Markdown.
+The downdoc package provides both a CLI (command: `downdoc`) and a JavaScript function (`downdoc`) to down-convert AsciiDoc to Markdown.
 "`But why,`" you may ask?
 
 The reality is, the AsciiDoc format isn't supported everywhere.
