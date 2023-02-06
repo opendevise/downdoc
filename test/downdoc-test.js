@@ -1522,23 +1522,24 @@ describe('downdoc()', () => {
     it('should convert collapsible block to spoiler variant if markdown-collapsible-variant is spoiler', () => {
       const input = heredoc`
       = Title
+      :subject: summary
 
-      .Always visible text
+      .Always visible {subject}
       [%collapsible]
       ====
       This text won't be visible until the user clicks the always visible text.
 
-      TIP: Click the *always visible text* to hide this text again.
+      TIP: Click *Always visible {subject}* to hide this text again.
       ====
       `
       const expected = heredoc`
       # Title
 
-      \`\`\`spoiler Always visible text
+      \`\`\`spoiler Always visible summary
       This text won’t be visible until the user clicks the always visible text.
 
       **💡 TIP**\\
-      Click the **always visible text** to hide this text again.
+      Click **Always visible summary** to hide this text again.
       \`\`\`
       `
       expect(downdoc(input, { attributes: { 'markdown-collapsible-variant': 'spoiler' } })).to.equal(expected)
