@@ -33,34 +33,35 @@ Rather, it's intended to be used on AsciiDoc documents that are written with con
 
 Here's a rough list of the AsciiDoc syntax that downdoc current handles:
 
-* document title
-* author info and revision lines in document header
-* select intrinsic attributes (empty, idprefix, idseparator, nbsp, sp, vbar, zwsp)
-* document attribute entries (single-line only; no support for pass macro)
+* document title (atx-style only)
+* implicit author info and revision lines in document header
+* common intrinsic attributes (empty, idprefix, idseparator, nbsp, sp, vbar, zwsp)
+* document attribute entries (single-line value only; no support for pass macro)
 * document attribute references
 * part/chapter/section titles and discrete headings (atx-style only)
 * block titles
 * formatted text (restricted to boundaries of a single line)
- ** bold, italic, monospace, literal monospace, highlight, phrase w/ line-through role, double curly quotes, curly apostrophe
- ** literal monospace only escapes attribute references
- ** define `quotes` attribute to control space-separated characters used for double curly quotes (e.g., `“ ”`)
+** strong (bold), emphasis (italic), code phrase (monospace), literal code phrase, mark, span w/ line-through role, double curly quotes, curly apostrophe
+** literal code phrase only escapes attribute references
+** use `quotes` attribute to specify characters (space-separated) for double curly quotes (e.g., `“ ”`)
 * ordered, unordered (including checklists), and callout lists (1-19 or .)
 * nested ordered and unordered lists (use `markdown-list-indent` attribute to control indent size of output)
 * description and qanda list (first level only)
 * list continuation (for current list item only; no support for ancestor list continuation)
-* link and URL macros (honors `hide-uri-scheme` attribute to hide URL scheme in visible URL)
+* link and URL macros (honors `hide-uri-scheme` attribute to hide URL scheme in visible URL); can be escaped
 * escaped bare URLs
 * internal xrefs (honors value of `idprefix` and `idseparator` document attributes)
 * block IDs for document, sections, paragraphs
-* block IDs for certain blocks (listing, literal, list, etc) that have a title (anchor is placed in title)
-* auto-generated text for internal xrefs (section and verbatim blocks only) (honoring `reftext` attribute on section, if specified)
+* block IDs for other blocks (e.g., listing, literal, lists, example, sidebar, etc.) that have a title
+** anchor is placed at start of title
+* auto-generated text for internal xrefs (section and verbatim blocks only) (honors `reftext` attribute on section, if specified)
 * inline anchor (shorthand syntax only, no reftext)
 * block and inline image macros
 * literal blocks, listing blocks, and source blocks with optional source language
 * diagram blocks (literal block with diagram dialect)
 * literal paragraphs (auto-detects command prompt and promotes to command code block)
 * callout numbers (i.e., conums) (1-19 or .) in verbatim blocks
-* attribute references in literal paragraphs and verbatim blocks when subs=attributes+ or subs=+attributes is enabled
+* attribute references in literal paragraphs and verbatim blocks when subs=attributes+ or subs=+attributes is specified
 * indent=0 attribute on verbatim blocks
 * admonition paragraphs and blocks
 * quote blocks with optional attribution
@@ -77,7 +78,7 @@ Here's a rough list of the AsciiDoc syntax that downdoc current handles:
 * inline stem macro (no passthrough semantics)
 * delimited example, open, and sidebar blocks (delimiter lines removed)
 
-Currently, include directives are not processed.
+Currently, include directives are dropped.
 However, you can first run the document through https://github.com/asciidoctor/asciidoctor-reducer[Asciidoctor Reducer] to fold in the content from any included files.
 If you then run downdoc on the output of that step, it will convert the entire document, includes and all.
 
