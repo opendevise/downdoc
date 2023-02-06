@@ -31,6 +31,8 @@ downdoc employs a minimal approach to map the AsciiDoc syntax to Markdown that d
 While this gives downdoc the advantage of having no dependencies and being exceptionally fast, it does not support the full AsciiDoc syntax.
 Rather, it's intended to be used on AsciiDoc documents that are written with conversion to Markdown in mind.
 
+== Supported syntax
+
 Here's a rough list of the AsciiDoc syntax that downdoc current handles:
 
 * document title (atx-style only)
@@ -77,6 +79,12 @@ Here's a rough list of the AsciiDoc syntax that downdoc current handles:
 * stem blocks (i.e., display math) (assumes latexmath notation)
 * inline stem macro (no passthrough semantics)
 * delimited example, open, and sidebar blocks (delimiter lines removed)
+
+Here's the list of document attributes unique to this converter that control its behavior:
+
+* markdown-collapsible-variant (default: `disclosure`; accepts: `disclosure` or `spoiler`)
+* markdown-line-break (default: `\`; accepts any characters)
+* markdown-list-indent (default: not set; accepts a positive integer)
 
 Currently, include directives are dropped.
 However, you can first run the document through https://github.com/asciidoctor/asciidoctor-reducer[Asciidoctor Reducer] to fold in the content from any included files.
