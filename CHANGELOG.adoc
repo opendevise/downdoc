@@ -12,6 +12,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 * Add basic support for inline stem macro
 * Support ID on lists and description lists
 * Support title on admonition block; insert after label
+* Support ID on admonition block; insert before label
 * Support title with ID on example block
 * Support title without ID on example and sidebar blocks
 

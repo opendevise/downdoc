@@ -1344,12 +1344,12 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should support block title on admonition block', () => {
+    it('should support block title with ID on admonition block', () => {
       const input = heredoc`
       = Title
 
       .Key points to remember
-      [IMPORTANT]
+      [IMPORTANT#key-points]
       ====
       * Verify your sources.
       * Cite your references.
@@ -1359,7 +1359,7 @@ describe('downdoc()', () => {
       const expected = heredoc`
       # Title
 
-      <dl><dt><strong>❗ IMPORTANT: Key points to remember</strong></dt><dd>
+      <dl><dt><strong><a name="key-points"></a>❗ IMPORTANT: Key points to remember</strong></dt><dd>
 
       * Verify your sources.
       * Cite your references.
