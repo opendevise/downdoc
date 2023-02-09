@@ -3536,6 +3536,8 @@ describe('downdoc()', () => {
       const input = heredoc`
       = Title
 
+      See xref:docname:image-xref-and-link:::[link] to learn more.
+
       See <<docname:image-xref-and-link:::>> to learn more.
 
       [#docname:image-xref-and-link:::]
@@ -3543,6 +3545,8 @@ describe('downdoc()', () => {
       `
       const expected = heredoc`
       # Title
+
+      See [link](#link-to-resource-from-image) to learn more.
 
       See [Link to Resource from Image](#link-to-resource-from-image) to learn more.
 
