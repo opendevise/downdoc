@@ -85,6 +85,7 @@ Here's the list of document attributes unique to this converter that control its
 * markdown-collapsible-variant (default: `disclosure`; accepts: `disclosure` or `spoiler`)
 * markdown-line-break (default: `\`; accepts any characters)
 * markdown-list-indent (default: not set; accepts a positive integer)
+* quotes (default: `<q> </q>`; accepts a space-separated pair of HTML tags or marks)
 
 Currently, include directives are dropped.
 However, you can first run the document through https://github.com/asciidoctor/asciidoctor-reducer[Asciidoctor Reducer] to fold in the content from any included files.
