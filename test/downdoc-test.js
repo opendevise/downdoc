@@ -3504,10 +3504,14 @@ describe('downdoc()', () => {
       const input = heredoc`
       = Title
 
+      The link:[] macro is used to create a link with a non-URL target.
+
       See link:LICENSE[LICENSE] or link:LICENSE[] to find the license text.
       `
       const expected = heredoc`
       # Title
+
+      The link:[] macro is used to create a link with a non-URL target.
 
       See [LICENSE](LICENSE) or [LICENSE](LICENSE) to find the license text.
       `
