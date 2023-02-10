@@ -46,6 +46,7 @@ Here's a rough list of the AsciiDoc syntax that downdoc current handles:
 ** strong (bold), emphasis (italic), code phrase (monospace), literal code phrase, mark, span w/ line-through role, double curly quotes, curly apostrophe
 ** literal code phrase only escapes attribute references
 ** use `quotes` attribute to specify characters (space-separated) for double curly quotes (e.g., `“ ”`)
+** use `markdown-strikethrough` attribute to specify characters to use to enclose strikethrough text
 * ordered, unordered (including checklists), and callout lists (1-19 or .)
 * nested ordered and unordered lists (use `markdown-list-indent` attribute to control indent size of output)
 * description and qanda list (first level only)
@@ -85,6 +86,7 @@ Here's the list of document attributes unique to this converter that control its
 * markdown-collapsible-variant (default: `disclosure`; accepts: `disclosure` or `spoiler`)
 * markdown-line-break (default: `\`; accepts any characters)
 * markdown-list-indent (default: not set; accepts a positive integer)
+* markdown-strikethrough (default: `~~`; accepts a mark sequence or a space-separated pair of HTML tags)
 * quotes (default: `<q> </q>`; accepts a space-separated pair of HTML tags or marks)
 
 Currently, include directives are dropped.

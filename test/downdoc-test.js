@@ -2601,6 +2601,35 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should allow strikethrough mark to be configured using markdown-strikethrough attribute', () => {
+      const input = heredoc`
+      = Title
+      :markdown-strikethrough: ~
+
+      [.line-through]#strike it#, that was incorrect.
+      `
+      const expected = heredoc`
+      # Title
+
+      ~strike it~, that was incorrect.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should allow strikethrough tag pair to be configured using markdown-strikethrough attribute', () => {
+      const input = heredoc`
+      = Title
+
+      [.line-through]#strike it#, that was incorrect.
+      `
+      const expected = heredoc`
+      # Title
+
+      <s>strike it</s>, that was incorrect.
+      `
+      expect(downdoc(input, { attributes: { 'markdown-strikethrough': '<s> </s>' } })).to.equal(expected)
+    })
+
     it('should convert generic phrase with role', () => {
       const input = heredoc`
       = Title
