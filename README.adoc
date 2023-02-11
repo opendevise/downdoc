@@ -89,7 +89,7 @@ Here's the list of document attributes unique to this converter that control its
 * markdown-strikethrough (default: `~~`; accepts a mark sequence or a space-separated pair of HTML tags)
 * quotes (default: `<q> </q>`; accepts a space-separated pair of HTML tags or marks)
 
-To use a backtick in a code phrase in Markdown, it must be enclosed in backticks then enclosed in spaces.
+To use a backtick in a code phrase in Markdown, it must be enclosed in backticks then enclosed in non-backtick characters, such as spaces.
 To achieve this, we recommend setting the `backtick` attribute as follows:
 
 [,asciidoc]
@@ -99,6 +99,7 @@ To achieve this, we recommend setting the `backtick` attribute as follows:
 
 Then you can reference it anywhere in a code phrase using the `\{backtick}` attribute reference.
 If you need to use a backtick outside of a code phrase, you may want to split it into two separate attributes.
+You may need to play around a bit to get the output you want.
 
 Currently, include directives are dropped.
 However, you can first run the document through https://github.com/asciidoctor/asciidoctor-reducer[Asciidoctor Reducer] to fold in the content from any included files.
