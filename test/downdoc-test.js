@@ -6602,5 +6602,24 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should ignore ID on block without title', () => {
+      const input = heredoc`
+      See <<fizz>>.
+
+      [#fizz]
+      ----
+      buzz
+      ----
+      `
+      const expected = heredoc`
+      See [fizz](#fizz).
+
+      \`\`\`
+      buzz
+      \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
   })
 })
