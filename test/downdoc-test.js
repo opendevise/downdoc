@@ -636,7 +636,7 @@ describe('downdoc()', () => {
   })
 
   describe('block titles', () => {
-    it('should convert block title above block', () => {
+    it('should convert block title above literal paragraph', () => {
       const input = heredoc`
       .Usage
        downdoc [OPTION]... FILE
@@ -712,7 +712,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should convert block title on each block', () => {
+    it('should convert block title on consecutive blocks', () => {
       const input = heredoc`
       .Purpose
       To convert AsciiDoc to Markdown.
@@ -732,7 +732,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should not output dangling block title', () => {
+    it('should ignore dangling block title', () => {
       const input = heredoc`
       last paragraph
 
