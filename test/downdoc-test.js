@@ -695,6 +695,37 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should convert block title above delimited quote block', () => {
+      const input = heredoc`
+      .Words to code by
+      ____
+      Test, always test.
+      ____
+      `
+      const expected = heredoc`
+      **Words to code by**
+
+      > Test, always test.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert block title with ID above delimited quote block', () => {
+      const input = heredoc`
+      [#test-test-test]
+      .Words to code by
+      ____
+      Test, always test.
+      ____
+      `
+      const expected = heredoc`
+      <a name="test-test-test"></a>**Words to code by**
+
+      > Test, always test.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert block title that begins with .', () => {
       const input = heredoc`
       ..npmrc
