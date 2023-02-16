@@ -43,8 +43,9 @@ Here's a rough list of the AsciiDoc syntax that downdoc current handles:
 * part/chapter/section titles and discrete headings (atx-style only)
 * block titles
 * formatted text (restricted to boundaries of a single line)
-** strong (bold), emphasis (italic), code phrase (monospace), literal code phrase, mark, span w/ line-through role, double curly quotes, curly apostrophe
-** literal code phrase only escapes attribute references
+** strong (bold), emphasis (italic), code span (monospace), literal code phrase, mark, span w/ line-through role, double curly quotes, curly apostrophe
+** literal code span only escapes attribute references
+** roles attached to strong and emphasis are processed and dropped
 ** use `quotes` attribute to specify characters (space-separated) for double curly quotes (e.g., `“ ”`)
 ** use `markdown-strikethrough` attribute to specify characters to use to enclose strikethrough text
 * ordered, unordered (including checklists), and callout lists (1-19 or .)
