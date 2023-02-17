@@ -43,7 +43,7 @@ Here's a rough list of the AsciiDoc syntax that downdoc current handles:
 * part/chapter/section titles and discrete headings (atx-style only)
 * block titles
 * formatted text (restricted to boundaries of a single line)
-** strong (bold), emphasis (italic), code span (monospace), literal code phrase, mark, span w/ line-through role, double curly quotes, curly apostrophe
+** strong (bold), emphasis (italic), code span (monospace), literal code span, mark, span w/ line-through role, double curly quotes, curly apostrophe
 ** literal code span only escapes attribute references
 ** metadata attached to strong and emphasis (ID and roles) are processed and dropped
 ** use `quotes` attribute to specify characters (space-separated) for double curly quotes (e.g., `“ ”`)
@@ -90,7 +90,7 @@ Here's the list of document attributes unique to this converter that control its
 * markdown-strikethrough (default: `~~`; accepts a mark sequence or a space-separated pair of HTML tags)
 * quotes (default: `<q> </q>`; accepts a space-separated pair of HTML tags or marks)
 
-To use a backtick in a code phrase in Markdown, it must be enclosed in backticks then enclosed in non-backtick characters, such as spaces.
+To use a backtick in a code span in Markdown, it must be enclosed in backticks then enclosed in non-backtick characters, such as spaces.
 To achieve this, we recommend setting the `backtick` attribute as follows:
 
 [,asciidoc]
@@ -98,8 +98,8 @@ To achieve this, we recommend setting the `backtick` attribute as follows:
 :backtick: {sp}```{sp}
 ----
 
-Then you can reference it anywhere in a code phrase using the `\{backtick}` attribute reference.
-If you need to use a backtick outside of a code phrase, you may want to split it into two separate attributes.
+Then you can reference it anywhere in a code span using the `\{backtick}` attribute reference.
+If you need to use a backtick outside of a code span, you may want to split it into two separate attributes.
 You may need to play around a bit to get the output you want.
 
 Currently, include directives are dropped.
