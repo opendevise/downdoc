@@ -2432,11 +2432,15 @@ describe('downdoc()', () => {
       = Title
 
       A boolean value can be \`true\` or \`false\`.
+
+      In Java, a boolean is designated by the [.keyword]\`boolean\` keyword.
       `
       const expected = heredoc`
       # Title
 
       A boolean value can be \`true\` or \`false\`.
+
+      In Java, a boolean is designated by the \`boolean\` keyword.
       `
       expect(downdoc(input)).to.equal(expected)
     })
