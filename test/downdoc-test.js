@@ -2795,6 +2795,20 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should replace quotes around single quoted text', () => {
+      const input = heredoc`
+      = Title
+
+      Accept the terms by typing '\`yes\`' when prompted.
+      `
+      const expected = heredoc`
+      # Title
+
+      Accept the terms by typing <q>yes</q> when prompted.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should allow double smart quotes replacement to be controlled by quotes attribute', () => {
       const input = heredoc`
       :quotes: “ ”

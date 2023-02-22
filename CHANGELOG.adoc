@@ -11,6 +11,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 * Allow marks/tags used to enclose strikethrough text to be configured using `markdown-strikethrough` document attribute
 * Support title along with optional ID on delimited quote block
 * Process and drop metadata (ID and roles) on code span
+* Process single quoted text
 
 == 1.0.0-rc.1 (2023-02-07)
 
