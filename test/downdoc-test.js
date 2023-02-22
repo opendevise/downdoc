@@ -2781,7 +2781,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should substitute double smart quotes', () => {
+    it('should replace quotes around double quoted text', () => {
       const input = heredoc`
       Before you say "\`no way\`", I say "\`try before you deny\`".
 
@@ -2795,7 +2795,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should allow double smarts quotes replacement to be controlled by quotes attribute', () => {
+    it('should allow double smart quotes replacement to be controlled by quotes attribute', () => {
       const input = heredoc`
       :quotes: “ ”
 
