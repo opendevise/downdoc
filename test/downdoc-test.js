@@ -6142,6 +6142,18 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should skip line comment that contains a dlist term', () => {
+      const input = heredoc`
+      //old term:: description
+      new term:: description
+      `
+      const expected = heredoc`
+      * **new term**\\
+      description
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should skip block comments', () => {
       const input = heredoc`
       ////
