@@ -3228,7 +3228,7 @@ describe('downdoc()', () => {
 
       Instructions go here.
 
-      [[deploy,Deploy]]
+      [[deploy, Deploy]]
       == Deploy Your Site
 
       Instructions go here.
