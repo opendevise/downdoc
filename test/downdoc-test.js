@@ -3749,11 +3749,9 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should ignore inline macros if target contains space', () => {
+    it('should ignore URL and link macros if target contains space', () => {
       const input = heredoc`
       link:not processed.html[]
-
-      image:not processed.png[]
 
       https://example.org/not processed.html[]
       `
@@ -3808,6 +3806,24 @@ describe('downdoc()', () => {
       # Title
 
       * ![fr](https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit/Assets/PNG/FR.png)
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert inline image with space in target', () => {
+      const input = heredoc`
+      = Title
+
+      An image macro consists of an image: prefix, a target, and [] with optional alt text.
+
+      When it works, I get a image:big grin.png[big grin].
+      `
+      const expected = heredoc`
+      # Title
+
+      An image macro consists of an image: prefix, a target, and [] with optional alt text.
+
+      When it works, I get a ![big grin](big grin.png).
       `
       expect(downdoc(input)).to.equal(expected)
     })
