@@ -3863,6 +3863,29 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should convert block image with space in target', () => {
+      const input = heredoc`
+      = Title
+
+      image::[not an image macro]
+
+      image:: image.png[not an image macro]
+
+      image::my image.png[my image]
+      `
+      const expected = heredoc`
+      # Title
+
+      image::[not an image macro]
+
+      * **image**\\
+      image.png[not an image macro]
+
+      ![my image](my image.png)
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should prepend value of imagesdir attribute to target of block image', () => {
       const input = heredoc`
       = Title
