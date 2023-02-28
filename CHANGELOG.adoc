@@ -16,6 +16,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 === Changed
 
 * Allow space in target of block or inline image as long as it's not the first character of the target
+* Ignore `image:` macro prefix if followed by backtick
 
 == 1.0.0-rc.1 (2023-02-07)
 
