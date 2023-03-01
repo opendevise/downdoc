@@ -3529,6 +3529,15 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should not match xref macro if macro name delimiter is followed by backtick', () => {
+      const input = heredoc`
+      xref:\`[]
+
+      An xref macro consists of an \`xref:\` prefix, a target, and \`[]\` with optional link text.
+      `
+      expect(downdoc(input)).to.equal(input)
+    })
+
     it('should not match xref: prefix followed by colon', () => {
       const input = heredoc`
       = Title
