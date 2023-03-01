@@ -3426,6 +3426,22 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should allow space in target of external xref', () => {
+      const input = heredoc`
+      = Title
+
+      Please refer to the <<how to contribute.adoc#,contributing guide>>.
+      The xref:how to contribute.adoc[contribution guide] will teach you how to contribute to the project.
+      `
+      const expected = heredoc`
+      # Title
+
+      Please refer to the [contributing guide](how to contribute.adoc).
+      The [contribution guide](how to contribute.adoc) will teach you how to contribute to the project.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should rewrite xref to verbatim block with title and ID', () => {
       const input = heredoc`
       = Title
