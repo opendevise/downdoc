@@ -3828,18 +3828,13 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should convert inline image if macro name delimiter is followed by backtick', () => {
+    it('should not convert inline image macro if macro name delimiter is followed by backtick', () => {
       const input = heredoc`
-      = Title
+      image:\`[]
 
       An image macro consists of an \`image:\` prefix, a target, and \`[]\` with optional alt text.
       `
-      const expected = heredoc`
-      # Title
-
-      An image macro consists of an \`image:\` prefix, a target, and \`[]\` with optional alt text.
-      `
-      expect(downdoc(input)).to.equal(expected)
+      expect(downdoc(input)).to.equal(input)
     })
 
     it('should prepend value of imagesdir attribute to target of inline image', () => {
