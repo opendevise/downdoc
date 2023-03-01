@@ -3808,15 +3808,29 @@ describe('downdoc()', () => {
       = Title
 
       When you see image:images/green-bar.png[green bar], you know the tests have passed!
-
-      When you see image:images/red-bar.png[], something has gone wrong.
       `
       const expected = heredoc`
       # Title
 
       When you see ![green bar](images/green-bar.png), you know the tests have passed!
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
 
-      When you see ![red-bar.png](images/red-bar.png), something has gone wrong.
+    it('should generate alt text from basename of target if alt text not specified', () => {
+      const input = heredoc`
+      = Title
+
+      When you see image:images/red-bar.png[], something has gone wrong.
+
+      Fix the code and click image:run[] to run the test again.
+      `
+      const expected = heredoc`
+      # Title
+
+      When you see ![red-bar](images/red-bar.png), something has gone wrong.
+
+      Fix the code and click ![run](run) to run the test again.
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -3841,7 +3855,7 @@ describe('downdoc()', () => {
 
       An image macro consists of an image: prefix, a target, and [] with optional alt text.
 
-      When it works, I get a image:big grin.png[big grin].
+      When it works, I get a image:big grin.png[].
       `
       const expected = heredoc`
       # Title
@@ -3876,7 +3890,7 @@ describe('downdoc()', () => {
 
       When you see ![green bar](images/green-bar.png), you know the tests have passed!
 
-      When you see ![red-bar.png](images/red-bar.png), something has gone wrong.
+      When you see ![red-bar](images/red-bar.png), something has gone wrong.
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -3894,7 +3908,7 @@ describe('downdoc()', () => {
 
       Here’s a screenshot of the application in action.
 
-      ![screenshot.png](images/screenshot.png)
+      ![screenshot](images/screenshot.png)
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -3950,7 +3964,7 @@ describe('downdoc()', () => {
 
       Here’s a screenshot of the application in action.
 
-      ![screenshot.png](images/screenshot.png)
+      ![screenshot](images/screenshot.png)
       `
       expect(downdoc(input)).to.equal(expected)
     })
