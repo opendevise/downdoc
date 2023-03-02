@@ -3093,7 +3093,7 @@ describe('downdoc()', () => {
       const input = heredoc`
       = Title
 
-      <<Install>> <<Section Title with Spaces>>
+      <<Install>> xref:Section Title with Spaces[]
 
       == Install
 
