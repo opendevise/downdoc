@@ -3034,6 +3034,20 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should not match interdocument xref macro if fragment contains space characters', () => {
+      const input = heredoc`
+      = Title
+
+      xref:doc.adoc# may be followed by a fragment before the [].
+      `
+      const expected = heredoc`
+      # Title
+
+      xref:doc.adoc# may be followed by a fragment before the [].
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should not match xref shorthand if ID contains space characters', () => {
       const input = heredoc`
       = Title
