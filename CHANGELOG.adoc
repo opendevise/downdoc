@@ -19,6 +19,10 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 * Ignore `image:` macro prefix if followed by backtick
 * Remove file extension from basename of target when generating alt text for image
 
+=== Fixed
+
+* Don't recognize xref macro if fragment in target contains spaces
+
 == 1.0.0-rc.1 (2023-02-07)
 
 === Added

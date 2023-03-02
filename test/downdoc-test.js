@@ -3020,6 +3020,20 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should not match internal xref macro if ID contains space characters', () => {
+      const input = heredoc`
+      = Title
+
+      An internal xref macro starts with xref:#target and ends with [].
+      `
+      const expected = heredoc`
+      # Title
+
+      An internal xref macro starts with xref:#target and ends with [].
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should not match xref shorthand if ID contains space characters', () => {
       const input = heredoc`
       = Title
