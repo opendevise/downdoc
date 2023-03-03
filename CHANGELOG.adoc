@@ -12,6 +12,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 * Support title along with optional ID on delimited quote block
 * Process and drop metadata (ID and roles) on code span
 * Process single quoted text
+* Use reftext defined on target block for automatic link text of xref if block has ID, title, and reftext
 
 === Changed
 

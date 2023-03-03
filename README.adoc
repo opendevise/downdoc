@@ -58,7 +58,7 @@ Here's a rough list of the AsciiDoc syntax that downdoc current handles:
 * block IDs for document, sections, paragraphs
 * block IDs for other blocks (e.g., listing, literal, lists, example, sidebar, etc.) that have a title
 ** anchor is placed at start of title
-* auto-generated text for internal xrefs (section and verbatim blocks only) (honors `reftext` attribute on section, if specified)
+* auto-generated text for internal xrefs (section and verbatim blocks only) (honors `reftext` attribute on section or on block with ID and title)
 * inline anchor (shorthand syntax only, no reftext)
 * block and inline image macros
 * literal blocks, listing blocks, and source blocks with optional source language
