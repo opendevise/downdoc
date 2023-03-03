@@ -3878,6 +3878,8 @@ describe('downdoc()', () => {
       When you see image:images/red-bar.png[], something has gone wrong.
 
       Fix the code and click image:run[] to run the test again.
+
+      image::project/3.1/_images/test-result.svg[]
       `
       const expected = heredoc`
       # Title
@@ -3885,6 +3887,8 @@ describe('downdoc()', () => {
       When you see ![red-bar](images/red-bar.png), something has gone wrong.
 
       Fix the code and click ![run](run) to run the test again.
+
+      ![test-result](project/3.1/_images/test-result.svg)
       `
       expect(downdoc(input)).to.equal(expected)
     })
