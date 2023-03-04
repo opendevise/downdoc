@@ -69,7 +69,7 @@ Here's a rough list of the AsciiDoc syntax that downdoc current handles:
 * indent=0 attribute on verbatim blocks
 * admonition paragraphs and blocks
 * quote blocks with optional attribution
-* Markdown-style blockquotes
+* Markdown-style blockquotes (nested blocks are passed through as written; only inline markup is down-converted)
 * thematic breaks (including Markdown-style, e.g., `---`)
 * hard line breaks (uses backslash as line break character by default; use `markdown-line-break` document attribute to override)
 * ifdef and ifndef preprocessor conditionals
