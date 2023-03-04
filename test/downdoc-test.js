@@ -4115,6 +4115,26 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should preserve indentation of literal paragraph inside quote block', () => {
+      const input = heredoc`
+      = Title
+
+      ____
+      Mind the gap.
+
+       literally
+      ____
+      `
+      const expected = heredoc`
+      # Title
+
+      > Mind the gap.
+      >
+      >     literally
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert quote block', () => {
       const input = heredoc`
       = Title
