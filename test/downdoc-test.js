@@ -4895,6 +4895,31 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should outdent contents of verbatim block inside quote block if indent=0 attribute is set', () => {
+      const input = heredoc`
+      ____
+      [,java,indent=0]
+      ----
+        public class Hello {
+          public static void main (String... args) {
+            System.out.println("Hello, World!");
+          }
+        }
+      ----
+      ____
+      `
+      const expected = heredoc`
+      > \`\`\`java
+      > public class Hello {
+      >   public static void main (String... args) {
+      >     System.out.println("Hello, World!");
+      >   }
+      > }
+      > \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should honor subs=+attributes on source block', () => {
       const input = heredoc`
       = Title

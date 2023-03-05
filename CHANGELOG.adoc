@@ -23,6 +23,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 === Fixed
 
 * Don't recognize xref macro if fragment in target contains spaces
+* Preserve non-space indent (e.g., quote block markers) when resetting indent of code block
 
 == 1.0.0-rc.1 (2023-02-07)
 
