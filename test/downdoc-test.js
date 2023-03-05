@@ -4115,26 +4115,6 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should preserve indentation of literal paragraph inside quote block', () => {
-      const input = heredoc`
-      = Title
-
-      ____
-      Mind the gap.
-
-       literally
-      ____
-      `
-      const expected = heredoc`
-      # Title
-
-      > Mind the gap.
-      >
-      >     literally
-      `
-      expect(downdoc(input)).to.equal(expected)
-    })
-
     it('should convert quote block', () => {
       const input = heredoc`
       = Title
@@ -4166,6 +4146,26 @@ describe('downdoc()', () => {
 
       > 1. Fasten seatbelt
       > 2. And away we go!
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should preserve indentation of literal paragraph inside quote block', () => {
+      const input = heredoc`
+      = Title
+
+      ____
+      Mind the gap.
+
+       literally
+      ____
+      `
+      const expected = heredoc`
+      # Title
+
+      > Mind the gap.
+      >
+      >     literally
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -5926,6 +5926,22 @@ describe('downdoc()', () => {
          bar
 
       after list
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should retain blockquote indent on list continuation line', () => {
+      const input = heredoc`
+      ____
+      * foo
+      +
+      bar
+      ____
+      `
+      const expected = heredoc`
+      > * foo
+      >
+      >   bar
       `
       expect(downdoc(input)).to.equal(expected)
     })
