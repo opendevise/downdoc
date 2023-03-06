@@ -4202,6 +4202,26 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should indent paragraph attached to list inside quote block attached to list', () => {
+      const input = heredoc`
+      * foo
+      +
+      ____
+      * bar
+      +
+      baz
+      ____
+      `
+      const expected = heredoc`
+      * foo
+
+        > * bar
+        >
+        >   baz
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
   })
 
   describe('code blocks', () => {
