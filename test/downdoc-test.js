@@ -6857,5 +6857,20 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should not process non-paragraph blocks in Markdown-style blockquote', () => {
+      const input = heredoc`
+      > . one
+      > . two
+      > . three
+
+      > NOTE: This is treated as a regular paragraph.
+
+      > ====
+      > example
+      > ====
+      `
+      expect(downdoc(input)).to.equal(input)
+    })
   })
 })
