@@ -4169,6 +4169,39 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should indent quote block attached to list item properly', () => {
+      const input = heredoc`
+      * yin
+      +
+      ____
+      yang
+      ____
+
+      * foo
+      +
+      ____
+      bar
+
+      baz
+      ____
+
+      fin
+      `
+      const expected = heredoc`
+      * yin
+
+        > yang
+      * foo
+
+        > bar
+        >
+        > baz
+
+      fin
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
   })
 
   describe('code blocks', () => {
