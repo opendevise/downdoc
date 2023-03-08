@@ -20,7 +20,7 @@ if [ -z "$RELEASE_NPM_TAG" ]; then
     RELEASE_NPM_TAG=latest
   elif case $RELEASE_VERSION in pre*) ;; *) false;; esac; then
     RELEASE_NPM_TAG=testing
-  elif [ "$RELEASE_VERSION" != "${RELEASE_VERSION/-/}" ]; then
+  elif [ "$RELEASE_VERSION" != "${RELEASE_VERSION/-/}" ] && [ "${RELEASE_VERSION#*-}" != "stable" ]; then
     RELEASE_NPM_TAG=testing
   else
     RELEASE_NPM_TAG=latest
