@@ -4170,6 +4170,30 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should preserve indentation of empty line in verbatim block inside quote block', () => {
+      const input = heredoc`
+      = Title
+
+      ____
+      ----
+      foo
+
+      bar
+      ----
+      ____
+      `
+      const expected = heredoc`
+      # Title
+
+      > \`\`\`
+      > foo
+      >
+      > bar
+      > \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should indent quote block attached to list item properly', () => {
       const input = heredoc`
       * yin
