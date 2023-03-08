@@ -4180,11 +4180,24 @@ describe('downdoc()', () => {
 
       bar
       ----
+
+      [indent=0]
+      ----
+       foo
+
+       bar
+      ----
       ____
       `
       const expected = heredoc`
       # Title
 
+      > \`\`\`
+      > foo
+      >
+      > bar
+      > \`\`\`
+      >
       > \`\`\`
       > foo
       >
