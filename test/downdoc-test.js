@@ -5600,6 +5600,10 @@ describe('downdoc()', () => {
       attached paragraph
 
       yet another term:: desc
+
+      one more term::
+      desc
+      more desc
       `
       const expected = heredoc`
       * **term**\\
@@ -5610,6 +5614,9 @@ describe('downdoc()', () => {
         attached paragraph
       * **yet another term**\\
       desc
+      * **one more term**\\
+      desc
+      more desc
       `
       expect(downdoc(input)).to.equal(expected)
     })
