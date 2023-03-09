@@ -6,6 +6,10 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 == Unreleased
 
+=== Added
+
+* Add support for `hardbreaks` option on paragraph
+
 === Fixed
 
 * Preserve non-space indent in front of empty line in verbatim block (with and without indent=0)

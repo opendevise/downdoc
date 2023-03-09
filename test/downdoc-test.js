@@ -1133,6 +1133,23 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should add hard line break character if hardbreaks option is set on paragraph', () => {
+      const input = heredoc`
+      [%hardbreaks]
+      three
+      two
+      one
+      blast off!
+      `
+      const expected = heredoc`
+      three\\
+      two\\
+      one\\
+      blast off!
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should allow hard line break mark for paragraph to be configured using markdown-line-break attribute', () => {
       const input = heredoc`
       roses are red, +
