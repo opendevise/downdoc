@@ -5,7 +5,7 @@ ifdef::env-github[]
 :toclevels: 1
 endif::[]
 
-> Rapidly converts AsciiDoc to Markdown.
+> Rapidly down-converts AsciiDoc to Markdown.
 
 == What is downdoc?
 
@@ -17,13 +17,16 @@ For instance, npm package repositories such as https://npmjs.com and https://yar
 But you're a sensible developer who wants to maintain your README in AsciiDoc.
 Enter downdoc.
 
+When the situation calls for it, you can draft content in AsciiDoc and convert it to Markdown where only Markdown is accepted.
+Typical examples include an issue tracker or chat application.
+To post in Markdown, run the AsciiDoc content through downdoc and paste the result it produces.
+downdoc handles the context switch to Markdown so your brain doesn't have to.
+
 This project initially started out with a goal to transpile an AsciiDoc README to the Markdown format for npm packaging.
 In that regard, it was designed to be just good enough to get the job done.
-
-Over time, downdoc has proven to have broader application.
-With downdoc, you can draft content in AsciiDoc even for places where only Markdown is accepted, such as an issue tracker or chat application.
-To post in Markdown, run the content through downdoc then paste the result.
-downdoc handles the context switch to Markdown so your brain doesn't have to.
+Over time, downdoc has proven to have broader application and has thus been gradually improved.
+It now does a reasonably good job of mapping constructs in AsciiDoc to Markdown for all situations.
+It even offers dedicated configuration to target some Markdown flavors and environments.
 
 == How does it work?
 
