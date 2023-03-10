@@ -912,6 +912,16 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(input)
     })
 
+    it('should collapse newlines in paragraph if markdown-unwrap-prose attribute is set', () => {
+      const input = heredoc`
+      no
+      newlines
+      here
+      `
+      const expected = 'no newlines here'
+      expect(downdoc(input, { attributes: { 'markdown-unwrap-prose': '' } })).to.equal(expected)
+    })
+
     it('should not process section title within a paragraph', () => {
       const input = heredoc`
       Let the paragraph begin.
@@ -5389,6 +5399,39 @@ describe('downdoc()', () => {
         * bar
 
         baz
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should unwrap principal text and paragraph on list item when markdown-unwrap-prose attributes is set', () => {
+      const input = heredoc`
+      :markdown-unwrap-prose:
+
+      * foo
+      bar
+      +
+      fizz
+      buzz
+      `
+      const expected = heredoc`
+      * foo bar
+
+        fizz buzz
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should unwrap principal text on nested list item when markdown-unwrap-prose attributes is set', () => {
+      const input = heredoc`
+      :markdown-unwrap-prose:
+
+      * foo
+      ** bar
+      baz
+      `
+      const expected = heredoc`
+      * foo
+        * bar baz
       `
       expect(downdoc(input)).to.equal(expected)
     })

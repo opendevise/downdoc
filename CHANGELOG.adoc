@@ -9,6 +9,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 === Added
 
 * Add support for `hardbreaks` option on paragraph
+* Add support for `markdown-unwrap-prose` document attribute to remove newlines in paragraphs
 
 === Fixed
 

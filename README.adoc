@@ -90,6 +90,7 @@ Here's the list of document attributes unique to this converter that control its
 * markdown-line-break (default: `\`; accepts any characters)
 * markdown-list-indent (default: not set; accepts a positive integer)
 * markdown-strikethrough (default: `~~`; accepts a mark sequence or a space-separated pair of HTML tags)
+* markdown-unwrap-prose (when set, will remove newlines between lines in paragraphs; reverses ventilated prose)
 * quotes (default: `<q> </q>`; accepts a space-separated pair of HTML tags or marks)
 
 To use a backtick in a code span in Markdown, it must be enclosed in backticks then enclosed in non-backtick characters, such as spaces.
