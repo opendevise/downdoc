@@ -5505,6 +5505,16 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    // NOTE this syntax is not recognized as a list, so it only gets passed through
+    it('should retain ordered list that uses explicit arabic numerals', () => {
+      const input = heredoc`
+      1. whisk
+      2. mix
+      3. bake
+      `
+      expect(downdoc(input)).to.equal(input)
+    })
+
     it('should remove blank lines between ordered list items', () => {
       const input = heredoc`
       . one
