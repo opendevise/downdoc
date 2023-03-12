@@ -5738,22 +5738,27 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should not match double colon embedded in description list term', () => {
+    it('should not match repeating colon embedded in description list term', () => {
       const input = heredoc`
       foo::bar:: baz
 
       ::foo::
       bar
+
+      :::fizz::: buzz
       `
       const expected = heredoc`
       * **foo::bar**\\
       baz
       * **::foo**\\
       bar
+        * **:::fizz**\\
+        buzz
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
+    // FIXME any repeating colon shouldn't be matched
     it('should not match line with only double colon at start of line as description list entry', () => {
       const input = heredoc`
       ::
@@ -5845,6 +5850,52 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should convert nested description list into unordered list with bold first line', () => {
+      const input = heredoc`
+      term:: desc
+
+      nested term::: desc
+
+      another nested term:::
+      desc
+
+      another term::
+      desc
+      `
+      const expected = heredoc`
+      * **term**\\
+      desc
+        * **nested term**\\
+        desc
+        * **another nested term**\\
+        desc
+      * **another term**\\
+      desc
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert nested description list to depth of three', () => {
+      const input = heredoc`
+      term:: desc
+      term::: desc
+      term:::: desc
+      another term::
+      desc
+      `
+      const expected = heredoc`
+      * **term**\\
+      desc
+        * **term**\\
+        desc
+          * **term**\\
+          desc
+      * **another term**\\
+      desc
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should not leave behind hard line break marker after description list term followed by separate block', () => {
       const input = heredoc`
       term::
@@ -5874,6 +5925,27 @@ describe('downdoc()', () => {
       47
       2. _What’s a group of lemurs called?_\\
       A conspiracy.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should convert nested qanda list', () => {
+      const input = heredoc`
+      [qanda]
+      Did you read the novel?::
+      [qanda]
+      Who is the main character?:::
+      Jon
+
+      What is the main character's personal conflict?:::
+      Lack of respect from parents.
+      `
+      const expected = heredoc`
+      1. _Did you read the novel?_
+         1. _Who is the main character?_\\
+         Jon
+         2. _What is the main character’s personal conflict?_\\
+         Lack of respect from parents.
       `
       expect(downdoc(input)).to.equal(expected)
     })

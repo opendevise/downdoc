@@ -10,6 +10,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 * Add support for `hardbreaks` option on paragraph
 * Add support for `markdown-unwrap-prose` document attribute to remove newlines in paragraphs
+* Add support for nested description lists (up to 3 levels deep)
 
 === Fixed
 
