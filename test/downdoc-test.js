@@ -5912,6 +5912,24 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should not leave behind hard line break marker after description list entry with attached block', () => {
+      const input = heredoc`
+      term::
+      +
+      ----
+      listing
+      ----
+      `
+      const expected = heredoc`
+      * **term**
+
+        \`\`\`
+        listing
+        \`\`\`
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert qanda list', () => {
       const input = heredoc`
       [qanda]
