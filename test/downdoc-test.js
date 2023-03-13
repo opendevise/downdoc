@@ -628,17 +628,17 @@ describe('downdoc()', () => {
       const input = heredoc`
       ==    Heading with Leading Spaces Trimmed
 
-      ==  
+      ==
 
       fin
       `
       const expected = heredoc`
       ## Heading with Leading Spaces Trimmed
 
-      ==  
+      ==
 
       fin`
-      expect(downdoc(input)).to.equal(expected)
+      expect(downdoc(input.replace('\n==\n', '\n==  \n'))).to.equal(expected.replace('\n==\n', '\n==  \n'))
     })
 
     it('should clear block attributes after processing section title', () => {
@@ -1189,8 +1189,12 @@ describe('downdoc()', () => {
       roses are red, +
       violets are blue.
       `
-      const expected = 'roses are red,  \nviolets are blue.'
-      expect(downdoc(input, { attributes: { 'markdown-line-break': '  ' } })).to.equal(expected)
+      const expected = heredoc`
+      roses are red,
+      violets are blue.
+      `
+      const attributes = { 'markdown-line-break': '  ' }
+      expect(downdoc(input, { attributes })).to.equal(expected.replace('red,', 'red,  '))
     })
 
     it('should convert hard line break on line by itself', () => {
@@ -5771,7 +5775,7 @@ describe('downdoc()', () => {
       * **terroir**\\
       A wine’s sense of place.
       * **complexity**\\
-      A wine’s characteristic qualities. 
+      A wine’s characteristic qualities.
       `
       expect(downdoc(input)).to.equal(expected)
     })
