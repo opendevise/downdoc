@@ -478,7 +478,13 @@ describe('downdoc()', () => {
 
       ==== Level 3
 
-      content
+      ===== Level 4
+
+      ====== Level 5
+
+      ======= just content
+
+      more content
 
       == Another Level 1
       `
@@ -493,7 +499,13 @@ describe('downdoc()', () => {
 
       #### Level 3
 
-      content
+      ##### Level 4
+
+      ###### Level 5
+
+      ======= just content
+
+      more content
 
       ## Another Level 1
       `
