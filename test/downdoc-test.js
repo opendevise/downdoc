@@ -5324,6 +5324,20 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(input)
     })
 
+    it('should trim extra spaces following list marker', () => {
+      const input = heredoc`
+      * ready
+      *  set
+      *   go!
+      `
+      const expected = heredoc`
+      * ready
+      * set
+      * go!
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should remove blank lines between unordered list items', () => {
       const input = heredoc`
       * work
