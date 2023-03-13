@@ -625,8 +625,20 @@ describe('downdoc()', () => {
     })
 
     it('should convert line with heading marker followed by multiple spaces as paragraph text', () => {
-      const input = '==  Not a Heading'
-      expect(downdoc(input)).to.equal(input)
+      const input = heredoc`
+      ==    Heading with Leading Spaces Trimmed
+
+      ==  
+
+      fin
+      `
+      const expected = heredoc`
+      ## Heading with Leading Spaces Trimmed
+
+      ==  
+
+      fin`
+      expect(downdoc(input)).to.equal(expected)
     })
 
     it('should clear block attributes after processing section title', () => {

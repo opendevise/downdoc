@@ -14,6 +14,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 === Changed
 
+* Trim extra spaces after heading marker (effectively trimming leading spaces in title)
 * Trim extra spaces after list marker (effectively trimming leading spaces in principal text)
 
 === Fixed
