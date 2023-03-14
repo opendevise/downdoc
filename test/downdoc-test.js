@@ -1121,10 +1121,19 @@ describe('downdoc()', () => {
        paragraph
       []
       paragraph
+
+       more
+       literal
+      [foo:: bar]
+      paragraph
       `
       const expected = heredoc`
           literal
           paragraph
+      paragraph
+
+          more
+          literal
       paragraph
       `
       expect(downdoc(input)).to.equal(expected)
