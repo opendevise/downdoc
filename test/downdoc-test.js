@@ -5358,6 +5358,8 @@ describe('downdoc()', () => {
       const input = heredoc`
       * work
 
+      ** more work
+
       * play
 
 
@@ -5367,6 +5369,7 @@ describe('downdoc()', () => {
       `
       const expected = heredoc`
       * work
+        * more work
       * play
       * drink
 
@@ -5561,6 +5564,8 @@ describe('downdoc()', () => {
       const input = heredoc`
       . one
 
+      .. extra step
+
       . two
 
 
@@ -5570,6 +5575,7 @@ describe('downdoc()', () => {
       `
       const expected = heredoc`
       1. one
+         1. extra step
       2. two
       3. three
 
