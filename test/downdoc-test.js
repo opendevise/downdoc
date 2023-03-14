@@ -5593,9 +5593,11 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should start new list at block attribute line with empty attrlist', () => {
+    it('should break list at block attribute line if preceded by an empty line', () => {
       const input = heredoc`
       . one
+      [loweralpha]
+      .. nested in one
       . two
 
       []
@@ -5603,6 +5605,7 @@ describe('downdoc()', () => {
       `
       const expected = heredoc`
       1. one
+         1. nested in one
       2. two
 
       1. one
