@@ -251,9 +251,9 @@ describe('downdoc()', () => {
     it('should set value of attribute entry to empty string if value is not specified', () => {
       const input = heredoc`
       = Title
-      :empty:
+      :empty-string:
 
-      foo{empty}bar
+      foo{empty-string}bar
       `
       const expected = heredoc`
       # Title
