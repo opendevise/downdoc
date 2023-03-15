@@ -314,7 +314,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should permit all unicode letter characters in referenced attribute name', () => {
+    it('should permit all unicode letter characters in attribute name when assigned and referenced', () => {
       const input = heredoc`
       = Le Titre
       :dépôt-git: opendevise/downdoc
@@ -343,13 +343,14 @@ describe('downdoc()', () => {
       expect(downdoc(input, { attributes: { '-foo': 'bar' } })).to.equal(expected)
     })
 
+    // NOTE this test also asserts that attribute name can begin with number
     it('should substitute multiple attribute references in same line', () => {
       const input = heredoc`
       = Title
-      :author-1: Jim
-      :author-2: Jane
+      :1st-author: Jim
+      :2nd-author: Jane
 
-      This project was created by {author-1} and {author-2}.
+      This project was created by {1st-author} and {2nd-author}.
       `
       const expected = heredoc`
       # Title
@@ -586,14 +587,14 @@ describe('downdoc()', () => {
     it('should convert part title when document has no title', () => {
       const input = heredoc`
       :doctype: book
-      Not an author line.
+      This is the preface, not an author line.
 
       = First Steps
 
       == Installation
       `
       const expected = heredoc`
-      Not an author line.
+      This is the preface, not an author line.
 
       # First Steps
 
@@ -914,18 +915,6 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(input)
     })
-
-    it('should process paragraph that begins with ellipsis normally', () => {
-      const input = heredoc`
-      ...and to *home*
-      we shall go!
-      `
-      const expected = heredoc`
-      ...and to **home**
-      we shall go!
-      `
-      expect(downdoc(input)).to.equal(expected)
-    })
   })
 
   describe('paragraphs', () => {
@@ -946,6 +935,18 @@ describe('downdoc()', () => {
       `
       const expected = 'no newlines here'
       expect(downdoc(input, { attributes: { 'markdown-unwrap-prose': '' } })).to.equal(expected)
+    })
+
+    it('should treat ellipsis at start of paragraph as content not a block title', () => {
+      const input = heredoc`
+      ...and to *home*
+      we shall go!
+      `
+      const expected = heredoc`
+      ...and to **home**
+      we shall go!
+      `
+      expect(downdoc(input)).to.equal(expected)
     })
 
     it('should not process section title within a paragraph', () => {
@@ -980,7 +981,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(input)
     })
 
-    it('should not replace admonition label within a paragraph', () => {
+    it('should not process admonition label within a paragraph', () => {
       const input = heredoc`
       = Title
 
@@ -1208,16 +1209,20 @@ describe('downdoc()', () => {
       expect(downdoc(input, { attributes })).to.equal(expected.replace('red,', 'red,  '))
     })
 
-    it('should convert hard line break on line by itself', () => {
+    it('should convert hard line break on line by itself only if within a paragraph', () => {
       const input = heredoc`
       foo
        +
       bar
+
+       +
       `
       const expected = heredoc`
       foo
       \\
       bar
+
+          +
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -5468,25 +5473,13 @@ describe('downdoc()', () => {
       +
       fizz
       buzz
+      ** bar
+      baz
       `
       const expected = heredoc`
       * foo bar
 
         fizz buzz
-      `
-      expect(downdoc(input)).to.equal(expected)
-    })
-
-    it('should unwrap principal text on nested list item when markdown-unwrap-prose attributes is set', () => {
-      const input = heredoc`
-      :markdown-unwrap-prose:
-
-      * foo
-      ** bar
-      baz
-      `
-      const expected = heredoc`
-      * foo
         * bar baz
       `
       expect(downdoc(input)).to.equal(expected)
