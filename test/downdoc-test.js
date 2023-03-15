@@ -5798,7 +5798,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should not match repeating colon embedded in description list term', () => {
+    it('should allow repeating colon in description list term', () => {
       const input = heredoc`
       foo::bar:: baz
 
