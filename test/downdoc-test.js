@@ -67,7 +67,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should discard author line with single author', () => {
+    it('should consume author line with single author', () => {
       const input = heredoc`
       = Title
       Doc Writer <doc@example.org>
@@ -82,22 +82,24 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should discard author line with multiple authors', () => {
+    it('should consume author line with multiple authors', () => {
       const input = heredoc`
       = Title
       Doc Writer <doc@example.org>; Junior Écrivain <jr@example.org>
 
-      Body written by {authors}.
+      This document was written by {authors}.
+      It was lead by {author}.
       `
       const expected = heredoc`
       # Title
 
-      Body written by Doc Writer, Junior Écrivain.
+      This document was written by Doc Writer, Junior Écrivain.
+      It was lead by Doc Writer.
       `
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should discard revision line with only version', () => {
+    it('should consume revision line with only version', () => {
       const input = heredoc`
       = Title
       Author Name
@@ -113,7 +115,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should discard revision line with only date', () => {
+    it('should consume revision line with only date', () => {
       const input = heredoc`
       = Title
       Author Name
@@ -129,7 +131,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should discard revision line with version and date', () => {
+    it('should consume revision line with version and date', () => {
       const input = heredoc`
       = Title
       Author Name
@@ -145,7 +147,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should discard line after author line if only contains single number', () => {
+    it('should consume line after author line if only contains single number', () => {
       const input = heredoc`
       = Title
       Author Name
@@ -177,7 +179,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should process and remove attribute entries found in document header above doctitle', () => {
+    it('should consume attribute entries found in document header above doctitle', () => {
       const input = heredoc`
       :foo: bar
       :yin: yang
@@ -193,7 +195,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should process attribute entries found in body', () => {
+    it('should consume attribute entries found in body', () => {
       const input = heredoc`
       = Title
       :foo: bar
