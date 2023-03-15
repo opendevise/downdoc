@@ -5798,6 +5798,20 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should allow dlist term to start with list marker', () => {
+      const input = heredoc`
+      -:: subtract
+      <:: check if less than
+      `
+      const expected = heredoc`
+      * **-**\\
+      subtract
+      * **&lt;**\\
+      check if less than
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should allow repeating colon in description list term', () => {
       const input = heredoc`
       foo::bar:: baz
