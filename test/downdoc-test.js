@@ -1216,6 +1216,9 @@ describe('downdoc()', () => {
       bar
 
        +
+
+       +
+      baz
       `
       const expected = heredoc`
       foo
@@ -1223,6 +1226,9 @@ describe('downdoc()', () => {
       bar
 
           +
+
+          +
+      baz
       `
       expect(downdoc(input)).to.equal(expected)
     })
