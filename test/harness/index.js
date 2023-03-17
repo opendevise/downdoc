@@ -15,18 +15,28 @@ chai.use(require('dirty-chai'))
 const cleanDir = (dir, { create } = {}) =>
   fsp.rm(dir, { recursive: true, force: true }).then(() => (create ? fsp.mkdir(dir, { recursive: true }) : undefined))
 
-const heredoc = (literals) => {
-  const str = literals[0].trimEnd()
-  let lines = str.split(/^/m)
-  if (lines[0] === '\n') lines = lines.slice(1)
-  if (lines.length < 2) return str // discourage use of heredoc in this case
-  const last = lines.pop()
-  if (last != null) {
-    lines.push(last[last.length - 1] === '\\' && last[last.length - 2] === ' ' ? last.slice(0, -2) + '\n' : last)
+function heredoc (strings, ...values) {
+  const first = strings[0]
+  if (first[0] !== '\n') {
+    return values.length ? values.reduce((accum, value, idx) => accum + value + strings[idx + 1], first) : first
   }
-  const indentRx = /^ +/
-  const indentSize = Math.min(...lines.filter((l) => l.charAt() === ' ').map((l) => l.match(indentRx)[0].length))
-  return (indentSize ? lines.map((l) => (l.charAt() === ' ' ? l.slice(indentSize) : l)) : lines).join('')
+  let string = values.length
+    ? (strings = strings.slice()).push(strings.pop().trimEnd()) &&
+        values.reduce((accum, _, idx) => accum + '\x1f' + strings[idx + 1], first.slice(1))
+    : first.slice(1).trimEnd()
+  const lines = string.split('\n')
+  const indentSize = lines.reduce((accum, line) =>
+    accum && line ? (line[0] === ' ' ? Math.min(accum, line.length - line.trimStart().length) : 0) : accum,
+    Infinity
+  )
+  if (indentSize) {
+    string = lines.map((line) => line && line[0] === ' ' ? line.slice(indentSize) : line).join('\n')
+    if (!values.length) return string
+    strings = string.split('\x1f')
+  } else if (!values.length) {
+    return string
+  }
+  return values.reduce((accum, value, idx) => accum + value + strings[idx + 1], strings[0])
 }
 
 class StringIO {

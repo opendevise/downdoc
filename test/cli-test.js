@@ -11,6 +11,7 @@ const { version } = require('downdoc/package.json')
 const WORK_DIR = ospath.join(__dirname, 'work')
 
 describe('downdoc', () => {
+  const lf = '\n'
   const oldcwd = process.cwd()
   let stdout, stderr, example
 
@@ -31,14 +32,14 @@ describe('downdoc', () => {
 
       == Section Title
 
-      Paragraph. \\
+      Paragraph.${lf}
       `,
       expected: heredoc`
       # Document Title
 
       ## Section Title
 
-      Paragraph. \\
+      Paragraph.${lf}
       `,
     }
   })
@@ -65,7 +66,11 @@ describe('downdoc', () => {
 
     it('should only print usage when -h option is specified', async () => {
       const args = ['-h']
-      const expected = `downdoc ${version}\nUsage: downdoc [OPTION]... FILE\nConvert the specified AsciiDoc FILE`
+      const expected = heredoc`
+      downdoc ${version}
+      Usage: downdoc [OPTION]... FILE
+      Convert the specified AsciiDoc FILE to a Markdown file.${lf}
+      `
       await downdoc({ args, stdout })
       expect(stdout.string).to.startWith(expected)
       expect(stdout.string).to.endWith('\n')
@@ -73,7 +78,11 @@ describe('downdoc', () => {
 
     it('should only print usage when --help option is specified', async () => {
       const args = ['-h']
-      const expectedStart = `downdoc ${version}\nUsage: downdoc [OPTION]... FILE\nConvert the specified AsciiDoc FILE`
+      const expectedStart = heredoc`
+      downdoc ${version}
+      Usage: downdoc [OPTION]... FILE
+      Convert the specified AsciiDoc FILE to a Markdown file.${lf}
+      `
       const expectedIn = '\n  -a, --attribute name=val   set an AsciiDoc attribute; can be specified multiple times\n'
       const expectedEnd = 'If --output is not specified, the output file path is derived from FILE (e.g., README.md).\n'
       await downdoc({ args, stdout })
@@ -85,7 +94,10 @@ describe('downdoc', () => {
 
     it('should only print usage to stderr and set exit code when no options or arguments are specified', async () => {
       const args = []
-      const expected = "Usage: downdoc [OPTION]... FILE\nRun 'downdoc --help' for more information.\n"
+      const expected = heredoc`
+      Usage: downdoc [OPTION]... FILE
+      Run 'downdoc --help' for more information.${lf}
+      `
       const p = { args, stdout, stderr }
       await downdoc(p)
       expect(stdout.string).to.be.empty()
@@ -94,7 +106,10 @@ describe('downdoc', () => {
     })
 
     it('should only print usage to stderr and set exit code when neither args or argv are set on process', async () => {
-      const expected = "Usage: downdoc [OPTION]... FILE\nRun 'downdoc --help' for more information.\n"
+      const expected = heredoc`
+      Usage: downdoc [OPTION]... FILE
+      Run 'downdoc --help' for more information.${lf}
+      `
       const p = { stderr }
       await downdoc(p)
       expect(stderr.string).to.equal(expected)

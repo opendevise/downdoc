@@ -432,13 +432,9 @@ describe('downdoc()', () => {
 
     it('should unescape escaped attribute references in normal phrase', () => {
       const input = heredoc`
-      = Title
-
       Replace the token \\{owner} with the username or organization and replace the token \\{repo} with the name of the repository.
       `
       const expected = heredoc`
-      # Title
-
       Replace the token {owner} with the username or organization and replace the token {repo} with the name of the repository.
       `
       expect(input).to.include('\\')
@@ -5277,12 +5273,20 @@ describe('downdoc()', () => {
     })
 
     it('should support conums up to 10', () => {
-      const input = `----\n${[...Array(10)].map((_, i) => '<' + (i + 1) + '>').join('\n')}\n----`
+      const input = heredoc`
+      ----
+      ${[...Array(10)].map((_, i) => '<' + (i + 1) + '>').join('\n')}
+      ----
+      `
       expect(downdoc(input)).to.include('⑩')
     })
 
     it('should support autonumbered conums up to 10', () => {
-      const input = `----\n${Array(10).fill('<.>').join('\n')}\n----`
+      const input = heredoc`
+      ----
+      ${Array(10).fill('<.>').join('\n')}
+      ----
+      `
       expect(downdoc(input)).to.include('⑩')
     })
 
