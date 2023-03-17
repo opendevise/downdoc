@@ -22,15 +22,16 @@ function heredoc (strings, ...values) {
   }
   let string = values.length
     ? (strings = strings.slice()).push(strings.pop().trimEnd()) &&
-        values.reduce((accum, _, idx) => accum + '\x1f' + strings[idx + 1], first.slice(1))
+      values.reduce((accum, _, idx) => accum + '\x1f' + strings[idx + 1], first.slice(1))
     : first.slice(1).trimEnd()
   const lines = string.split('\n')
-  const indentSize = lines.reduce((accum, line) =>
-    accum && line ? (line[0] === ' ' ? Math.min(accum, line.length - line.trimStart().length) : 0) : accum,
+  const indentSize = lines.reduce(
+    (accum, line) =>
+      accum && line ? (line[0] === ' ' ? Math.min(accum, line.length - line.trimStart().length) : 0) : accum,
     Infinity
   )
   if (indentSize) {
-    string = lines.map((line) => line && line[0] === ' ' ? line.slice(indentSize) : line).join('\n')
+    string = lines.map((line) => (line && line[0] === ' ' ? line.slice(indentSize) : line)).join('\n')
     if (!values.length) return string
     strings = string.split('\x1f')
   } else if (!values.length) {
