@@ -2911,6 +2911,12 @@ describe('downdoc()', () => {
       Qu'est ce qu'AsciiDoc ?
 
       Enclose the value in single quotes (\`'\`) to apply normal substitutions to it.
+
+      6'5"
+
+      x'
+
+      \`'
       `
       const expected = heredoc`
       That’s probably not going to work.
@@ -2924,6 +2930,12 @@ describe('downdoc()', () => {
       Qu’est ce qu’AsciiDoc ?
 
       Enclose the value in single quotes (\`'\`) to apply normal substitutions to it.
+
+      6'5"
+
+      x'
+
+      ’
       `
       expect(downdoc(input)).to.equal(expected)
     })
