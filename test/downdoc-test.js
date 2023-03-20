@@ -5423,12 +5423,18 @@ describe('downdoc()', () => {
       *** baz
       ** bar
       * foo
+      ** bar
+      *** baz
+      * foo
       `
       const expected = heredoc`
       * foo
         * bar
           * baz
         * bar
+      * foo
+        * bar
+          * baz
       * foo
       `
       expect(downdoc(input)).to.equal(expected)
@@ -5637,6 +5643,9 @@ describe('downdoc()', () => {
       ... baz
       .. bar
       . foo
+      .. bar
+      ... baz
+      . foo
       `
       const expected = heredoc`
       1. foo
@@ -5644,6 +5653,9 @@ describe('downdoc()', () => {
             1. baz
          2. bar
       2. foo
+         1. bar
+            1. baz
+      3. foo
       `
       expect(downdoc(input)).to.equal(expected)
     })
@@ -5966,23 +5978,35 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should convert nested description list to depth of three', () => {
+    it('should convert nested description lists', () => {
       const input = heredoc`
-      term:: desc
-      term::: desc
-      term:::: desc
-      another term::
-      desc
+      foo:: bar
+      yin::: yang
+      fizz:::: buzz
+      yin::: yang
+      foo:: bar
+      yin::: yang
+      fizz:::: buzz
+      foo::
+      bar
       `
       const expected = heredoc`
-      * **term**\\
-      desc
-        * **term**\\
-        desc
-          * **term**\\
-          desc
-      * **another term**\\
-      desc
+      * **foo**\\
+      bar
+        * **yin**\\
+        yang
+          * **fizz**\\
+          buzz
+        * **yin**\\
+        yang
+      * **foo**\\
+      bar
+        * **yin**\\
+        yang
+          * **fizz**\\
+          buzz
+      * **foo**\\
+      bar
       `
       expect(downdoc(input)).to.equal(expected)
     })
