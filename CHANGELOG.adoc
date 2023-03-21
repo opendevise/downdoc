@@ -19,6 +19,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 === Fixed
 
+* Allow preprocessor conditionals to be nested
 * Allow description list term to start with list marker if line is not matched as a list item
 * Preserve non-space indent in front of empty line in verbatim block (with and without indent=0)
 * Restrict maximum (0-based) section level to 5

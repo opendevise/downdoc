@@ -7109,6 +7109,122 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should support nested preprocessor conditionals that evaluate to true', () => {
+      const input = heredoc`
+      = Title
+      :foo: bar
+
+      ifdef::foo[]
+      foo is set
+      ifndef::yin[]
+      yin is not set
+      endif::[]
+      ifdef::foo[foo is still set]
+      endif::[]
+      fin
+      `
+      const expected = heredoc`
+      # Title
+
+      foo is set
+      yin is not set
+      foo is still set
+      fin
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should support nested preprocessor conditionals that evaluate to false', () => {
+      const input = heredoc`
+      = Title
+      :foo: bar
+
+      ifndef::foo[]
+      foo is not set
+      ifdef::yin[]
+      yin is set
+      endif::[]
+      foo is still not set
+      endif::[]
+      fin
+      `
+      const expected = heredoc`
+      # Title
+
+      fin
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should support preprocessor conditional that evaluates to false inside one that evaluates to true', () => {
+      const input = heredoc`
+      = Title
+      :foo: bar
+      :yin: yang
+
+      ifdef::foo[]
+      foo is set
+      ifndef::yin[]
+      yin is not set
+      endif::[]
+      foo is still set
+      endif::[]
+      fin
+      `
+      const expected = heredoc`
+      # Title
+
+      foo is set
+      foo is still set
+      fin
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should support preprocessor conditional that evaluates to true inside one that evaluates to false', () => {
+      const input = heredoc`
+      = Title
+      :yin: yang
+
+      ifdef::foo[]
+      foo is set
+      ifdef::yin[]
+      yin is set
+      endif::[]
+      foo is still set
+      endif::[]
+      fin
+      `
+      const expected = heredoc`
+      # Title
+
+      fin
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should support block comment inside preprocessor conditional that resolves to true', () => {
+      const input = heredoc`
+      = Title
+      :foo: bar
+
+      ifdef::foo[]
+      foo is set
+      ////
+      comment
+      ////
+      endif::[]
+      fin
+      `
+      const expected = heredoc`
+      # Title
+
+      foo is set
+      fin
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should unescape escaped preprocessor directive in verbatim block', () => {
       const input = heredoc`
       ----
