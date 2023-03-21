@@ -51,7 +51,7 @@ Here's a rough list of the AsciiDoc syntax that downdoc current handles:
 ** literal code span only escapes attribute references
 ** use `quotes` attribute to specify characters (space-separated) for double curly quotes (e.g., `“ ”`)
 ** use `markdown-strikethrough` attribute to specify characters to use to enclose strikethrough text
-* ordered, unordered (including checklists), and callout lists (1-19 or .)
+* ordered, unordered (including checklists), and callout lists (1-9 or .)
 * nested ordered and unordered lists (use `markdown-list-indent` attribute to control indent size of output)
 * description (and qanda) lists
 * list continuation (for current list item only; no support for ancestor list continuation)
@@ -67,7 +67,7 @@ Here's a rough list of the AsciiDoc syntax that downdoc current handles:
 * literal blocks, listing blocks, and source blocks with optional source language
 * diagram blocks (literal block with diagram dialect)
 * literal paragraphs (auto-detects command prompt and promotes to command code block; first line must be least indented line)
-* callout numbers (i.e., conums) (1-19 or .) in verbatim blocks
+* callout numbers (i.e., conums) (1-9 or .) in verbatim blocks
 * attribute references in literal paragraphs and verbatim blocks when subs=attributes+ or subs=+attributes is specified
 * indent=0 attribute on verbatim blocks
 * admonition paragraphs and blocks
