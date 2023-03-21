@@ -39,24 +39,24 @@ Rather, it's intended to be used on AsciiDoc documents that are written with con
 Here's a rough list of the AsciiDoc syntax that downdoc current handles:
 
 * document title (atx-style only)
-* implicit author info and revision lines in document header
+* implicit author and revision lines in document header
 * common intrinsic attributes (empty, idprefix, idseparator, nbsp, sp, vbar, zwsp)
 * document attribute entries (single-line value only; no support for pass macro)
 * document attribute references
 * part/chapter/section titles and discrete headings (atx-style only)
 * block titles
 * formatted text (restricted to boundaries of a single line)
-** strong (bold), emphasis (italic), code span (monospace), literal code span, mark, span w/ line-through role, double and single curly quotes, curly apostrophe
+** strong (bold), emphasis (italic), code (monospace), literal code, mark, span w/ line-through role, double and single curly quotes, curly apostrophe
 ** metadata (ID and roles) attached to strong, emphasis and code spans are processed and dropped
 ** literal code span only escapes attribute references
 ** use `quotes` attribute to specify characters (space-separated) for double curly quotes (e.g., `“ ”`)
 ** use `markdown-strikethrough` attribute to specify characters to use to enclose strikethrough text
 * ordered, unordered (including checklists), and callout lists (1-9 or .)
 * nested ordered and unordered lists (use `markdown-list-indent` attribute to control indent size of output)
-* description (and qanda) lists
+* description lists with optional qanda style
 * list continuation (for current list item only; no support for ancestor list continuation)
 * link and URL macros (honors `hide-uri-scheme` attribute to hide URL scheme in visible URL); can be escaped
-* escaped bare URLs
+* escaped link and URL macros and autolinks (bare URLs)
 * internal xrefs (honors value of `idprefix` and `idseparator` document attributes)
 * block IDs for document, sections, paragraphs
 * block IDs for other blocks (e.g., listing, literal, lists, example, sidebar, etc.) that have a title
@@ -77,7 +77,7 @@ Here's a rough list of the AsciiDoc syntax that downdoc current handles:
 * hard line breaks
  ** supports explicit character or `hardbreaks` option on paragraph
  ** uses backslash as line break character by default (use `markdown-line-break` document attribute to override)
-* ifdef and ifndef preprocessor conditionals
+* ifdef and ifndef preprocessor conditionals (can be nested)
 * escaped ifdef, ifndef, and include preprocessor directives
 * tables (cols attribute with optional horizontal alignments; no support for cell style; cell spec ignored)
 * collapsible blocks (set the `markdown-collapsible-variant` attribute to `spoiler` to generate Zulip-compatible spoiler block)
