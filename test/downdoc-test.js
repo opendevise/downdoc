@@ -6154,12 +6154,28 @@ describe('downdoc()', () => {
 
       <1> Prints the number 1.
       <2> Exits the program.
+      <3> Explain me.
+      <4> Explain me.
+      <5> Explain me.
+      <6> Explain me.
+      <7> Explain me.
+      <8> Explain me.
+      <9> Explain me.
+      <10> Explain me.
       `
       const expected = heredoc`
       # Document Title
 
       1. Prints the number 1.
       2. Exits the program.
+      3. Explain me.
+      4. Explain me.
+      5. Explain me.
+      6. Explain me.
+      7. Explain me.
+      8. Explain me.
+      9. Explain me.
+      10. Explain me.
       `
       expect(downdoc(input)).to.equal(expected)
     })
