@@ -6826,6 +6826,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    // NOTE: it's an open question about whether a block comment breaks a paragraph
     it('should skip block comments', () => {
       const input = heredoc`
       ////
@@ -6850,6 +6851,7 @@ describe('downdoc()', () => {
       ////
       Maybe some instructions to the author here?
       ////
+      . Wrap it up!
       `
       const expected = heredoc`
       # Title
@@ -6857,6 +6859,7 @@ describe('downdoc()', () => {
       Summary
 
       More summary
+      1. Wrap it up!
       `
       expect(downdoc(input)).to.equal(expected)
     })
