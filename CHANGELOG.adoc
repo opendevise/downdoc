@@ -10,6 +10,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 * Support link attribute on image macros (#13)
 * Apply normal substitutions to section titles / discrete headings (#25)
+* Support `indent` attribute with positive value on verbatim block (#31)
 
 === Changed
 
