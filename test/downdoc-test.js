@@ -1855,6 +1855,24 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should not promote first row to header if preceded by empty line', () => {
+      const input = heredoc`
+      |===
+      
+      |A1
+
+      |A2
+      |===
+      `
+      const expected = heredoc`
+      |     |
+      | --- |
+      | A1 |
+      | A2 |
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert table with explicit header', () => {
       const input = heredoc`
       [%header]
