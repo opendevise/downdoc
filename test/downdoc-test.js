@@ -1751,6 +1751,24 @@ describe('downdoc()', () => {
   })
 
   describe('tables', () => {
+    it('should convert table with only body', () => {
+      const input = heredoc`
+      |===
+      | A1 | B1
+      | A2 | B2
+      | A3 | B3
+      |===
+      `
+      const expected = heredoc`
+      |     |     |
+      | --- | --- |
+      | A1 | B1 |
+      | A2 | B2 |
+      | A3 | B3 |
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert table with header with implicit column count', () => {
       const input = heredoc`
       |===
