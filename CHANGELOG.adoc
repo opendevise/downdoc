@@ -13,6 +13,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 * Add support for nested description lists (up to 3 levels deep)
 * Add support for ordered list that uses explicit arabic numerals (e.g., `1.`)
 * Add support for numbers 10-19 in callout list
+* Add support for `noheader` option on table
 
 === Changed
 

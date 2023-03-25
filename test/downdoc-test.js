@@ -1890,6 +1890,24 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should not promote first row to header if noheader option is set', () => {
+      const input = heredoc`
+      [%noheader]
+      |===
+      |A1
+
+      |A2
+      |===
+      `
+      const expected = heredoc`
+      |     |
+      | --- |
+      | A1 |
+      | A2 |
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert table with header with explicit cols as repeater', () => {
       const input = heredoc`
       [cols=2*d]
