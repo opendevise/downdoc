@@ -29,6 +29,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 * Verify in list when looking for list item offset by one or more empty lines
 * Don't interpret hard line break in last line of literal paragraph when directly adjacent to another paragraph
 * Don't promote first row of table to header if preceded by empty line
+* Don't drop cells when number of cells on line in source exceeds number of columns in table
 
 == 1.0.0-rc.2 (2023-03-07)
 

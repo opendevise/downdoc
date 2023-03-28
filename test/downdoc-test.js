@@ -1829,14 +1829,17 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should convert table with jagged rows', () => {
+    it('should convert table with ragged rows', () => {
       const input = heredoc`
       |===
       | Col A | Col B | Col C
 
-      | A1 | B1
-      | C1 | A2 | B2
-      | C2
+      | A1
+      | B1 | C1
+      | A2 | B2 | C2 | A3
+      | B3 | C3
+      | A4
+      | B4 | C4 | A5 | B5 | C5
       |===
       `
       const expected = heredoc`
@@ -1844,6 +1847,9 @@ describe('downdoc()', () => {
       | --- | --- | --- |
       | A1 | B1 | C1 |
       | A2 | B2 | C2 |
+      | A3 | B3 | C3 |
+      | A4 | B4 | C4 |
+      | A5 | B5 | C5 |
       `
       expect(downdoc(input)).to.equal(expected)
     })
