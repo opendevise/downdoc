@@ -1877,9 +1877,9 @@ describe('downdoc()', () => {
       const input = heredoc`
       |===
       
-      |A1
+      | A1
 
-      |A2
+      | A2
       |===
       `
       const expected = heredoc`
@@ -1912,9 +1912,9 @@ describe('downdoc()', () => {
       const input = heredoc`
       [%noheader]
       |===
-      |A1
+      | A1
 
-      |A2
+      | A2
       |===
       `
       const expected = heredoc`
@@ -2094,12 +2094,12 @@ describe('downdoc()', () => {
       const input = heredoc`
       [cols=3*]
       |===
-      |A1
-      |B1
-      |C1
-      |A2
-      |B2
-      |C2
+      | A1
+      | B1
+      | C1
+      | A2
+      | B2
+      | C2
       |===
       `
       const expected = heredoc`
@@ -2114,7 +2114,7 @@ describe('downdoc()', () => {
     it('should use first row to determine number of columns without creating header', () => {
       const input = heredoc`
       |===
-      |A
+      | A
       |===
       `
       const expected = heredoc`
@@ -3018,7 +3018,7 @@ describe('downdoc()', () => {
       * [[bar]]all about bar
 
       |===
-      |[[baz]]all about baz
+      | [[baz]]all about baz
       |===
       `
       const expected = heredoc`
