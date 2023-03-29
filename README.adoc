@@ -79,7 +79,10 @@ Here's a rough list of the AsciiDoc syntax that downdoc current handles:
  ** uses backslash as line break character by default (use `markdown-line-break` document attribute to override)
 * ifdef and ifndef preprocessor conditionals (can be nested)
 * escaped ifdef, ifndef, and include preprocessor directives
-* tables (cols attribute with optional horizontal alignments; implicit or explicit header; no support for cell style; cell spec ignored)
+* tables
+ ** cols attirbute with optional horizontal alignments
+ ** explicit header row or implicit header row unless noheader option is set
+ ** no support for cell style (ignores cell style in colspec and cellspec)
 * collapsible blocks (set the `markdown-collapsible-variant` attribute to `spoiler` to generate Zulip-compatible spoiler block)
 * comment lines and blocks
 * passthrough blocks
