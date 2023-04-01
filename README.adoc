@@ -130,6 +130,9 @@ Use the following command to install the downdoc package into your project:
 $ npm i downdoc
 ----
 
+By default, `npm i` will install the latest stable release.
+The version number for stable downdoc releases ends with `-stable` because downdoc is a reclaimed package.
+
 Alternately, you can defer installation and invoke the CLI using the `npx` command.
 
 == Usage
