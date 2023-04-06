@@ -4,6 +4,12 @@
 This document provides a summary of all notable changes to downdoc by release.
 For a detailed view of what's changed, refer to the {url-repo}/commits[commit history] of this project.
 
+== Unreleased
+
+=== Fixed
+
+* Use target as fallback text for external xref
+
 == 1.0.0-stable (2023-04-01)
 
 === Added

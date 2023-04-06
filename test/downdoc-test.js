@@ -3609,6 +3609,34 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should use target as fallback text for external xref', () => {
+      const input = heredoc`
+      = Title
+
+      Please refer to xref:contributing.adoc[].
+      `
+      const expected = heredoc`
+      # Title
+
+      Please refer to [contributing.adoc](contributing.adoc).
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should drop trailing # from target used as fallback text for external xref', () => {
+      const input = heredoc`
+      = Title
+
+      Please refer to xref:contributing.html#[].
+      `
+      const expected = heredoc`
+      # Title
+
+      Please refer to [contributing.html](contributing.html).
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should not prepend # to target of external xref', () => {
       const input = heredoc`
       = Title
