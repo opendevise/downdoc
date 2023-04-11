@@ -2080,18 +2080,21 @@ describe('downdoc()', () => {
     it('should normalize space around cell text', () => {
       const input = heredoc`
       |===
-      |Col A |  Col B
+      |Col A |  Col B  |   Col C
 
-      |A1    |  B1
+      |A1    |  B1   | C1
 
-      |   A2 |     B2
+      |   A2 |     B2|  C2
+
+      |foo|bar|baz
       |===
       `
       const expected = heredoc`
-      | Col A | Col B |
-      | --- | --- |
-      | A1 | B1 |
-      | A2 | B2 |
+      | Col A | Col B | Col C |
+      | --- | --- | --- |
+      | A1 | B1 | C1 |
+      | A2 | B2 | C2 |
+      | foo | bar | baz |
       `
       expect(downdoc(input)).to.equal(expected)
     })
