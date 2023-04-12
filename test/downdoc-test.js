@@ -7534,6 +7534,22 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should ignore cell specifier on table cells', () => {
+      const input = heredoc`
+      |===
+      |A |B |C
+
+      s| strong >m| monospace ^.<| normal
+      |===
+      `
+      const expected = heredoc`
+      | A | B | C |
+      | --- | --- | --- |
+      | strong | monospace | normal |
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should not process non-paragraph blocks in Markdown-style blockquote', () => {
       const input = heredoc`
       > . one

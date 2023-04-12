@@ -10,6 +10,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 * Use target as fallback text for external xref (#10)
 * Do not consume final letter of cell as part of cell delimiter (#11)
+* Consume alignment as part of cellspec on table cell
 
 == 1.0.0-stable (2023-04-01)
 
