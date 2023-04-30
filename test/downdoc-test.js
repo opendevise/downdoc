@@ -216,6 +216,20 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should not recognize attribute entry if attribute name begins with -', () => {
+      const input = heredoc`
+      :-foo: bar
+
+      {-foo} is not a valid attribute reference.
+      `
+      const expected = heredoc`
+      :-foo: bar
+
+      {-foo} is not a valid attribute reference.
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should substitute attribute reference in value of attribute entry', () => {
       const input = heredoc`
       :project-slug: acme

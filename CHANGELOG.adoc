@@ -4,6 +4,12 @@
 This document provides a summary of all notable changes to downdoc by release.
 For a detailed view of what's changed, refer to the {url-repo}/commits[commit history] of this project.
 
+== Unreleased
+
+=== Fixed
+
+* Do not process attribute entry if attribute name begins with hyphen
+
 == 1.0.1-stable (2023-04-12)
 
 === Fixed
