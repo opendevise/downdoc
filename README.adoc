@@ -1,4 +1,5 @@
 = downdoc: Down-convert AsciiDoc to Markdown
+Dan Allen <https://github.com/mojavelinux>
 ifdef::env-github[]
 :toc: preamble
 :toc-title: Contents
@@ -112,8 +113,9 @@ If you need to use a backtick outside of a code span, you may want to split it i
 You may need to play around a bit to get the output you want.
 
 Currently, include directives are dropped.
-However, you can first run the document through https://github.com/asciidoctor/asciidoctor-reducer[Asciidoctor Reducer] to fold in the content from any included files.
-If you then run downdoc on the output of that step, it will convert the entire document, includes and all.
+However, you can first run the document through https://github.com/asciidoctor/asciidoctor-reducer[Asciidoctor Reducer] to incorporate the content from any included files.
+Add the `--preserve-conditionals` option when running Asciidoctor Reducer to preserve preprocessor conditional directives in the output of this step.
+If you then run downdoc on the output produced by Asciidoctor Reducer, it will convert the entire document, includes and all.
 
 Support for additional syntax may be added in the future.
 
