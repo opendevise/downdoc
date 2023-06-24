@@ -277,6 +277,41 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should not set document attribute if name in attribute entry is negated', () => {
+      const input = heredoc`
+      = Title
+      :!foo:
+
+      ifndef::foo[]
+      foo was not set
+      endif::[]
+      `
+      const expected = heredoc`
+      # Title
+
+      foo was not set
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should unset document attribute if name in attribute entry is negated', () => {
+      const input = heredoc`
+      = Title
+      :foo: bar
+      :!foo:
+
+      ifndef::foo[]
+      foo has been unset
+      endif::[]
+      `
+      const expected = heredoc`
+      # Title
+
+      foo has been unset
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should allow seed attributes to be passed in to API function', () => {
       const input = heredoc`
       = Title
