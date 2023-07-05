@@ -4340,6 +4340,41 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
+    it('should unwrap consecutive non-empty lines in Markdown-style blockquote', () => {
+      const input = heredoc`
+      = Title
+      :markdown-unwrap-prose:
+
+      > Where we're going,
+      > we don't need _roads_!
+      `
+      const expected = heredoc`
+      # Title
+
+      > Where we’re going, we don’t need _roads_!
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should preserve paragraph break when unwrapping Markdown-style blockquote', () => {
+      const input = heredoc`
+      = Title
+      :markdown-unwrap-prose:
+
+      > hi
+      >
+      > bye
+      `
+      const expected = heredoc`
+      # Title
+
+      > hi
+      >
+      > bye
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
     it('should convert quote block', () => {
       const input = heredoc`
       = Title

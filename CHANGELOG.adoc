@@ -10,6 +10,8 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 * Do not process attribute entry if attribute name begins with hyphen
 * Unset attribute entry if attribute name begins with exclamation point
+* Remove blockquote marker when unwrapping lines in Markdown-style blockquote
+* Retain paragraph breaks when unwrapping lines in Markdown-style blockquote
 
 == 1.0.1-stable (2023-04-12)
 
