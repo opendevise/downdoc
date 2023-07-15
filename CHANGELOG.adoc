@@ -6,6 +6,10 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 == Unreleased
 
+=== Changed
+
+* Only support single hyphen as list marker
+
 === Fixed
 
 * Do not process attribute entry if attribute name begins with hyphen

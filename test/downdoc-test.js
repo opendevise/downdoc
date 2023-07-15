@@ -5688,7 +5688,7 @@ describe('downdoc()', () => {
       expect(downdoc(input)).to.equal(expected)
     })
 
-    it('should support - as unordered list marker', () => {
+    it('should support single hyphen as unordered list marker', () => {
       const input = heredoc`
       * Do
       - Re
@@ -5699,6 +5699,15 @@ describe('downdoc()', () => {
         * Re
       * Do
       `
+      expect(downdoc(input)).to.equal(expected)
+    })
+
+    it('should not recognize repeating hyphens as list marker', () => {
+      const input = heredoc`
+      -- foo
+      -- bar
+      `
+      const expected = input
       expect(downdoc(input)).to.equal(expected)
     })
 
