@@ -1,6 +1,6 @@
 {
   "name": "downdoc",
-  "version": "1.0.1-stable",
+  "version": "1.0.2-stable",
   "description": "Rapidly down-converts AsciiDoc to Markdown. Often used to prepare an AsciiDoc README for npm packaging.",
   "license": "MIT",
   "author": "Dan Allen",
