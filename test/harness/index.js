@@ -22,8 +22,8 @@ function heredoc (strings, ...values) {
   }
   let string = values.length
     ? (strings = strings.slice()).push(strings.pop().trimEnd()) &&
-      values.reduce((accum, _, idx) => accum + '\x1f' + strings[idx + 1], first.slice(1))
-    : first.slice(1).trimEnd()
+      values.reduce((accum, _, idx) => accum + '\x1f' + strings[idx + 1], first.substring(1))
+    : first.substring(1).trimEnd()
   const lines = string.split('\n')
   const indentSize = lines.reduce(
     (accum, line) =>
@@ -31,7 +31,7 @@ function heredoc (strings, ...values) {
     Infinity
   )
   if (indentSize) {
-    string = lines.map((line) => (line && line[0] === ' ' ? line.slice(indentSize) : line)).join('\n')
+    string = lines.map((line) => (line && line[0] === ' ' ? line.substring(indentSize) : line)).join('\n')
     if (!values.length) return string
     strings = string.split('\x1f')
   } else if (!values.length) {
