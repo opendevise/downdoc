@@ -4311,6 +4311,22 @@ describe('downdoc()', () => {
       `
       expect(downdoc(input)).to.equal(expected)
     })
+
+    it('should wrap image in link if link attribute is set', () => {
+      const input = heredoc`
+      = Title
+
+      image::images/screenshot.png[Screenshot,link=https://example.com]
+      image::images/screenshot.png[Screenshot,link="https://example.com"]
+      `
+      const expected = heredoc`
+      # Title
+
+      [![Screenshot](images/screenshot.png)](https://example.com)
+      [![Screenshot](images/screenshot.png)](https://example.com)
+      `
+      expect(downdoc(input)).to.equal(expected)
+    })
   })
 
   describe('blockquotes', () => {
