@@ -39,12 +39,12 @@ Rather, it's intended to be used on AsciiDoc documents that are written with con
 
 Here's a rough list of the AsciiDoc syntax that downdoc current handles:
 
-* document title (atx-style only)
+* document title (atx-style only; Markdown-style headings not supported)
 * implicit author and revision lines in document header
 * common intrinsic attributes (empty, idprefix, idseparator, nbsp, sp, vbar, zwsp)
 * document attribute entries (single-line value only; no support for pass macro)
 * document attribute references
-* part/chapter/section titles and discrete headings (atx-style only)
+* part/chapter/section titles and discrete headings (atx-style only; Markdown-style headings not supported)
 * block titles
 * formatted text (restricted to boundaries of a single line)
 ** strong (bold), emphasis (italic), code (monospace), literal code, mark, span w/ line-through role, double and single curly quotes, curly apostrophe
