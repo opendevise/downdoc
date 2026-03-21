@@ -1,7 +1,6 @@
-/* eslint-env mocha */
 'use strict'
 
-const { cleanDir, expect, heredoc, StringIO } = require('./harness')
+const { after, assert, assertx, before, beforeEach, cleanDir, describe, heredoc, it, StringIO } = require('./harness')
 const downdoc = require('#cli')
 const fsp = require('node:fs/promises')
 const ospath = require('node:path')
@@ -54,14 +53,14 @@ describe('downdoc', () => {
       const args = ['-v']
       const expected = version + '\n'
       await downdoc({ args, stdout })
-      expect(stdout.string).to.equal(expected)
+      assert.equal(stdout.string, expected)
     })
 
     it('should only print version when --version option is specified', async () => {
       const args = ['--version']
       const expected = version + '\n'
       await downdoc({ args, stdout })
-      expect(stdout.string).to.equal(expected)
+      assert.equal(stdout.string, expected)
     })
 
     it('should only print usage when -h option is specified', async () => {
@@ -72,8 +71,8 @@ describe('downdoc', () => {
       Convert the specified AsciiDoc FILE to a Markdown file.${lf}
       `
       await downdoc({ args, stdout })
-      expect(stdout.string).to.startWith(expected)
-      expect(stdout.string).to.endWith('\n')
+      assertx.startWith(stdout.string, expected)
+      assertx.endWith(stdout.string, '\n')
     })
 
     it('should only print usage when --help option is specified', async () => {
@@ -86,10 +85,10 @@ describe('downdoc', () => {
       const expectedIn = '\n  -a, --attribute name=val   set an AsciiDoc attribute; can be specified multiple times\n'
       const expectedEnd = 'If --output is not specified, the output file path is derived from FILE (e.g., README.md).\n'
       await downdoc({ args, stdout })
-      expect(stdout.string).to.startWith(expectedStart)
-      expect(stdout.string).to.include(expectedIn)
-      expect(stdout.string).to.endWith(expectedEnd)
-      expect(stdout.string).to.endWith('\n')
+      assertx.startWith(stdout.string, expectedStart)
+      assertx.include(stdout.string, expectedIn)
+      assertx.endWith(stdout.string, expectedEnd)
+      assertx.endWith(stdout.string, '\n')
     })
 
     it('should only print usage to stderr and set exit code when no options or arguments are specified', async () => {
@@ -100,9 +99,9 @@ describe('downdoc', () => {
       `
       const p = { args, stdout, stderr }
       await downdoc(p)
-      expect(stdout.string).to.be.empty()
-      expect(stderr.string).to.equal(expected)
-      expect(p.exitCode).to.equal(1)
+      assertx.empty(stdout.string)
+      assert.equal(stderr.string, expected)
+      assert.equal(p.exitCode, 1)
     })
 
     it('should only print usage to stderr and set exit code when neither args or argv are set on process', async () => {
@@ -112,8 +111,8 @@ describe('downdoc', () => {
       `
       const p = { stderr }
       await downdoc(p)
-      expect(stderr.string).to.equal(expected)
-      expect(p.exitCode).to.equal(1)
+      assert.equal(stderr.string, expected)
+      assert.equal(p.exitCode, 1)
     })
   })
 
@@ -123,8 +122,8 @@ describe('downdoc', () => {
       await fsp.writeFile('doc.adoc', input, 'utf8')
       const args = ['doc.adoc']
       await downdoc({ args, stdout })
-      expect(stdout.string).to.be.empty()
-      expect('doc.md').to.be.a.file().with.contents(expected)
+      assertx.empty(stdout.string)
+      assertx.contents('doc.md', expected)
     })
 
     it('should convert FILE and write output to file in subdir when --output option not specified', async () => {
@@ -133,7 +132,7 @@ describe('downdoc', () => {
       await fsp.writeFile('docs/doc.adoc', input, 'utf8')
       const args = ['docs/doc.adoc']
       await downdoc({ args })
-      expect('docs/doc.md').to.be.a.file().with.contents(expected)
+      assertx.contents('docs/doc.md', expected)
     })
 
     it('should convert FILE and write output to stdout when -o option is -', async () => {
@@ -141,8 +140,8 @@ describe('downdoc', () => {
       await fsp.writeFile('doc.adoc', input, 'utf8')
       const args = ['-o', '-', 'doc.adoc']
       await downdoc({ args, stdout })
-      expect(stdout.string).to.equal(expected)
-      expect('doc.md').to.not.be.a.path()
+      assert.equal(stdout.string, expected)
+      assertx.notPath('doc.md')
     })
 
     it('should convert FILE and write output to stdout when --output option is -', async () => {
@@ -150,8 +149,8 @@ describe('downdoc', () => {
       await fsp.writeFile('doc.adoc', input, 'utf8')
       const args = ['--output', '-', 'doc.adoc']
       await downdoc({ args, stdout })
-      expect(stdout.string).to.equal(expected)
-      expect('doc.md').to.not.be.a.path()
+      assert.equal(stdout.string, expected)
+      assertx.notPath('doc.md')
     })
 
     it('should convert FILE and write output to adjacent file specified by -o option', async () => {
@@ -159,7 +158,7 @@ describe('downdoc', () => {
       await fsp.writeFile('doc.adoc', input, 'utf8')
       const args = ['-o', 'out.md', 'doc.adoc']
       await downdoc({ args })
-      expect('out.md').to.be.a.file().with.contents(expected)
+      assertx.contents('out.md', expected)
     })
 
     it('should convert FILE and write output to adjacent file specified by --output option', async () => {
@@ -167,7 +166,7 @@ describe('downdoc', () => {
       await fsp.writeFile('doc.adoc', input, 'utf8')
       const args = ['--output', 'out.md', 'doc.adoc']
       await downdoc({ args })
-      expect('out.md').to.be.a.file().with.contents(expected)
+      assertx.contents('out.md', expected)
     })
 
     it('should convert FILE and write output to file in different folder specified by -o option', async () => {
@@ -176,7 +175,7 @@ describe('downdoc', () => {
       await fsp.mkdir('build')
       const args = ['-o', 'build/doc.md', 'doc.adoc']
       await downdoc({ args })
-      expect('build/doc.md').to.be.a.file().with.contents(expected)
+      assertx.contents('build/doc.md', expected)
     })
   })
 
@@ -187,15 +186,15 @@ describe('downdoc', () => {
       const stdin = Readable.from('*foo* and _bar_')
       const p = { args, stdout, stdin }
       await downdoc(p)
-      expect(stdout.string).to.equal(expected)
+      assert.equal(stdout.string, expected)
     })
 
     it('should print message to stderr and set exit code when FILE is missing', async () => {
       const args = ['no-such-file.adoc']
       const p = { args, stderr }
       await downdoc(p)
-      expect(stderr.string).to.equal('downdoc: no-such-file.adoc: No such file\n')
-      expect(p.exitCode).to.equal(1)
+      assert.equal(stderr.string, 'downdoc: no-such-file.adoc: No such file\n')
+      assert.equal(p.exitCode, 1)
     })
 
     it('should print message to stderr and set exit code when FILE is directory', async () => {
@@ -203,8 +202,8 @@ describe('downdoc', () => {
       const args = ['docs']
       const p = { args, stderr }
       await downdoc(p)
-      expect(stderr.string).to.equal('downdoc: docs: Not a file\n')
-      expect(p.exitCode).to.equal(1)
+      assert.equal(stderr.string, 'downdoc: docs: Not a file\n')
+      assert.equal(p.exitCode, 1)
     })
   })
 
@@ -215,7 +214,7 @@ describe('downdoc', () => {
       await fsp.writeFile('doc.adoc', input, 'utf8')
       const args = ['-a', 'url-order=https://example.org/order', 'doc.adoc']
       await downdoc({ args })
-      expect('doc.md').to.be.a.file().with.contents(expected)
+      assertx.contents('doc.md', expected)
     })
 
     it('should pass attribute specified by --attribute option', async () => {
@@ -224,7 +223,7 @@ describe('downdoc', () => {
       await fsp.writeFile('doc.adoc', input, 'utf8')
       const args = ['-a', 'url-order=https://example.org/order', 'doc.adoc']
       await downdoc({ args })
-      expect('doc.md').to.be.a.file().with.contents(expected)
+      assertx.contents('doc.md', expected)
     })
 
     it('should allow -a option to be specified multiple times', async () => {
@@ -233,7 +232,7 @@ describe('downdoc', () => {
       await fsp.writeFile('doc.adoc', input, 'utf8')
       const args = ['-a', 'url-site=https://example.org', '-a', 'company=ACME', 'doc.adoc']
       await downdoc({ args })
-      expect('doc.md').to.be.a.file().with.contents(expected)
+      assertx.contents('doc.md', expected)
     })
   })
 
@@ -243,9 +242,9 @@ describe('downdoc', () => {
       await fsp.writeFile('doc.adoc', input, 'utf8')
       const args = ['--prepublish', 'doc.adoc']
       await downdoc({ args })
-      expect('doc.md').to.be.a.file().with.contents(expected)
-      expect('doc.adoc').to.not.be.a.path()
-      expect('.doc.adoc').to.be.a.file().with.contents(input)
+      assertx.contents('doc.md', expected)
+      assertx.notPath('doc.adoc')
+      assertx.contents('.doc.adoc', input)
     })
 
     it('should convert FILE in subdir and hide it when --prepublish option is specified', async () => {
@@ -254,9 +253,9 @@ describe('downdoc', () => {
       await fsp.writeFile('docs/doc.adoc', input, 'utf8')
       const args = ['--prepublish', 'docs/doc.adoc']
       await downdoc({ args })
-      expect('docs/doc.md').to.be.a.file().with.contents(expected)
-      expect('docs/doc.adoc').to.not.be.a.path()
-      expect('docs/.doc.adoc').to.be.a.file().with.contents(input)
+      assertx.contents('docs/doc.md', expected)
+      assertx.notPath('docs/doc.adoc')
+      assertx.contents('docs/.doc.adoc', input)
     })
 
     it('should assume FILE is README.adoc when --prepublish option is specified', async () => {
@@ -264,9 +263,9 @@ describe('downdoc', () => {
       await fsp.writeFile('README.adoc', input, 'utf8')
       const args = ['--prepublish']
       await downdoc({ args })
-      expect('README.md').to.be.a.file().with.contents(expected)
-      expect('README.adoc').to.not.be.a.path()
-      expect('.README.adoc').to.be.a.file().with.contents(input)
+      assertx.contents('README.md', expected)
+      assertx.notPath('README.adoc')
+      assertx.contents('.README.adoc', input)
     })
 
     it('should set env and env-npm attributes when --prepublish option is specified', async () => {
@@ -276,7 +275,7 @@ describe('downdoc', () => {
       await fsp.writeFile('README.adoc', input, 'utf8')
       const args = ['--prepublish']
       await downdoc({ args })
-      expect('README.md').to.be.a.file().with.contents(expected)
+      assertx.contents('README.md', expected)
     })
 
     it('should set env and env-npm attributes when --prepublish option and -a options are specified', async () => {
@@ -286,7 +285,7 @@ describe('downdoc', () => {
       await fsp.writeFile('README.adoc', input, 'utf8')
       const args = ['--prepublish', '-a', 'scope=@org']
       await downdoc({ args })
-      expect('README.md').to.be.a.file().with.contents(expected)
+      assertx.contents('README.md', expected)
     })
 
     it('should restore FILE when --postpublish option is specified', async () => {
@@ -294,9 +293,9 @@ describe('downdoc', () => {
       await fsp.writeFile('doc.adoc', input, 'utf8')
       await downdoc({ args: ['--prepublish', 'doc.adoc'] })
       await downdoc({ args: ['--postpublish', 'doc.adoc'] })
-      expect('doc.md').to.not.be.a.path()
-      expect('.doc.adoc').to.not.be.a.path()
-      expect('doc.adoc').to.be.a.file().with.contents(input)
+      assertx.notPath('doc.md')
+      assertx.notPath('.doc.adoc')
+      assertx.contents('doc.adoc', input)
     })
 
     it('should assume FILE is README.adoc when --postpublish option is specified', async () => {
@@ -304,18 +303,18 @@ describe('downdoc', () => {
       await fsp.writeFile('README.adoc', input, 'utf8')
       await downdoc({ args: ['--prepublish'] })
       await downdoc({ args: ['--postpublish'] })
-      expect('README.md').to.not.be.a.path()
-      expect('.README.adoc').to.not.be.a.path()
-      expect('README.adoc').to.be.a.file().with.contents(input)
+      assertx.notPath('README.md')
+      assertx.notPath('.README.adoc')
+      assertx.contents('README.adoc', input)
     })
 
     it('should take no action if there is no file to restore', async () => {
       const { input } = example
       await fsp.writeFile('README.adoc', input, 'utf8')
       await downdoc({ args: ['--postpublish'] })
-      expect('README.md').to.not.be.a.path()
-      expect('.README.adoc').to.not.be.a.path()
-      expect('README.adoc').to.be.a.file().with.contents(input)
+      assertx.notPath('README.md')
+      assertx.notPath('.README.adoc')
+      assertx.contents('README.adoc', input)
     })
   })
 
@@ -327,8 +326,8 @@ describe('downdoc', () => {
         const { input, expected } = example
         await fsp.writeFile('doc.adoc', input, 'utf8')
         await downdoc()
-        expect(stdout.string).to.equal(expected)
-        expect('doc.md').to.not.be.a.path()
+        assert.equal(stdout.string, expected)
+        assertx.notPath('doc.md')
       } finally {
         global.process = oldprocess
       }
@@ -340,7 +339,7 @@ describe('downdoc', () => {
       await fsp.writeFile('doc.adoc', input, 'utf8')
       const args = ['-a', 'url-site=https://example.org', 'doc.adoc', '-a', 'company=ACME', '-o', 'out.md']
       await downdoc({ args })
-      expect('out.md').to.be.a.file().with.contents(expected)
+      assertx.contents('out.md', expected)
     })
   })
 })

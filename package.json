@@ -17,13 +17,13 @@
   "scripts": {
     "build": "npm test",
     "postbuild": "npm run lint",
-    "coverage": "nyc _mocha",
+    "coverage": "npx -y nyc node -r ./test/harness/coverage-config.js --test-reporter junit --test-reporter-destination reports/tests-xunit.xml --test test/*-test.js",
     "format": "npx -y --include optional @biomejs/biome@~2.1 format --write",
     "postformat": "node --disable-warning ExperimentalWarning npm/postformat.js",
     "lint": "npx -y --include optional @biomejs/biome@~2.1 lint --error-on-warnings",
     "postpublish": "downdoc --postpublish",
     "prepublishOnly": "downdoc --prepublish",
-    "test": "_mocha",
+    "test": "node --test test/*-test.js",
     "pretidy": "npm run lint",
     "tidy": "npm run format",
     "version": "node npm/version.js"
@@ -50,28 +50,23 @@
     "markdown",
     "converter"
   ],
-  "devDependencies": {
-    "chai": "~4.3",
-    "chai-fs": "~2.0",
-    "chai-string": "~1.5",
-    "dirty-chai": "~2.0",
-    "mocha": "~10.2",
-    "nyc": "~15.1"
-  },
   "nyc": {
-    "all": true,
     "branches": 100,
-    "cacheDir": "node_modules/.cache/nyc",
-    "checkCoverage": true,
+    "cache": true,
+    "cacheDir": ".cache/nyc/c",
     "include": [
       "lib/**/*.js"
     ],
+    "exclude": [],
+    "functions": 100,
     "lines": 100,
     "reporter": [
-      "cobertura",
+      "json",
       "lcov",
       "text"
     ],
-    "reportDir": "reports"
+    "reportDir": "reports",
+    "statements": 100,
+    "tempDir": ".cache/nyc/i"
   }
 }

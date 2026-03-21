@@ -17,11 +17,14 @@ jobs:
     - name: Install Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '16'
-    - name: Install dependencies
-      run: npm ci
+        node-version: '22'
     - name: Run linter
-      run: npm run lint
+      run: |
+        npm run tidy
+        if [ -n "$(git --no-pager diff --name-only)" ]; then
+          echo 'Detected pending code style changes'
+          exit 1
+        fi
     - name: Run tests
       run: npm test
     - name: Set up release environment

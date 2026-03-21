@@ -1,25 +1,24 @@
-/* eslint-env mocha */
 'use strict'
 
-const { expect, heredoc } = require('./harness')
+const { assert, assertx, describe, heredoc, it } = require('./harness')
 const downdoc = require('downdoc')
 
 describe('downdoc()', () => {
   describe('document parts', () => {
     it('should convert empty document', () => {
       const input = ''
-      expect(downdoc(input)).to.equal(input)
+      assert.equal(downdoc(input), input)
     })
 
     it('should convert document with only body', () => {
       const input = 'Body.'
-      expect(downdoc(input)).to.equal(input)
+      assert.equal(downdoc(input), input)
     })
 
     it('should convert document with only document title', () => {
       const input = '= Title'
       const expected = '# Title'
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert document with header and body', () => {
@@ -33,7 +32,7 @@ describe('downdoc()', () => {
 
       Body.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert document with body directly adjacent to header', () => {
@@ -48,7 +47,7 @@ describe('downdoc()', () => {
 
       Body.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
   })
 
@@ -64,7 +63,7 @@ describe('downdoc()', () => {
 
       The title of this document is Document Title.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should consume author line with single author', () => {
@@ -79,7 +78,7 @@ describe('downdoc()', () => {
 
       Body written by Doc Writer.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should consume author line with multiple authors', () => {
@@ -96,7 +95,7 @@ describe('downdoc()', () => {
       This document was written by Doc Writer, Junior Écrivain.
       It was lead by Doc Writer.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should consume revision line with only version', () => {
@@ -112,7 +111,7 @@ describe('downdoc()', () => {
 
       1.0.0
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should consume revision line with only date', () => {
@@ -128,7 +127,7 @@ describe('downdoc()', () => {
 
       2022-10-22
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should consume revision line with version and date', () => {
@@ -144,7 +143,7 @@ describe('downdoc()', () => {
 
       Version 2 released on 2022-10-22.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should consume line after author line if only contains single number', () => {
@@ -160,7 +159,7 @@ describe('downdoc()', () => {
 
       {revnumber}
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should process and remove attribute entries found in document header below doctitle', () => {
@@ -176,7 +175,7 @@ describe('downdoc()', () => {
 
       Body
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should consume attribute entries found in document header above doctitle', () => {
@@ -192,7 +191,7 @@ describe('downdoc()', () => {
 
       Body
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should consume attribute entries found in body', () => {
@@ -213,7 +212,7 @@ describe('downdoc()', () => {
 
       after: baz
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not recognize attribute entry if attribute name begins with -', () => {
@@ -227,7 +226,7 @@ describe('downdoc()', () => {
 
       {-foo} is not a valid attribute reference.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should substitute attribute reference in value of attribute entry', () => {
@@ -244,7 +243,7 @@ describe('downdoc()', () => {
 
       The URL for this project is https://example.org/acme.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should permit underscore as attribute name', () => {
@@ -259,7 +258,7 @@ describe('downdoc()', () => {
 
       one two three
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should set value of attribute entry to empty string if value is not specified', () => {
@@ -274,7 +273,7 @@ describe('downdoc()', () => {
 
       foobar
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not set document attribute if name in attribute entry is negated', () => {
@@ -291,7 +290,7 @@ describe('downdoc()', () => {
 
       foo was not set
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should unset document attribute if name in attribute entry is negated', () => {
@@ -309,7 +308,7 @@ describe('downdoc()', () => {
 
       foo has been unset
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should allow seed attributes to be passed in to API function', () => {
@@ -329,7 +328,7 @@ describe('downdoc()', () => {
 
       from document
       `
-      expect(downdoc(input, { attributes: { 'attribute-from-api': 'from API' } })).to.equal(expected)
+      assert.equal(downdoc(input, { attributes: { 'attribute-from-api': 'from API' } }), expected)
     })
 
     it('should ignore doctitle attribute set from CLI', () => {
@@ -343,7 +342,7 @@ describe('downdoc()', () => {
 
       The doctitle is Document Title.
       `
-      expect(downdoc(input, { attributes: { doctitle: 'Title' } })).to.equal(expected)
+      assert.equal(downdoc(input, { attributes: { doctitle: 'Title' } }), expected)
     })
   })
 
@@ -360,7 +359,7 @@ describe('downdoc()', () => {
 
       The name of this project is ACME.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should permit all unicode letter characters in attribute name when assigned and referenced', () => {
@@ -375,7 +374,7 @@ describe('downdoc()', () => {
 
       Vous pouvez aussi récupérer les sources via le dépôt Git à opendevise/downdoc.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not recognize attribute reference that begins with -', () => {
@@ -389,7 +388,7 @@ describe('downdoc()', () => {
 
       {-foo} is not a valid attribute reference.
       `
-      expect(downdoc(input, { attributes: { '-foo': 'bar' } })).to.equal(expected)
+      assert.equal(downdoc(input, { attributes: { '-foo': 'bar' } }), expected)
     })
 
     // NOTE this test also asserts that attribute name can begin with number
@@ -406,7 +405,7 @@ describe('downdoc()', () => {
 
       This project was created by Jim and Jane.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should substitute attribute reference in section title', () => {
@@ -425,7 +424,7 @@ describe('downdoc()', () => {
 
       Let’s get acquainted.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should substitute attribute reference in unordered list item', () => {
@@ -441,7 +440,7 @@ describe('downdoc()', () => {
 
       1. First, download the ACME installer from the [ACME website](https://example.org/acme).
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should skip unresolved attribute reference', () => {
@@ -455,7 +454,7 @@ describe('downdoc()', () => {
 
       This project is named {unknown}.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should unescape escaped attribute references in monospace phrase', () => {
@@ -475,8 +474,8 @@ describe('downdoc()', () => {
 
       Use the endpoint \`/repos/{owner}/{repo}\` to retrieve information about a repository.
       `
-      expect(input).to.include('\\')
-      expect(downdoc(input)).to.equal(expected)
+      assertx.include(input, '\\')
+      assert.equal(downdoc(input), expected)
     })
 
     it('should unescape escaped attribute references in normal phrase', () => {
@@ -486,8 +485,8 @@ describe('downdoc()', () => {
       const expected = heredoc`
       Replace the token {owner} with the username or organization and replace the token {repo} with the name of the repository.
       `
-      expect(input).to.include('\\')
-      expect(downdoc(input)).to.equal(expected)
+      assertx.include(input, '\\')
+      assert.equal(downdoc(input), expected)
     })
 
     it('should resolve all intrinsic attributes', () => {
@@ -509,7 +508,7 @@ describe('downdoc()', () => {
 
       Insert a \` \` character.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
   })
 
@@ -557,7 +556,7 @@ describe('downdoc()', () => {
 
       ## Another Level 1
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should process document that starts with section title', () => {
@@ -571,7 +570,7 @@ describe('downdoc()', () => {
 
       Let’s get started!
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should process document that starts with discrete heading', () => {
@@ -586,7 +585,7 @@ describe('downdoc()', () => {
 
       When we say [Your Way](#your-way), we mean it.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not treat level-0 discrete heading at top of document as document title', () => {
@@ -603,7 +602,7 @@ describe('downdoc()', () => {
 
       {doctitle}
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert part titles', () => {
@@ -626,7 +625,7 @@ describe('downdoc()', () => {
 
       # Going Further
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert part title when document has no title', () => {
@@ -645,7 +644,7 @@ describe('downdoc()', () => {
 
       ## Installation
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should drop section title directly adjacent to document header', () => {
@@ -664,12 +663,12 @@ describe('downdoc()', () => {
 
       ## Going Further
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert line with heading marker only as paragraph text', () => {
       const input = '=='
-      expect(downdoc(input)).to.equal(input)
+      assert.equal(downdoc(input), input)
     })
 
     it('should convert line with heading marker followed by multiple spaces as paragraph text', () => {
@@ -686,7 +685,7 @@ describe('downdoc()', () => {
       ==
 
       fin`
-      expect(downdoc(input.replace('\n==\n', '\n==  \n'))).to.equal(expected.replace('\n==\n', '\n==  \n'))
+      assert.equal(downdoc(input.replace('\n==\n', '\n==  \n')), expected.replace('\n==\n', '\n==  \n'))
     })
 
     it('should clear block attributes after processing section title', () => {
@@ -703,7 +702,7 @@ describe('downdoc()', () => {
       plain listing block
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
   })
 
@@ -718,7 +717,7 @@ describe('downdoc()', () => {
 
           downdoc [OPTION]... FILE
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert block title with ID above literal paragraph', () => {
@@ -732,7 +731,7 @@ describe('downdoc()', () => {
 
           downdoc [OPTION]... FILE
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert block title with ID above verbatim block', () => {
@@ -750,7 +749,7 @@ describe('downdoc()', () => {
       puts 'Hello, World!'
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert block title with ID above block image', () => {
@@ -764,7 +763,7 @@ describe('downdoc()', () => {
 
       ![Package Explorer](package-explorer-screenshot.png)
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert block title above delimited quote block', () => {
@@ -779,7 +778,7 @@ describe('downdoc()', () => {
 
       > Test, always test.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert block title with ID above delimited quote block', () => {
@@ -795,7 +794,7 @@ describe('downdoc()', () => {
 
       > Test, always test.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert block title that begins with .', () => {
@@ -812,7 +811,7 @@ describe('downdoc()', () => {
       omit=optional
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert block title on consecutive blocks', () => {
@@ -832,7 +831,7 @@ describe('downdoc()', () => {
 
       ![Screenshot](screenshot.png)
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should ignore dangling block title', () => {
@@ -842,7 +841,7 @@ describe('downdoc()', () => {
       .dangling block title
       `
       const expected = 'last paragraph'
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should ignore block title above section title', () => {
@@ -861,7 +860,7 @@ describe('downdoc()', () => {
 
       content
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not apply strong emphasis to block title with emphasis', () => {
@@ -882,7 +881,7 @@ describe('downdoc()', () => {
       2. Chill
       3. Whip
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should apply normal substitutions to title of verbatim block', () => {
@@ -902,7 +901,7 @@ describe('downdoc()', () => {
       auto=true
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should add anchor to block with title and ID attached to list item', () => {
@@ -928,7 +927,7 @@ describe('downdoc()', () => {
         key: value
         \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not add anchor to verbatim block with only ID', () => {
@@ -947,7 +946,7 @@ describe('downdoc()', () => {
       key: value
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not process . on a line by itself as a block title', () => {
@@ -958,7 +957,7 @@ describe('downdoc()', () => {
 
       after
       `
-      expect(downdoc(input)).to.equal(input)
+      assert.equal(downdoc(input), input)
     })
   })
 
@@ -969,7 +968,7 @@ describe('downdoc()', () => {
       second line
       last line
       `
-      expect(downdoc(input)).to.equal(input)
+      assert.equal(downdoc(input), input)
     })
 
     it('should collapse newlines in paragraph if markdown-unwrap-prose attribute is set', () => {
@@ -979,7 +978,7 @@ describe('downdoc()', () => {
       here
       `
       const expected = 'no newlines here'
-      expect(downdoc(input, { attributes: { 'markdown-unwrap-prose': '' } })).to.equal(expected)
+      assert.equal(downdoc(input, { attributes: { 'markdown-unwrap-prose': '' } }), expected)
     })
 
     it('should treat ellipsis at start of paragraph as content not a block title', () => {
@@ -991,7 +990,7 @@ describe('downdoc()', () => {
       ...and to **home**
       we shall go!
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not process section title within a paragraph', () => {
@@ -999,7 +998,7 @@ describe('downdoc()', () => {
       Let the paragraph begin.
       == only starts a section title outside of a paragraph.
       `
-      expect(downdoc(input)).to.equal(input)
+      assert.equal(downdoc(input), input)
     })
 
     it('should not process attribute entry within a paragraph', () => {
@@ -1007,7 +1006,7 @@ describe('downdoc()', () => {
       Let the paragraph begin.
       :name: declares an attibute in the document header.
       `
-      expect(downdoc(input)).to.equal(input)
+      assert.equal(downdoc(input), input)
     })
 
     it('should not process block title within a paragraph', () => {
@@ -1015,7 +1014,7 @@ describe('downdoc()', () => {
       Let the paragraph begin.
       .hidden.adoc is a hidden file.
       `
-      expect(downdoc(input)).to.equal(input)
+      assert.equal(downdoc(input), input)
     })
 
     it('should not process indented line within a paragraph', () => {
@@ -1023,7 +1022,7 @@ describe('downdoc()', () => {
       Let the paragraph begin.
         This paragraph uses a hanging indent.
       `
-      expect(downdoc(input)).to.equal(input)
+      assert.equal(downdoc(input), input)
     })
 
     it('should not process admonition label within a paragraph', () => {
@@ -1041,7 +1040,7 @@ describe('downdoc()', () => {
       for the
       NOTE: prefix.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not process toc::[] macro within a paragraph', () => {
@@ -1051,7 +1050,7 @@ describe('downdoc()', () => {
       toc::[]
       it will be replaced with the table of contents.
       `
-      expect(downdoc(input)).to.equal(input)
+      assert.equal(downdoc(input), input)
     })
 
     it('should convert paragraph prefixed with admonition label', () => {
@@ -1087,7 +1086,7 @@ describe('downdoc()', () => {
       **⚠️ WARNING**\\
       The software you’re about to use has **not** been tested.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not add hard line break mark to admonition label if text resolves to empty', () => {
@@ -1101,7 +1100,7 @@ describe('downdoc()', () => {
 
       **🔥 CAUTION**
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should allow hard line break mark for admonition to be configured using markdown-line-break attribute', () => {
@@ -1117,7 +1116,7 @@ describe('downdoc()', () => {
       **🔥 CAUTION**
       Slippery when wet.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should promote ID on paragraph to inline anchor', () => {
@@ -1132,7 +1131,7 @@ describe('downdoc()', () => {
 
       <a name="p-1"></a>This is the first paragraph.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should ignore role on paragraph', () => {
@@ -1147,7 +1146,7 @@ describe('downdoc()', () => {
 
       This is the lead paragraph.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should end paragraph at next block attribute line', () => {
@@ -1160,7 +1159,7 @@ describe('downdoc()', () => {
       The paragraph before [Section Title](#section-title).
       ## Section Title
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should end literal paragraph at next block attribute line', () => {
@@ -1184,7 +1183,7 @@ describe('downdoc()', () => {
           literal
       paragraph
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should end list and literal paragraph in list at next block attribute line', () => {
@@ -1207,7 +1206,7 @@ describe('downdoc()', () => {
 
       1. yang
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
   })
 
@@ -1221,7 +1220,7 @@ describe('downdoc()', () => {
       roses are red,\\
       violets are blue.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should add hard line break character if hardbreaks option is set on paragraph', () => {
@@ -1238,7 +1237,7 @@ describe('downdoc()', () => {
       one\\
       blast off!
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should allow hard line break mark for paragraph to be configured using markdown-line-break attribute', () => {
@@ -1251,7 +1250,7 @@ describe('downdoc()', () => {
       violets are blue.
       `
       const attributes = { 'markdown-line-break': '  ' }
-      expect(downdoc(input, { attributes })).to.equal(expected.replace('red,', 'red,  '))
+      assert.equal(downdoc(input, { attributes }), expected.replace('red,', 'red,  '))
     })
 
     it('should convert hard line break on line by itself only if within a paragraph', () => {
@@ -1275,7 +1274,7 @@ describe('downdoc()', () => {
           +
       baz
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not convert hard line break in a block title', () => {
@@ -1288,7 +1287,7 @@ describe('downdoc()', () => {
 
       red
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not look for hard line break if previous line is empty', () => {
@@ -1304,7 +1303,7 @@ describe('downdoc()', () => {
 
       bar
       `
-      expect(downdoc(input, { attributes: { empty: '' } })).to.equal(expected)
+      assert.equal(downdoc(input, { attributes: { empty: '' } }), expected)
     })
 
     it('should convert thematic breaks', () => {
@@ -1322,7 +1321,7 @@ describe('downdoc()', () => {
 
       ---
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
   })
 
@@ -1358,7 +1357,7 @@ describe('downdoc()', () => {
 
       Even this paragraph is promoted to the top level.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should support block title with ID on example block', () => {
@@ -1378,7 +1377,7 @@ describe('downdoc()', () => {
 
       This is a paragraph.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should unwrap example block with title that encloses verbatim block with title', () => {
@@ -1412,7 +1411,7 @@ describe('downdoc()', () => {
 
       content
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should support block title on sidebar block', () => {
@@ -1433,7 +1432,7 @@ describe('downdoc()', () => {
       If you saw this in a text book, you would likely skip it.
       Or would you?
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not convert section title inside delimited block', () => {
@@ -1449,7 +1448,7 @@ describe('downdoc()', () => {
 
       == Not a Section Title
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert discrete heading inside delimited block', () => {
@@ -1470,7 +1469,7 @@ describe('downdoc()', () => {
 
       Explain this example here.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert admonition block', () => {
@@ -1494,7 +1493,7 @@ describe('downdoc()', () => {
       Oh, and watch out for zombies too.
       </dd></dl>
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should support block title with ID on admonition block', () => {
@@ -1519,7 +1518,7 @@ describe('downdoc()', () => {
       * Proofread!
       </dd></dl>
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should ignore unknown admonition type', () => {
@@ -1540,7 +1539,7 @@ describe('downdoc()', () => {
 
       You will just see paragraphs.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert collapsible block with title', () => {
@@ -1562,7 +1561,7 @@ describe('downdoc()', () => {
       This is the answer.
       </details>
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert collapsible block without title', () => {
@@ -1583,7 +1582,7 @@ describe('downdoc()', () => {
       These are the details.
       </details>
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should indent collapsible block attached to list item', () => {
@@ -1624,7 +1623,7 @@ describe('downdoc()', () => {
          Rome
          </details>
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should start collapsible block open if open option is set', () => {
@@ -1646,7 +1645,7 @@ describe('downdoc()', () => {
       They made it out alive.
       </details>
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should process options on separate lines', () => {
@@ -1669,7 +1668,7 @@ describe('downdoc()', () => {
       They made it out alive.
       </details>
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert collapsible block to spoiler variant if markdown-collapsible-variant is spoiler', () => {
@@ -1695,7 +1694,7 @@ describe('downdoc()', () => {
       Click **Always visible summary** to hide this text again.
       \`\`\`
       `
-      expect(downdoc(input, { attributes: { 'markdown-collapsible-variant': 'spoiler' } })).to.equal(expected)
+      assert.equal(downdoc(input, { attributes: { 'markdown-collapsible-variant': 'spoiler' } }), expected)
     })
 
     it('should convert collapsible block without title to spoiler', () => {
@@ -1715,7 +1714,7 @@ describe('downdoc()', () => {
       This is the spoiler.
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should pass through content of passthrough block as is', () => {
@@ -1735,7 +1734,7 @@ describe('downdoc()', () => {
       </tr>
       </table>
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should support passthrough block inside another block', () => {
@@ -1763,7 +1762,7 @@ describe('downdoc()', () => {
       </table>
       </details>
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should ignore block title on passthrough block', () => {
@@ -1780,7 +1779,7 @@ describe('downdoc()', () => {
       <p>just an aside</p>
       </aside>
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert passthrough block with stem style to display (block) match', () => {
@@ -1795,7 +1794,7 @@ describe('downdoc()', () => {
       a^2 = b^2 + c^2
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
   })
 
@@ -1815,7 +1814,7 @@ describe('downdoc()', () => {
       | A2 | B2 |
       | A3 | B3 |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert table with header with implicit column count', () => {
@@ -1835,7 +1834,7 @@ describe('downdoc()', () => {
       | A1 | B1 |
       | A2 | B2 |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should collapse empty lines between rows', () => {
@@ -1857,7 +1856,7 @@ describe('downdoc()', () => {
       | A1 | B1 |
       | A2 | B2 |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert table with each row on its own line', () => {
@@ -1875,7 +1874,7 @@ describe('downdoc()', () => {
       | A1 | B1 |
       | A2 | B2 |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert table with ragged rows', () => {
@@ -1900,7 +1899,7 @@ describe('downdoc()', () => {
       | A4 | B4 | C4 |
       | A5 | B5 | C5 |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should end table at closing delimiter', () => {
@@ -1925,7 +1924,7 @@ describe('downdoc()', () => {
 
       after | not a table cell
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not promote first row to header if preceded by empty line', () => {
@@ -1943,7 +1942,7 @@ describe('downdoc()', () => {
       | A1 |
       | A2 |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert table with explicit header', () => {
@@ -1960,7 +1959,7 @@ describe('downdoc()', () => {
       | --- | --- |
       | A1 | B1 |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not promote first row to header if noheader option is set', () => {
@@ -1978,7 +1977,7 @@ describe('downdoc()', () => {
       | A1 |
       | A2 |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert table with header with explicit cols as repeater', () => {
@@ -1996,7 +1995,7 @@ describe('downdoc()', () => {
       | --- | --- |
       | A1 | B1 |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert table with header with explicit cols with comma separator', () => {
@@ -2014,7 +2013,7 @@ describe('downdoc()', () => {
       | --- | --- |
       | A1 | B1 |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert table with header with explicit cols with semi-colon separator', () => {
@@ -2032,7 +2031,7 @@ describe('downdoc()', () => {
       | --- | --- |
       | A1 | B1 |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert table with explicit cols containing repeater and columns separated by comma', () => {
@@ -2051,7 +2050,7 @@ describe('downdoc()', () => {
       | --- | --- | --- |
       | A1 | B1 | C1 |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert table with explicit cols containing repeater and columns separated by semi-colon', () => {
@@ -2070,7 +2069,7 @@ describe('downdoc()', () => {
       | --- | --- | --- |
       | A1 | B1 | C1 |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert table with explicit cols defined in attribute followed by other attributes with quotes', () => {
@@ -2087,7 +2086,7 @@ describe('downdoc()', () => {
       | --- | --- |
       | A1 | B1 |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert table with cols attribute followed by other attributes without quotes', () => {
@@ -2104,7 +2103,7 @@ describe('downdoc()', () => {
       | --: | --- |
       | A1 | B1 |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should honor horizontal column alignments in value of cols attribute', () => {
@@ -2123,7 +2122,7 @@ describe('downdoc()', () => {
       | :-: | :-: | --: | --- |
       | A1 | B1 | C1 | D1 |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should normalize space around cell text', () => {
@@ -2145,7 +2144,7 @@ describe('downdoc()', () => {
       | A2 | B2 | C2 |
       | foo | bar | baz |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should create empty header row if first row has less columns than specified', () => {
@@ -2166,7 +2165,7 @@ describe('downdoc()', () => {
       | A1 | B1 | C1 |
       | A2 | B2 | C2 |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should use first row to determine number of columns without creating header', () => {
@@ -2180,7 +2179,7 @@ describe('downdoc()', () => {
       | --- |
       | A |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert block title on table', () => {
@@ -2200,7 +2199,7 @@ describe('downdoc()', () => {
       | --- | --- |
       | yin | yang |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert block title on table with no header', () => {
@@ -2217,7 +2216,7 @@ describe('downdoc()', () => {
       | --- | --- |
       | foo | bar |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should support table with no empty lines attached to list item', () => {
@@ -2247,7 +2246,7 @@ describe('downdoc()', () => {
 
       after
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should support table with empty lines attached to list item', () => {
@@ -2278,7 +2277,7 @@ describe('downdoc()', () => {
 
       after
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should support table with explicit cols and ragged first row attached to list item', () => {
@@ -2310,7 +2309,7 @@ describe('downdoc()', () => {
 
       after
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not carry over block title on empty table to next adjacent block', () => {
@@ -2327,7 +2326,7 @@ describe('downdoc()', () => {
       verbatim
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert table header with wrapped text in final cell', () => {
@@ -2354,7 +2353,7 @@ describe('downdoc()', () => {
       | --- | --- |
       | A1 | B1 |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert cell with wrapped text at start of row', () => {
@@ -2379,7 +2378,7 @@ describe('downdoc()', () => {
       | Autopilot Only available on certain models. Requires an autopilot subscription. | Drives the vehicle automatically. |
       | Bluetooth audio Available on all models. | Plays music from an external device over bluetooth. |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert cell with wrapped text in subsequent column', () => {
@@ -2404,7 +2403,7 @@ describe('downdoc()', () => {
       | Autopilot | Drives the vehicle automatically. Only available on certain models. Requires an autopilot subscription. |
       | Bluetooth audio | Plays music from an external device over bluetooth. Available on all models. |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert cells with text starting on separate line', () => {
@@ -2423,7 +2422,7 @@ describe('downdoc()', () => {
       | --- | --- |
       | fizz | buzz |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should apply substitutions to cells in header row', () => {
@@ -2441,7 +2440,7 @@ describe('downdoc()', () => {
       | --- | --- | --- |
       | text formatting | text formatting | macro |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should apply substitutions to cells in body row', () => {
@@ -2461,7 +2460,7 @@ describe('downdoc()', () => {
       | --- | --- | --- |
       | _emphasis_ | **strong emphasis** **still strong** | [link](https://example.org) [another link](https://example.com) |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert hardbreak character at end wrapped line in table cell', () => {
@@ -2479,7 +2478,7 @@ describe('downdoc()', () => {
       | --- | --- |
       | A<br> 1 | B<br> 1 |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not convert hardbreak character at end of table cell', () => {
@@ -2497,7 +2496,7 @@ describe('downdoc()', () => {
       | --- | --- |
       | A 1 + | B 1 + |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
   })
 
@@ -2513,7 +2512,7 @@ describe('downdoc()', () => {
 
       You **really** need to check **this** * out!
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not convert bold phrase inside a word', () => {
@@ -2539,7 +2538,7 @@ describe('downdoc()', () => {
 
       é*t*é
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should leave escaped bold formatting escaped', () => {
@@ -2548,13 +2547,13 @@ describe('downdoc()', () => {
 
       \\*a becomes b*
       `
-      expect(downdoc(input)).to.equal(input)
+      assert.equal(downdoc(input), input)
     })
 
     it('should convert bold formatting in unordered list item', () => {
       const input = '* be *bold*'
       const expected = '* be **bold**'
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert italic formatting', () => {
@@ -2568,7 +2567,7 @@ describe('downdoc()', () => {
 
       The _ is _so_ incredibly _useful_ when making snake_case.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not convert italic phrase inside a word', () => {
@@ -2586,7 +2585,7 @@ describe('downdoc()', () => {
 
       é[.role]*t*é
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should leave escaped italic formatting escaped', () => {
@@ -2595,7 +2594,7 @@ describe('downdoc()', () => {
 
       \\_layouts or layouts_ contain the layout files.
       `
-      expect(downdoc(input)).to.equal(input)
+      assert.equal(downdoc(input), input)
     })
 
     it('should convert bold italic formatting in specific order', () => {
@@ -2609,7 +2608,7 @@ describe('downdoc()', () => {
 
       If you really want to put some _*emphasis*_ on it, use **_bold italic_**.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert monospace formatting', () => {
@@ -2627,7 +2626,7 @@ describe('downdoc()', () => {
 
       In Java, a boolean is designated by the \`boolean\` keyword.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not escape < inside monospace phrase', () => {
@@ -2636,7 +2635,7 @@ describe('downdoc()', () => {
 
       An inline macro follows the format \`<name>:<target>[<attrlist>]\`.
       `
-      expect(downdoc(input)).to.equal(input)
+      assert.equal(downdoc(input), input)
     })
 
     it('should escape < outside of monospace phrase', () => {
@@ -2654,7 +2653,7 @@ describe('downdoc()', () => {
 
       * List&lt;Object>
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should remove backslashes in front of URL or ellipsis in monospace phrase', () => {
@@ -2684,7 +2683,7 @@ describe('downdoc()', () => {
 
       Use \`xref:page.adoc#fragment[]\` to link to a fragment in another page.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should remove passthrough formatting marks in literal monospace phrase', () => {
@@ -2702,7 +2701,7 @@ describe('downdoc()', () => {
 
       The target of an inline macro is preceded by \`:\` and followed by an attrlist enclosed in \`[]\`.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should automatically escape attribute references in literal monospace phrase', () => {
@@ -2718,7 +2717,7 @@ describe('downdoc()', () => {
 
       Use the endpoint \`/{owner}/{repo}\` to get information about the repository.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not try to escape lone { in literal monospace phrase', () => {
@@ -2732,7 +2731,7 @@ describe('downdoc()', () => {
 
       An attribute reference is an attribute name surrounded by \`{\` and \`}\`.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not try to escape { not followed by attribute name in literal monospace phrase', () => {
@@ -2746,7 +2745,7 @@ describe('downdoc()', () => {
 
       The range \`{1..9}\` represents all non-zero numbers.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert marked phrase', () => {
@@ -2760,7 +2759,7 @@ describe('downdoc()', () => {
 
       <mark>highlight this</mark> to remember it later.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not convert marked phrase inside a word', () => {
@@ -2786,7 +2785,7 @@ describe('downdoc()', () => {
 
       é#t#é
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not convert character reference as marked phrase', () => {
@@ -2795,7 +2794,7 @@ describe('downdoc()', () => {
 
       [.role]#&169; and [.role]&#174; should be left as is.
       `
-      expect(downdoc(input)).to.equal(input)
+      assert.equal(downdoc(input), input)
     })
 
     it('should leave escaped marked phrase escaped', () => {
@@ -2804,7 +2803,7 @@ describe('downdoc()', () => {
 
       \\#hashtag is a tag or a URL fragment, but not a phone#
       `
-      expect(downdoc(input)).to.equal(input)
+      assert.equal(downdoc(input), input)
     })
 
     it('should convert phrase with line-through role', () => {
@@ -2818,7 +2817,7 @@ describe('downdoc()', () => {
 
       ~~strike it~~, that was incorrect.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should allow strikethrough mark to be configured using markdown-strikethrough attribute', () => {
@@ -2833,7 +2832,7 @@ describe('downdoc()', () => {
 
       ~strike it~, that was incorrect.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should allow strikethrough tag pair to be configured using markdown-strikethrough attribute', () => {
@@ -2847,7 +2846,7 @@ describe('downdoc()', () => {
 
       <s>strike it</s>, that was incorrect.
       `
-      expect(downdoc(input, { attributes: { 'markdown-strikethrough': '<s> </s>' } })).to.equal(expected)
+      assert.equal(downdoc(input, { attributes: { 'markdown-strikethrough': '<s> </s>' } }), expected)
     })
 
     it('should convert generic phrase with role', () => {
@@ -2861,7 +2860,7 @@ describe('downdoc()', () => {
 
       Something special.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert directly adjacent marked phrases with or without role', () => {
@@ -2879,7 +2878,7 @@ describe('downdoc()', () => {
 
       script.js
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should drop boxed attrlist in front of formatted text', () => {
@@ -2897,7 +2896,7 @@ describe('downdoc()', () => {
 
       [x]_foo_bar
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not be greedy when matching boxed attrlist on formatted text', () => {
@@ -2923,7 +2922,7 @@ describe('downdoc()', () => {
 
       <a name="marked"></a><mark>marked</mark>
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert formatted text with single character', () => {
@@ -2949,7 +2948,7 @@ describe('downdoc()', () => {
 
       <mark>h</mark>
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not drop line that starts with formatting text with attribute list', () => {
@@ -2963,7 +2962,7 @@ describe('downdoc()', () => {
 
       _README.adoc_ contains all the essential information.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should replace quotes around double quoted text', () => {
@@ -2977,7 +2976,7 @@ describe('downdoc()', () => {
 
       That <q>bug</q> is actually a feature of the software.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should replace quotes around single quoted text', () => {
@@ -2991,7 +2990,7 @@ describe('downdoc()', () => {
 
       Accept the terms by typing <q>yes</q> when prompted.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should allow double smart quotes replacement to be controlled by quotes attribute', () => {
@@ -3007,7 +3006,7 @@ describe('downdoc()', () => {
 
       That “bug” is actually a feature of the software.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should substitute curly apostrophe', () => {
@@ -3049,7 +3048,7 @@ describe('downdoc()', () => {
 
       ’
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert formatted text before replacing attribute references', () => {
@@ -3064,7 +3063,7 @@ describe('downdoc()', () => {
 
       *not actually bold*
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should replace inline anchor with anchor tag', () => {
@@ -3090,7 +3089,7 @@ describe('downdoc()', () => {
       | --- |
       | <a name="baz"></a>all about baz |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should put inline anchor in block title if paragraph has ID and block title', () => {
@@ -3108,7 +3107,7 @@ describe('downdoc()', () => {
 
       You can communicate with project members and fellow users in the community chat.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should ignore inline anchor with invalid syntax', () => {
@@ -3122,7 +3121,7 @@ describe('downdoc()', () => {
 
       [[text inside]]text outside
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert inline stem macro and unescape escaped closing square bracket', () => {
@@ -3140,7 +3139,7 @@ describe('downdoc()', () => {
 
       We arrive at $4 \\times [(3 + 2) \\times 6]$.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
   })
 
@@ -3178,7 +3177,7 @@ describe('downdoc()', () => {
 
       The end.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert internal xrefs when using default idprefix and idseparator', () => {
@@ -3200,7 +3199,7 @@ describe('downdoc()', () => {
 
       ## Foo Baz
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should unescape escaped xref macro', () => {
@@ -3214,7 +3213,7 @@ describe('downdoc()', () => {
 
       Use the syntax xref:page.adoc#fragment[] to link to a fragment in another page.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not match internal xref macro if ID contains space characters', () => {
@@ -3228,7 +3227,7 @@ describe('downdoc()', () => {
 
       An internal xref macro starts with xref:#target and ends with [].
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not match interdocument xref macro if fragment contains space characters', () => {
@@ -3242,7 +3241,7 @@ describe('downdoc()', () => {
 
       xref:doc.adoc# may be followed by a fragment before the [].
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not match xref shorthand if ID contains space characters', () => {
@@ -3260,7 +3259,7 @@ describe('downdoc()', () => {
 
       &lt;&lt; and >> are the ASCII equivalent of double quotes in French.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should match shorthand xref inside monospace phrase', () => {
@@ -3283,7 +3282,7 @@ describe('downdoc()', () => {
 
       All about the replace method.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert natural xref', () => {
@@ -3305,7 +3304,7 @@ describe('downdoc()', () => {
 
       ## Section Title with Spaces
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should match natural xref against first occurrence of title', () => {
@@ -3329,7 +3328,7 @@ describe('downdoc()', () => {
 
       ## Get Started
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should fill in text for backward xref', () => {
@@ -3357,7 +3356,7 @@ describe('downdoc()', () => {
 
       Be sure you have read the [System Requirements](#system-requirements).
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not fill in text for xref to doctitle without explicit ID', () => {
@@ -3371,7 +3370,7 @@ describe('downdoc()', () => {
 
       In this [_howto](#_howto), you will learn how to do stuff.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should fill in text for xref to doctitle with explicit ID', () => {
@@ -3386,7 +3385,7 @@ describe('downdoc()', () => {
 
       In this [HOWTO downdoc](#howto-downdoc), you will learn HOWTO downdoc.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should fill in text for forward xref', () => {
@@ -3415,7 +3414,7 @@ describe('downdoc()', () => {
 
       Let’s get started.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should use fill in text using reftext of target block with ID, title, and reftext', () => {
@@ -3441,7 +3440,7 @@ describe('downdoc()', () => {
       puts 'hi'
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should honor idprefix and idseparator when mapping autogenerated IDs', () => {
@@ -3465,7 +3464,7 @@ describe('downdoc()', () => {
 
       Check the [System Requirements](#system-requirements), then [Get Started](#get-started).
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should rewrite explicit ID to auto-generated ID and support explicit reftext', () => {
@@ -3497,7 +3496,7 @@ describe('downdoc()', () => {
 
       Instructions go here.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should support both forms of block attribute line on same section title', () => {
@@ -3521,7 +3520,7 @@ describe('downdoc()', () => {
 
       Instructions go here.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not match block anchor with invalid characters', () => {
@@ -3556,7 +3555,7 @@ describe('downdoc()', () => {
 
       ## Yep
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should preserve escaped square brackets in xref text', () => {
@@ -3581,7 +3580,7 @@ describe('downdoc()', () => {
 
       A type that represents multiple string values.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should preserve escaped square brackets in xref text of xref enclosed in quotes', () => {
@@ -3600,7 +3599,7 @@ describe('downdoc()', () => {
 
       ## Array of strings
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should replace attribute reference in title of internal reference', () => {
@@ -3624,7 +3623,7 @@ describe('downdoc()', () => {
 
       Let’s go!
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should use ID as text for unresolved xref', () => {
@@ -3638,7 +3637,7 @@ describe('downdoc()', () => {
 
       Refer to [webserver-instructions](#webserver-instructions) to set up your webserver.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should generate and rewrite ID for discrete heading', () => {
@@ -3658,7 +3657,7 @@ describe('downdoc()', () => {
 
       We can refer to a [Discrete Heading](#discrete-heading) using an xref.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should use target as fallback text for external xref', () => {
@@ -3672,7 +3671,7 @@ describe('downdoc()', () => {
 
       Please refer to [contributing.adoc](contributing.adoc).
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should drop trailing # from target used as fallback text for external xref', () => {
@@ -3686,7 +3685,7 @@ describe('downdoc()', () => {
 
       Please refer to [contributing.html](contributing.html).
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not prepend # to target of external xref', () => {
@@ -3702,7 +3701,7 @@ describe('downdoc()', () => {
       Please refer to the [contributing guide](contributing.adoc).
       The [contribution guide](contribution.adoc) will teach you how to [build the project](contribution.adoc#build-project).
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should allow space in target of external xref', () => {
@@ -3718,7 +3717,7 @@ describe('downdoc()', () => {
       Please refer to the [contributing guide](how to contribute.adoc).
       The [contribution guide](how to contribute.adoc) will teach you how to contribute to the project.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should rewrite xref to verbatim block with title and ID', () => {
@@ -3744,7 +3743,7 @@ describe('downdoc()', () => {
       key: value
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not rewrite xref with explicit text to verbatim block with title and ID', () => {
@@ -3770,7 +3769,7 @@ describe('downdoc()', () => {
       key: value
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should rewrite xref to promoted console block with title and ID', () => {
@@ -3794,7 +3793,7 @@ describe('downdoc()', () => {
       $ git clone https://github.com/opendevise/downdoc
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should apply subs to title of block in xref', () => {
@@ -3821,7 +3820,7 @@ describe('downdoc()', () => {
       key: value
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not match xref macro if macro name delimiter is followed by backtick', () => {
@@ -3830,7 +3829,7 @@ describe('downdoc()', () => {
 
       An xref macro consists of an \`xref:\` prefix, a target, and \`[]\` with optional link text.
       `
-      expect(downdoc(input)).to.equal(input)
+      assert.equal(downdoc(input), input)
     })
 
     it('should not match xref: prefix followed by colon', () => {
@@ -3848,7 +3847,7 @@ describe('downdoc()', () => {
 
       <a name="docname:xref:::link-text"></a>[link text] is the part where you specify the text of the link.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
   })
 
@@ -3864,7 +3863,7 @@ describe('downdoc()', () => {
 
       These tests are run using [Mocha](https://mochajs.org).
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert URL macro defined using attribute reference', () => {
@@ -3879,7 +3878,7 @@ describe('downdoc()', () => {
 
       These tests are run using [Mocha](https://mochajs.org).
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert link macro to relative file', () => {
@@ -3897,7 +3896,7 @@ describe('downdoc()', () => {
 
       See [LICENSE](LICENSE) or [LICENSE](LICENSE) to find the license text.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert URL macro with link macro prefix', () => {
@@ -3911,7 +3910,7 @@ describe('downdoc()', () => {
 
       These tests are run using [Mocha](https://mochajs.org).
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not match link: prefix followed by colon', () => {
@@ -3934,7 +3933,7 @@ describe('downdoc()', () => {
 
       ## Link to Resource from Image
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should remove open in blank window hint from end of link text', () => {
@@ -3948,7 +3947,7 @@ describe('downdoc()', () => {
 
       These tests are run using [Mocha](https://mochajs.org).
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should remove open in blank window hint when used as link text', () => {
@@ -3963,7 +3962,7 @@ describe('downdoc()', () => {
 
       These tests are run using [mochajs.org](https://mochajs.org).
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not modify non-escaped bare URL', () => {
@@ -3977,7 +3976,7 @@ describe('downdoc()', () => {
 
       The https://example.org domain name is for tests, tutorials, and examples.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should obscure escaped bare URL', () => {
@@ -3991,7 +3990,7 @@ describe('downdoc()', () => {
 
       The <span>https://</span>example.org domain name is for tests, tutorials, and examples.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should obscure escaped URL macro', () => {
@@ -4005,7 +4004,7 @@ describe('downdoc()', () => {
 
       Use <span>https://</span>example.org[text] to add a link to text.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     // NOTE this does not handle case when URL macro is preceded by link:
@@ -4020,7 +4019,7 @@ describe('downdoc()', () => {
 
       Use link:file.ext[text] to link to a relative URL or local file.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should hide scheme of URL if hide-uri-scheme attribute is set', () => {
@@ -4036,7 +4035,7 @@ describe('downdoc()', () => {
 
       The [example.org](http://example.org) domain name is for tests, tutorials, and examples.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should preserve escaped square brackets in link text', () => {
@@ -4050,7 +4049,7 @@ describe('downdoc()', () => {
 
       The [toc::\\[\\]](https://example.org) macro is not supported in Markdown.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should ignore URL and link macros if target contains space', () => {
@@ -4059,7 +4058,7 @@ describe('downdoc()', () => {
 
       https://example.org/not processed.html[]
       `
-      expect(downdoc(input)).to.equal(input)
+      assert.equal(downdoc(input), input)
     })
 
     it('should process xref macro if target has non-leading space', () => {
@@ -4077,7 +4076,7 @@ describe('downdoc()', () => {
 
       xref: not processed.adoc[not processed]
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
   })
 
@@ -4093,7 +4092,7 @@ describe('downdoc()', () => {
 
       When you see ![green bar](images/green-bar.png), you know the tests have passed!
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should generate alt text from basename of target if alt text not specified', () => {
@@ -4115,7 +4114,7 @@ describe('downdoc()', () => {
 
       ![test-result](project/3.1/_images/test-result.svg)
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert remote inline image', () => {
@@ -4129,7 +4128,7 @@ describe('downdoc()', () => {
 
       * ![fr](https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit/Assets/PNG/FR.png)
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert inline image with space in target', () => {
@@ -4147,7 +4146,7 @@ describe('downdoc()', () => {
 
       When it works, I get a ![big grin](big grin.png).
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not convert inline image macro if macro name delimiter is followed by backtick', () => {
@@ -4156,7 +4155,7 @@ describe('downdoc()', () => {
 
       An image macro consists of an \`image:\` prefix, a target, and \`[]\` with optional alt text.
       `
-      expect(downdoc(input)).to.equal(input)
+      assert.equal(downdoc(input), input)
     })
 
     it('should prepend value of imagesdir attribute to target of inline image', () => {
@@ -4175,7 +4174,7 @@ describe('downdoc()', () => {
 
       When you see ![red-bar](images/red-bar.png), something has gone wrong.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert local block image', () => {
@@ -4193,7 +4192,7 @@ describe('downdoc()', () => {
 
       ![screenshot](images/screenshot.png)
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert remote block image', () => {
@@ -4207,7 +4206,7 @@ describe('downdoc()', () => {
 
       ![fr](https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit/Assets/PNG/FR.png)
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert block image with space in target', () => {
@@ -4230,7 +4229,7 @@ describe('downdoc()', () => {
 
       ![my image](my image.png)
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should prepend value of imagesdir attribute to target of block image', () => {
@@ -4249,7 +4248,7 @@ describe('downdoc()', () => {
 
       ![screenshot](images/screenshot.png)
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should substitute attribute reference in target of block image', () => {
@@ -4264,7 +4263,7 @@ describe('downdoc()', () => {
 
       ![fr](https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit/Assets/PNG/FR.png)
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not convert local block image within a paragraph', () => {
@@ -4272,7 +4271,7 @@ describe('downdoc()', () => {
       A block image macro uses the following form:
       image::target[]
       `
-      expect(downdoc(input)).to.equal(input)
+      assert.equal(downdoc(input), input)
     })
 
     it('should preserve escaped square brackets in image alt text', () => {
@@ -4286,7 +4285,7 @@ describe('downdoc()', () => {
 
       ![The \\[ and \\] brackets](square-brackets.png)
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not match macro whose target contains backslash characters', () => {
@@ -4309,7 +4308,7 @@ describe('downdoc()', () => {
 
       Similar to the xref:\\[\\] macro, but for images. The text between [ and ] is the alt text.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
   })
 
@@ -4337,7 +4336,7 @@ describe('downdoc()', () => {
 
       > And away we go!
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should unwrap consecutive non-empty lines in Markdown-style blockquote', () => {
@@ -4353,7 +4352,7 @@ describe('downdoc()', () => {
 
       > Where we’re going, we don’t need _roads_!
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should preserve paragraph break when unwrapping Markdown-style blockquote', () => {
@@ -4372,7 +4371,7 @@ describe('downdoc()', () => {
       >
       > bye
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert quote block', () => {
@@ -4407,7 +4406,7 @@ describe('downdoc()', () => {
       > 1. Fasten seatbelt
       > 2. And away we go!
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should preserve indentation of literal paragraph inside quote block', () => {
@@ -4427,7 +4426,7 @@ describe('downdoc()', () => {
       >
       >     literally
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should preserve indentation of empty line in verbatim block inside quote block', () => {
@@ -4464,7 +4463,7 @@ describe('downdoc()', () => {
       > bar
       > \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should indent quote block attached to list item properly', () => {
@@ -4497,7 +4496,7 @@ describe('downdoc()', () => {
 
       fin
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should indent paragraph attached to list inside quote block attached to list', () => {
@@ -4517,7 +4516,7 @@ describe('downdoc()', () => {
         >
         >   baz
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
   })
 
@@ -4551,7 +4550,7 @@ describe('downdoc()', () => {
 
       end
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert literal paragraph at start of document', () => {
@@ -4565,7 +4564,7 @@ describe('downdoc()', () => {
 
       normal paragraph
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should terminate literal paragraph at start of delimited block', () => {
@@ -4585,7 +4584,7 @@ describe('downdoc()', () => {
       literal block
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should promote literal paragraph that starts with command prompt to a console code block', () => {
@@ -4611,7 +4610,7 @@ describe('downdoc()', () => {
       $ npx downdoc -h
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not apply subs to literal paragraph by default', () => {
@@ -4630,7 +4629,7 @@ describe('downdoc()', () => {
 
       fin
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should honor subs attribute on all lines of literal paragraph', () => {
@@ -4653,7 +4652,7 @@ describe('downdoc()', () => {
 
       installed
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should honor subs attribute on all lines of literal paragraph promoted to a console code block', () => {
@@ -4670,7 +4669,7 @@ describe('downdoc()', () => {
       #=> 1.0.0
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should support title on promoted console literal paragraph', () => {
@@ -4693,7 +4692,7 @@ describe('downdoc()', () => {
 
       All set.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should close implicit console code block at end of document after trimming trailing newline', () => {
@@ -4713,7 +4712,7 @@ describe('downdoc()', () => {
       $ npx downdoc -h
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert source block with language', () => {
@@ -4734,7 +4733,7 @@ describe('downdoc()', () => {
       console.log(downdoc('= Document Title'))
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert source block with language preceded by space', () => {
@@ -4753,7 +4752,7 @@ describe('downdoc()', () => {
       just plain text
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert implicit source block with language and role', () => {
@@ -4780,7 +4779,7 @@ describe('downdoc()', () => {
       }
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert explicit source block with language and role', () => {
@@ -4807,7 +4806,7 @@ describe('downdoc()', () => {
       }
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert source block with language and role set on separate lines', () => {
@@ -4835,7 +4834,7 @@ describe('downdoc()', () => {
       }
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert source block with source language set on document', () => {
@@ -4856,7 +4855,7 @@ describe('downdoc()', () => {
       console.log(downdoc('= Document Title'))
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert source block with attrlist and source language set on document', () => {
@@ -4878,7 +4877,7 @@ describe('downdoc()', () => {
       console.log(downdoc('= Document Title'))
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert promoted source block with language', () => {
@@ -4899,7 +4898,7 @@ describe('downdoc()', () => {
       console.log(downdoc('= Document Title'))
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert source block with language with block title above or below block attribute line', () => {
@@ -4933,7 +4932,7 @@ describe('downdoc()', () => {
       puts 1
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert source block without language', () => {
@@ -4954,7 +4953,7 @@ describe('downdoc()', () => {
       /node_modules/
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not carry over block attributes from adjacent code block', () => {
@@ -4979,7 +4978,7 @@ describe('downdoc()', () => {
       puts 1
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert listing block', () => {
@@ -5003,7 +5002,7 @@ describe('downdoc()', () => {
           file.js
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert literal block without block style', () => {
@@ -5028,7 +5027,7 @@ describe('downdoc()', () => {
           file.js
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should ignore language on listing block with listing style', () => {
@@ -5049,7 +5048,7 @@ describe('downdoc()', () => {
       verbatim
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert literal block with style (diagram)', () => {
@@ -5070,7 +5069,7 @@ describe('downdoc()', () => {
       stop;
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not substitute text in a verbatim block without block metadata', () => {
@@ -5097,7 +5096,7 @@ describe('downdoc()', () => {
 
       ACME is awesome.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not substitute text in a verbatim block with block metadata', () => {
@@ -5125,7 +5124,7 @@ describe('downdoc()', () => {
 
       ACME is awesome.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not process line-oriented syntax inside verbatim block', () => {
@@ -5164,7 +5163,7 @@ describe('downdoc()', () => {
 
       Isn’t AsciiDoc grand?
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not terminate verbatim block at alternate delimiter line', () => {
@@ -5182,7 +5181,7 @@ describe('downdoc()', () => {
       below
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should outdent contents of verbatim block if indent=0 attribute is set', () => {
@@ -5242,7 +5241,7 @@ describe('downdoc()', () => {
       \`\`\`
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should outdent contents of verbatim block inside quote block if indent=0 attribute is set', () => {
@@ -5267,7 +5266,7 @@ describe('downdoc()', () => {
       > }
       > \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should outdent contents of verbatim block inside quote block attached to list item', () => {
@@ -5296,7 +5295,7 @@ describe('downdoc()', () => {
         > }
         > \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should outdent contents of verbatim block attached to list item inside quote block', () => {
@@ -5325,7 +5324,7 @@ describe('downdoc()', () => {
       >   }
       >   \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should honor subs=+attributes on source block', () => {
@@ -5345,7 +5344,7 @@ describe('downdoc()', () => {
       $ git clone https://github.com/octocat/Spoon-Knife
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should honor subs="attributes+" on source block', () => {
@@ -5365,7 +5364,7 @@ describe('downdoc()', () => {
       $ git clone https://github.com/octocat/Spoon-Knife
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not mistake subs attribute for language on listing block', () => {
@@ -5385,7 +5384,7 @@ describe('downdoc()', () => {
       Enter URL: https://github.com/octocat/Spoon-Knife
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should replace conums in source block with circled numbers', () => {
@@ -5412,7 +5411,7 @@ describe('downdoc()', () => {
       1. Enables strict mode.
       2. Requires the built-in fs module.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should replace autonumbered conumms in source block', () => {
@@ -5456,7 +5455,7 @@ describe('downdoc()', () => {
       1. Prevents strings from being mutable.
       2. The File API is part of the stdlib.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should support conums up to 10', () => {
@@ -5465,7 +5464,7 @@ describe('downdoc()', () => {
       ${[...Array(10)].map((_, i) => '<' + (i + 1) + '>').join('\n')}
       ----
       `
-      expect(downdoc(input)).to.include('⑩')
+      assertx.include(downdoc(input), '⑩')
     })
 
     it('should support autonumbered conums up to 10', () => {
@@ -5474,7 +5473,7 @@ describe('downdoc()', () => {
       ${Array(10).fill('<.>').join('\n')}
       ----
       `
-      expect(downdoc(input)).to.include('⑩')
+      assertx.include(downdoc(input), '⑩')
     })
 
     it('should replace conum at start of otherwise blank line', () => {
@@ -5494,7 +5493,7 @@ describe('downdoc()', () => {
       \`\`\`
       1. blank line
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should substitute all conums on same line in verbatim block', () => {
@@ -5520,7 +5519,7 @@ describe('downdoc()', () => {
       3. Parses the AsciiDoc file into a Document object.
       4. Sets the safe mode from the default of secure to safe.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
   })
 
@@ -5537,7 +5536,7 @@ describe('downdoc()', () => {
       One more for the road.
       <1> is a callout list marker and conum.
       `
-      expect(downdoc(input)).to.equal(input.replace(/</g, '&lt;'))
+      assert.equal(downdoc(input), input.replace(/</g, '&lt;'))
     })
 
     it('should retain unordered list', () => {
@@ -5550,7 +5549,7 @@ describe('downdoc()', () => {
 
       * and party!
       `
-      expect(downdoc(input)).to.equal(input)
+      assert.equal(downdoc(input), input)
     })
 
     it('should trim extra spaces following list marker', () => {
@@ -5564,7 +5563,7 @@ describe('downdoc()', () => {
       * set
       * go!
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should remove blank lines between unordered list items', () => {
@@ -5588,7 +5587,7 @@ describe('downdoc()', () => {
 
       and party!
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert nested unordered lists', () => {
@@ -5612,7 +5611,7 @@ describe('downdoc()', () => {
           * baz
       * foo
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert nested unordered lists if they are indented', () => {
@@ -5630,7 +5629,7 @@ describe('downdoc()', () => {
         * bar
       * foo
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should honor markdown-list-indent when converting nested unordered lists', () => {
@@ -5648,7 +5647,7 @@ describe('downdoc()', () => {
           * bar
       * foo
       `
-      expect(downdoc(input, { attributes: { 'markdown-list-indent': '4' } })).to.equal(expected)
+      assert.equal(downdoc(input, { attributes: { 'markdown-list-indent': '4' } }), expected)
     })
 
     it('should not indent empty line in nested list', () => {
@@ -5664,7 +5663,7 @@ describe('downdoc()', () => {
 
         baz
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should unwrap principal text and paragraph on list item when markdown-unwrap-prose attributes is set', () => {
@@ -5685,7 +5684,7 @@ describe('downdoc()', () => {
         fizz buzz
         * bar baz
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should support single hyphen as unordered list marker', () => {
@@ -5699,7 +5698,7 @@ describe('downdoc()', () => {
         * Re
       * Do
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not recognize repeating hyphens as list marker', () => {
@@ -5708,7 +5707,7 @@ describe('downdoc()', () => {
       -- bar
       `
       const expected = input
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should support block title and ID on list', () => {
@@ -5726,7 +5725,7 @@ describe('downdoc()', () => {
       * Sugar
       * Oil
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert checklist', () => {
@@ -5735,7 +5734,7 @@ describe('downdoc()', () => {
       * [ ] not done
       * nothing special
       `
-      expect(downdoc(input)).to.equal(input)
+      assert.equal(downdoc(input), input)
     })
 
     it('should convert ordered list to numbered list', () => {
@@ -5763,7 +5762,7 @@ describe('downdoc()', () => {
 
       1. and one
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert ordered list that uses explicit arabic numerals', () => {
@@ -5793,7 +5792,7 @@ describe('downdoc()', () => {
       10. **10!**
          * out of 10!
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should remove blank lines between ordered list items', () => {
@@ -5817,7 +5816,7 @@ describe('downdoc()', () => {
 
       done
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should break list at block attribute line if preceded by an empty line', () => {
@@ -5837,7 +5836,7 @@ describe('downdoc()', () => {
 
       1. one
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert nested ordered lists', () => {
@@ -5861,7 +5860,7 @@ describe('downdoc()', () => {
             1. baz
       3. foo
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert nested ordered lists if they are indented', () => {
@@ -5879,7 +5878,7 @@ describe('downdoc()', () => {
          2. bar
       2. foo
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should honor markdown-list-indent when converting nested ordered lists', () => {
@@ -5899,7 +5898,7 @@ describe('downdoc()', () => {
           2. bar
       2. foo
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert mixed nested lists', () => {
@@ -5917,7 +5916,7 @@ describe('downdoc()', () => {
         2. ordered
       * unordered
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should continue numbering from ancestor list', () => {
@@ -5933,7 +5932,7 @@ describe('downdoc()', () => {
             1. baz
       2. foo
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert description list into unordered list with bold first line', () => {
@@ -5964,7 +5963,7 @@ describe('downdoc()', () => {
       desc
       more desc
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not add hard line break mark to description list term if description resolves to empty', () => {
@@ -5994,7 +5993,7 @@ describe('downdoc()', () => {
 
       * **term**
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should allow hard line break mark for dlist term to be configured using markdown-line-break attribute', () => {
@@ -6010,7 +6009,7 @@ describe('downdoc()', () => {
       * **another term**<br>
       desc
       `
-      expect(downdoc(input, { attributes: { 'markdown-line-break': '<br>' } })).to.equal(expected)
+      assert.equal(downdoc(input, { attributes: { 'markdown-line-break': '<br>' } }), expected)
     })
 
     it('should support block title and ID on description list', () => {
@@ -6028,7 +6027,7 @@ describe('downdoc()', () => {
       * **complexity**\\
       A wine’s characteristic qualities.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should allow dlist term to start with list marker', () => {
@@ -6042,7 +6041,7 @@ describe('downdoc()', () => {
       * **&lt;**\\
       check if less than
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should allow repeating colon in description list term', () => {
@@ -6062,7 +6061,7 @@ describe('downdoc()', () => {
         * **:::fizz**\\
         buzz
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     // FIXME any repeating colon shouldn't be matched
@@ -6072,7 +6071,7 @@ describe('downdoc()', () => {
 
       ::foo
       `
-      expect(downdoc(input)).to.equal(input)
+      assert.equal(downdoc(input), input)
     })
 
     it('should convert description list nested in unordered list', () => {
@@ -6087,7 +6086,7 @@ describe('downdoc()', () => {
         desc
       * bar
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert description list nested in unordered list and indented', () => {
@@ -6104,7 +6103,7 @@ describe('downdoc()', () => {
         desc
       * bar
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert description list nested in ordered list', () => {
@@ -6119,7 +6118,7 @@ describe('downdoc()', () => {
          desc
       2. bar
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert description list nested in ordered list and indented', () => {
@@ -6136,7 +6135,7 @@ describe('downdoc()', () => {
          desc
       2. bar
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert unordered list nested in description list', () => {
@@ -6154,7 +6153,7 @@ describe('downdoc()', () => {
         * baz
       * **another term**
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert nested description list into unordered list with bold first line', () => {
@@ -6179,7 +6178,7 @@ describe('downdoc()', () => {
       * **another term**\\
       desc
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert nested description lists', () => {
@@ -6212,7 +6211,7 @@ describe('downdoc()', () => {
       * **foo**\\
       bar
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not leave behind hard line break marker after description list term followed by separate block', () => {
@@ -6228,7 +6227,7 @@ describe('downdoc()', () => {
       listing
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not leave behind hard line break marker after description list entry with attached block', () => {
@@ -6246,7 +6245,7 @@ describe('downdoc()', () => {
         listing
         \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert qanda list', () => {
@@ -6263,7 +6262,7 @@ describe('downdoc()', () => {
       2. _What’s a group of lemurs called?_\\
       A conspiracy.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert nested qanda list', () => {
@@ -6284,7 +6283,7 @@ describe('downdoc()', () => {
          2. _What is the main character’s personal conflict?_\\
          Lack of respect from parents.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should continue numbering after list item with attached block followed by blank line', () => {
@@ -6313,7 +6312,7 @@ describe('downdoc()', () => {
 
       paragraph
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not process section title inside list item', () => {
@@ -6329,7 +6328,7 @@ describe('downdoc()', () => {
         * nested list item
       * last list item
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert colist to numbered list', () => {
@@ -6361,7 +6360,7 @@ describe('downdoc()', () => {
       9. Explain me.
       10. Explain me.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should convert colist with autonumbering to numbered list', () => {
@@ -6377,7 +6376,7 @@ describe('downdoc()', () => {
       1. Prints the number 1.
       2. Exits the program.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should indent block following a list continuation', () => {
@@ -6408,7 +6407,7 @@ describe('downdoc()', () => {
         $ npx downdoc README.adoc
         \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should indent block following a list continuation on description list item', () => {
@@ -6439,7 +6438,7 @@ describe('downdoc()', () => {
         $ npx downdoc README.adoc
         \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should indent block following a list continuation on colist item', () => {
@@ -6459,7 +6458,7 @@ describe('downdoc()', () => {
 
          This happens automatically when all statements have been exhausted.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should indent block following a list continuation of nested list item', () => {
@@ -6485,7 +6484,7 @@ describe('downdoc()', () => {
         $ npx downdoc README.adoc
         \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should interpret literal paragraph in list as having an implicit list continuation', () => {
@@ -6513,7 +6512,7 @@ describe('downdoc()', () => {
             [node: v16]
       * Now you are ready to go.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should restore indent after literal paragraph attached to block attached to list item', () => {
@@ -6545,7 +6544,7 @@ describe('downdoc()', () => {
 
       after list
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should close promoted console code block at list continuation', () => {
@@ -6577,7 +6576,7 @@ describe('downdoc()', () => {
 
       after list
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should retain blockquote indent on list continuation line', () => {
@@ -6593,7 +6592,7 @@ describe('downdoc()', () => {
       >
       >   bar
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should create isolated list context inside block attached to a list', () => {
@@ -6615,7 +6614,7 @@ describe('downdoc()', () => {
           more
       * outside
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should end list when followed by non-adjacent delimited block', () => {
@@ -6637,7 +6636,7 @@ describe('downdoc()', () => {
       \`\`\`
       1. list item
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should end list when followed by adjacent delimited block', () => {
@@ -6657,7 +6656,7 @@ describe('downdoc()', () => {
       \`\`\`
       1. list item
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should end list if literal paragraph in list item has block attributes', () => {
@@ -6685,7 +6684,7 @@ describe('downdoc()', () => {
 
       Now you are ready to go.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should interpret block title following list continuation', () => {
@@ -6719,7 +6718,7 @@ describe('downdoc()', () => {
         console.log('Hello!')
         \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should apply correct indentation to literal paragraph in list', () => {
@@ -6739,7 +6738,7 @@ describe('downdoc()', () => {
 
             -h
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should close implicit console listing before starting next list item', () => {
@@ -6761,7 +6760,7 @@ describe('downdoc()', () => {
       2. Follow the instructions in the console.
        bar
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should indent verbatim blocks in list item', () => {
@@ -6804,7 +6803,7 @@ describe('downdoc()', () => {
 
       all done
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should continue list item throughout attached container', () => {
@@ -6832,7 +6831,7 @@ describe('downdoc()', () => {
 
       done now
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should restore indent after literal paragraph inside block attached to list item', () => {
@@ -6860,7 +6859,7 @@ describe('downdoc()', () => {
 
       not attached
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should continue list item throughout attached container with nested container', () => {
@@ -6894,7 +6893,7 @@ describe('downdoc()', () => {
 
       done now
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should continue list item throughout attached container with nested verbatim block', () => {
@@ -6930,7 +6929,7 @@ describe('downdoc()', () => {
 
       done now
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not process list continuation outside of list', () => {
@@ -6938,7 +6937,7 @@ describe('downdoc()', () => {
       +
       paragraph
       `
-      expect(downdoc(input)).to.equal(input)
+      assert.equal(downdoc(input), input)
     })
 
     it('should reset indent when starting new ordered list item', () => {
@@ -6968,7 +6967,7 @@ describe('downdoc()', () => {
          $ npx downdoc README.adoc
          \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
   })
 
@@ -6995,7 +6994,7 @@ describe('downdoc()', () => {
 
       More summary
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should skip line comment that contains a dlist term', () => {
@@ -7007,7 +7006,7 @@ describe('downdoc()', () => {
       * **new term**\\
       description
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     // NOTE: it's an open question about whether a block comment breaks a paragraph
@@ -7045,7 +7044,7 @@ describe('downdoc()', () => {
       More summary
       1. Wrap it up!
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not stop skipping block comment that contains other skipping line', () => {
@@ -7071,7 +7070,7 @@ describe('downdoc()', () => {
 
       after
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
   })
 
@@ -7091,7 +7090,7 @@ describe('downdoc()', () => {
       This project is named downdoc.
       The URL of the project is https://example.org/downdoc.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should permit use of conditional directive above doctitle', () => {
@@ -7107,7 +7106,7 @@ describe('downdoc()', () => {
 
       This project is named downdoc.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should skip ifdef enclosure on attribute entry in header for undefined attribute', () => {
@@ -7122,7 +7121,7 @@ describe('downdoc()', () => {
 
       {toc-title}
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should expand ifndef enclosure on attribute entry in header for undefined attribute', () => {
@@ -7140,7 +7139,7 @@ describe('downdoc()', () => {
       This project is named downdoc.
       The URL of the project is https://example.org/downdoc.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should skip ifndef enclosure on attribute entry in header for defined attribute', () => {
@@ -7159,7 +7158,7 @@ describe('downdoc()', () => {
       This project is named downdoc.
       The URL of the project is https://example.org/downdoc.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should keep contents of ifdef directive block if attribute is set', () => {
@@ -7180,7 +7179,7 @@ describe('downdoc()', () => {
 
       Summary
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should keep contents of ifndef directive block if attribute is not set', () => {
@@ -7200,7 +7199,7 @@ describe('downdoc()', () => {
 
       Summary
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should skip ifdef directive block if attribute is not set and collapse empty lines', () => {
@@ -7218,7 +7217,7 @@ describe('downdoc()', () => {
 
       Summary
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should skip ifndef directive block if attribute is set and collapse empty lines', () => {
@@ -7239,7 +7238,7 @@ describe('downdoc()', () => {
 
       Summary written by Author Name.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not stop skipping ifdef enclosure if it contains another skipping line', () => {
@@ -7261,7 +7260,7 @@ describe('downdoc()', () => {
 
       Summary
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should skip single-line conditional directive if condition is false', () => {
@@ -7276,7 +7275,7 @@ describe('downdoc()', () => {
 
       Summary
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should keep and process text from single-line conditional directive if condition is true', () => {
@@ -7291,7 +7290,7 @@ describe('downdoc()', () => {
 
       bar
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should allow single-line conditional directive to enclose block macro', () => {
@@ -7306,7 +7305,7 @@ describe('downdoc()', () => {
 
       ![Screenshot](img/screenshot.png)
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not remove unmatched endif::[] directive', () => {
@@ -7315,7 +7314,7 @@ describe('downdoc()', () => {
       endif::[]
       after
       `
-      expect(downdoc(input)).to.equal(input)
+      assert.equal(downdoc(input), input)
     })
 
     it('should not remove unmatched endif::[] directive following single-line conditional directive', () => {
@@ -7329,7 +7328,7 @@ describe('downdoc()', () => {
       endif::[]
       after
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should support nested preprocessor conditionals that evaluate to true', () => {
@@ -7354,7 +7353,7 @@ describe('downdoc()', () => {
       foo is still set
       fin
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should support nested preprocessor conditionals that evaluate to false', () => {
@@ -7376,7 +7375,7 @@ describe('downdoc()', () => {
 
       fin
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should support preprocessor conditional that evaluates to false inside one that evaluates to true', () => {
@@ -7401,7 +7400,7 @@ describe('downdoc()', () => {
       foo is still set
       fin
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should support preprocessor conditional that evaluates to true inside one that evaluates to false', () => {
@@ -7423,7 +7422,7 @@ describe('downdoc()', () => {
 
       fin
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should support block comment inside preprocessor conditional that resolves to true', () => {
@@ -7445,7 +7444,7 @@ describe('downdoc()', () => {
       foo is set
       fin
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should unescape escaped preprocessor directive in verbatim block', () => {
@@ -7467,7 +7466,7 @@ describe('downdoc()', () => {
       endif::[]
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should unescape escaped preprocessor directive outside verbatim block', () => {
@@ -7481,7 +7480,7 @@ describe('downdoc()', () => {
       include::notice.adoc[]
       endif::[]
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should process preprocessor conditionals inside verbatim block', () => {
@@ -7500,7 +7499,7 @@ describe('downdoc()', () => {
       foo is set
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
   })
 
@@ -7520,7 +7519,7 @@ describe('downdoc()', () => {
 
       Content.
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should trim trailing space', () => {
@@ -7529,7 +7528,7 @@ describe('downdoc()', () => {
 
       second paragraph
       `
-      expect(downdoc(input + '\n  ')).to.equal(input)
+      assert.equal(downdoc(input + '\n  '), input)
     })
 
     it('should trim leading blank lines', () => {
@@ -7542,7 +7541,7 @@ describe('downdoc()', () => {
       Visible content.
       `
       const expected = 'Visible content.'
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should trim leading blank lines after applying subs', () => {
@@ -7551,7 +7550,7 @@ describe('downdoc()', () => {
       Visible content.
       `
       const expected = 'Visible content.'
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
   })
 
@@ -7569,7 +7568,7 @@ describe('downdoc()', () => {
 
       ## First Section
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should drop page break', () => {
@@ -7585,7 +7584,7 @@ describe('downdoc()', () => {
 
       second page
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should drop include directive', () => {
@@ -7605,7 +7604,7 @@ describe('downdoc()', () => {
 
       ## Chapter C
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should ignore ID on block without title', () => {
@@ -7624,7 +7623,7 @@ describe('downdoc()', () => {
       buzz
       \`\`\`
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should ignore cell specifier on table cells', () => {
@@ -7640,7 +7639,7 @@ describe('downdoc()', () => {
       | --- | --- | --- |
       | strong | monospace | normal |
       `
-      expect(downdoc(input)).to.equal(expected)
+      assert.equal(downdoc(input), expected)
     })
 
     it('should not process non-paragraph blocks in Markdown-style blockquote', () => {
@@ -7655,7 +7654,7 @@ describe('downdoc()', () => {
       > example
       > ====
       `
-      expect(downdoc(input)).to.equal(input)
+      assert.equal(downdoc(input), input)
     })
   })
 })
