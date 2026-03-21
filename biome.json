@@ -1,0 +1,48 @@
+{
+  "files": {
+    "includes": ["biome.json", "lib/**/*.js", "npm/**/*.js", "test/**/*.js"]
+  },
+  "formatter": {
+    "enabled": true,
+    "includes": ["!lib/index.js"],
+    "useEditorconfig": true
+  },
+  "javascript": {
+    "formatter": {
+      "lineWidth": 120,
+      "quoteStyle": "single",
+      "semicolons": "asNeeded",
+      "trailingCommas": "es5"
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "complexity": {
+        "noArguments": "off",
+        "noForEach": "off"
+      },
+      "performance": {
+        "noDelete": "off"
+      },
+      "style": {
+        "noParameterAssign": "off",
+        "useNumberNamespace": "off",
+        "useSingleVarDeclarator": "off",
+        "useTemplate": "off"
+      },
+      "suspicious": {
+        "noAssignInExpressions": "off",
+        "noRedundantUseStrict": "off"
+      }
+    }
+  },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "off"
+      }
+    }
+  }
+}
