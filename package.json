@@ -15,13 +15,17 @@
     "node": ">=16.17.0"
   },
   "scripts": {
+    "build": "npm test",
+    "postbuidl": "npm run lint",
     "coverage": "nyc _mocha",
-    "build": "npm test && npm run lint",
-    "format": "node npm/format.js lib,test,npm",
-    "lint": "eslint \"{lib,test,npm}/**/*.js\"",
+    "format": "npx -y --include optional @biomejs/biome@~2.1 format --write",
+    "postformat": "node --disable-warning ExperimentalWarning npm/postformat.js",
+    "lint": "npx -y --include optional @biomejs/biome@~2.1 lint --error-on-warnings",
     "postpublish": "downdoc --postpublish",
     "prepublishOnly": "downdoc --prepublish",
     "test": "_mocha",
+    "pretidy": "npm run lint",
+    "tidy": "npm run format",
     "version": "node npm/version.js"
   },
   "bin": {
@@ -51,11 +55,8 @@
     "chai-fs": "~2.0",
     "chai-string": "~1.5",
     "dirty-chai": "~2.0",
-    "eslint": "~8.45",
-    "eslint-config-standard": "~17.1",
     "mocha": "~10.2",
-    "nyc": "~15.1",
-    "prettier-eslint": "~15.0"
+    "nyc": "~15.1"
   },
   "nyc": {
     "all": true,
