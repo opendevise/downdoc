@@ -16,7 +16,7 @@
   },
   "scripts": {
     "build": "npm test",
-    "postbuidl": "npm run lint",
+    "postbuild": "npm run lint",
     "coverage": "nyc _mocha",
     "format": "npx -y --include optional @biomejs/biome@~2.1 format --write",
     "postformat": "node --disable-warning ExperimentalWarning npm/postformat.js",
