@@ -1,7 +1,7 @@
 'use strict'
 
-const { promises: fsp } = require('fs')
-const ospath = require('path')
+const { promises: fsp } = require('node:fs')
+const ospath = require('node:path')
 const format = require('prettier-eslint')
 
 async function formatAll (dirs, ignores, cwd = process.cwd()) {
