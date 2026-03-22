@@ -4117,7 +4117,21 @@ describe('downdoc()', () => {
       assert.equal(downdoc(input), expected)
     })
 
-    it('should only consider first positional attribute as alt text when image macro has attributes', () => {
+    it('should only use first positional attribute as alt text', () => {
+      const input = heredoc`
+      = Title
+
+      image::picture.jpg[,600]
+      `
+      const expected = heredoc`
+      # Title
+
+      ![picture](picture.jpg)
+      `
+      assert.equal(downdoc(input), expected)
+    })
+
+    it('should not use named attributes as alt text', () => {
       const input = heredoc`
       = Title
 
