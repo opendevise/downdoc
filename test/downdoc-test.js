@@ -4342,6 +4342,24 @@ describe('downdoc()', () => {
       `
       assert.equal(downdoc(input), expected)
     })
+
+    it('should wrap image in link if link attribute is set', () => {
+      const input = heredoc`
+      = Title
+
+      image::images/screenshot.png[Screenshot,link=https://example.com]
+
+      Click the image:images/green-bar.png[green bar,link=https://ci.example.com] to see the result.
+      `
+      const expected = heredoc`
+      # Title
+
+      [![Screenshot](images/screenshot.png)](https://example.com)
+
+      Click the [![green bar](images/green-bar.png)](https://ci.example.com) to see the result.
+      `
+      assert.equal(downdoc(input), expected)
+    })
   })
 
   describe('blockquotes', () => {
