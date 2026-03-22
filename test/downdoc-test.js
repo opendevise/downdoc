@@ -4117,6 +4117,24 @@ describe('downdoc()', () => {
       assert.equal(downdoc(input), expected)
     })
 
+    it('should only consider first positional attribute as alt text when image macro has attributes', () => {
+      const input = heredoc`
+      = Title
+
+      When you see image:images/red-bar.png[role=red], something has gone wrong.
+
+      image::project/3.1/_images/test-result.svg[opts=interactive]
+      `
+      const expected = heredoc`
+      # Title
+
+      When you see ![red-bar](images/red-bar.png), something has gone wrong.
+
+      ![test-result](project/3.1/_images/test-result.svg)
+      `
+      assert.equal(downdoc(input), expected)
+    })
+
     it('should convert remote inline image', () => {
       const input = heredoc`
       = Title

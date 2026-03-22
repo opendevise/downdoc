@@ -4,6 +4,12 @@
 This document provides a summary of all notable changes to downdoc by release.
 For a detailed view of what's changed, refer to the {url-repo}/commits[commit history] of this project.
 
+== Unreleased
+
+=== Fixed
+
+* Only consider first positional attribute when looking for alt text on image macro
+
 == 1.0.2-stable (2023-07-25)
 
 === Changed
