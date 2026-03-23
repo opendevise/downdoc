@@ -34,8 +34,10 @@ jobs:
     - name: Run linter
       run: |
         npm run tidy
+        npm pkg fix
         if [ -n "$(git --no-pager diff --name-only)" ]; then
           echo 'Detected pending code style changes'
+          git --no-pager diff
           exit 1
         fi
     - name: Run tests with coverage
