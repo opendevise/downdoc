@@ -12,7 +12,7 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 
 === Fixed
 
-* Only consider first positional attribute when looking for alt text on image macro
+* Only consider first positional attribute when looking for alt text on image macro (#29)
 * Apply passthrough semantics to contents of inline stem expression (#22)
 
 == 1.0.2-stable (2023-07-25)
