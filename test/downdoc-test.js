@@ -3141,6 +3141,24 @@ describe('downdoc()', () => {
       `
       assert.equal(downdoc(input), expected)
     })
+
+    it('should handle multiple stem macros in same line', () => {
+      const input = 'stem:[x+y] and stem:[a*b]'
+      const expected = '$x+y$ and $a*b$'
+      assert.equal(downdoc(input), expected)
+    })
+
+    it('should not apply text formatting to stem expression', () => {
+      const input = 'stem:[a**b**c]'
+      const expected = '$a**b**c$'
+      assert.equal(downdoc(input), expected)
+    })
+
+    it('should not apply text formatting to stem expression when enclosed in text formatting', () => {
+      const input = '*stem:[V^{**}]*'
+      const expected = '**$V^{**}$**'
+      assert.equal(downdoc(input), expected)
+    })
   })
 
   describe('xrefs', () => {
