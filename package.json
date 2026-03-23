@@ -7,7 +7,10 @@
   "contributors": [
     "Dan Allen <dan@opendevise.com>"
   ],
-  "repository": "https://github.com/opendevise/downdoc",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/opendevise/downdoc.git"
+  },
   "bugs": {
     "url": "https://github.com/opendevise/downdoc/issues"
   },
