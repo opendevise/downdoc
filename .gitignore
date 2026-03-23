@@ -2,3 +2,5 @@
 /.idea/
 /reports/
 /.nvmrc
+/npm/release.sh
+/releaserc

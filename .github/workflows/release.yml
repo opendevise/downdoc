@@ -34,4 +34,6 @@ jobs:
         echo RELEASE_VERSION=${{ github.event.inputs.release-version }} >> $GITHUB_ENV
         echo RELEASE_NPM_TOKEN=${{ secrets[format('NPM_TOKEN_{0}', github.actor)] }} >> $GITHUB_ENV
     - name: Build, tag, and publish npm package
-      run: ./npm/release.sh
+      run: |
+        curl -o npm/release.sh -sS https://gitlab.com/opendevise/oss/we-are-releasing/-/raw/main/npm-release-from-github.sh
+        bash npm/release.sh

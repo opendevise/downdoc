@@ -28,8 +28,7 @@
     "prepublishOnly": "npx downdoc --prepublish",
     "test": "node --test test/*-test.js",
     "pretidy": "npm run lint",
-    "tidy": "npm run format",
-    "version": "node npm/version.js"
+    "tidy": "npm run format"
   },
   "bin": {
     "downdoc": "bin/downdoc"
