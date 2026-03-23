@@ -704,6 +704,23 @@ describe('downdoc()', () => {
       `
       assert.equal(downdoc(input), expected)
     })
+
+    it('should apply normal substitutions to section title', () => {
+      const input = heredoc`
+      :plugin: ACME Integration
+      :url-host: https://cloud.example.org
+
+      == *Search* for {plugin} on {url-host}[host]
+
+      content
+      `
+      const expected = heredoc`
+      ## **Search** for ACME Integration on [host](https://cloud.example.org)
+
+      content
+      `
+      assert.equal(downdoc(input), expected)
+    })
   })
 
   describe('block titles', () => {
