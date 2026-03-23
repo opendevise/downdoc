@@ -11,6 +11,10 @@ For a detailed view of what's changed, refer to the {url-repo}/commits[commit hi
 * Support link attribute on image macros (#13)
 * Apply normal substitutions to section titles / discrete headings (#25)
 
+=== Changed
+
+* Clean invalid characters from auto-generated ID (#30)
+
 == 1.0.3-stable (2026-03-23)
 
 === Fixed

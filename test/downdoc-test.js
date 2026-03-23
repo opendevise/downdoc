@@ -3237,6 +3237,20 @@ describe('downdoc()', () => {
       assert.equal(downdoc(input), expected)
     })
 
+    it('should clean invalid ID characters from auto ID', () => {
+      const input = heredoc`
+      == Foo *Bar*
+
+      See <<Foo *Bar*>>
+      `
+      const expected = heredoc`
+      ## Foo **Bar**
+
+      See [Foo **Bar**](#foo-bar)
+      `
+      assert.equal(downdoc(input), expected)
+    })
+
     it('should unescape escaped xref macro', () => {
       const input = heredoc`
       = Title
