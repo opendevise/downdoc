@@ -5397,6 +5397,29 @@ describe('downdoc()', () => {
       assert.equal(downdoc(input), expected)
     })
 
+    it('should indent verbatim block if indent value is positive', () => {
+      const input = heredoc`
+      = Title
+
+      [indent=4]
+      ----
+      def fn arg
+        puts arg
+      end
+      ----
+      `
+      const expected = heredoc`
+      # Title
+
+      \`\`\`
+          def fn arg
+            puts arg
+          end
+      \`\`\`
+      `
+      assert.equal(downdoc(input), expected)
+    })
+
     it('should outdent contents of verbatim block attached to list item inside quote block', () => {
       const input = heredoc`
       ____
