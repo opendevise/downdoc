@@ -4,6 +4,12 @@
 This document provides a summary of all notable changes to downdoc by release.
 For a detailed view of what's changed, refer to the {url-repo}/commits[commit history] of this project.
 
+== Unreleased
+
+=== Fixed
+
+* Treat integer `cols` value (e.g. `cols=3`) as shorthand for the column multiplier form (#37)
+
 == 1.1.0-stable (2026-03-23)
 
 === Added

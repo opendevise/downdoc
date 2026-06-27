@@ -2204,6 +2204,23 @@ describe('downdoc()', () => {
       assert.equal(downdoc(input), expected)
     })
 
+    it('should treat integer cols value as shorthand for column multiplier', () => {
+      const input = heredoc`
+      [cols=3]
+      |===
+      | A | B | C
+      | 1 | 2 | 3
+      |===
+      `
+      const expected = heredoc`
+      |     |     |     |
+      | --- | --- | --- |
+      | A | B | C |
+      | 1 | 2 | 3 |
+      `
+      assert.equal(downdoc(input), expected)
+    })
+
     it('should use first row to determine number of columns without creating header', () => {
       const input = heredoc`
       |===
