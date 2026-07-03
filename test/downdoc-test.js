@@ -4146,6 +4146,76 @@ describe('downdoc()', () => {
       `
       assert.equal(downdoc(input), expected)
     })
+
+    it('should convert mailto macro with label', () => {
+      const input = heredoc`
+      = Title
+
+      Send a message to mailto:jane@example.com[Jane Doe].
+      `
+      const expected = heredoc`
+      # Title
+
+      Send a message to [Jane Doe](mailto:jane@example.com).
+      `
+      assert.equal(downdoc(input), expected)
+    })
+
+    it('should convert mailto macro with empty label', () => {
+      const input = heredoc`
+      = Title
+
+      Send a message to mailto:jane@example.com[].
+      `
+      const expected = heredoc`
+      # Title
+
+      Send a message to [jane@example.com](mailto:jane@example.com).
+      `
+      assert.equal(downdoc(input), expected)
+    })
+
+    it('should unescape escaped mailto macro', () => {
+      const input = heredoc`
+      = Title
+
+      Use \\mailto:jane@example.com[Jane Doe] to create an email link.
+      `
+      const expected = heredoc`
+      # Title
+
+      Use mailto:jane@example.com[Jane Doe] to create an email link.
+      `
+      assert.equal(downdoc(input), expected)
+    })
+
+    it('should not convert bare mailto address without brackets', () => {
+      const input = heredoc`
+      = Title
+
+      Contact us at mailto:jane@example.com for more information.
+      `
+      const expected = heredoc`
+      # Title
+
+      Contact us at mailto:jane@example.com for more information.
+      `
+      assert.equal(downdoc(input), expected)
+    })
+
+    it('should convert link macro with mailto target', () => {
+      const input = heredoc`
+      = Title
+
+      Send a message to link:mailto:jane@example.com[Jane Doe].
+      `
+      const expected = heredoc`
+      # Title
+
+      Send a message to [Jane Doe](mailto:jane@example.com).
+      `
+      assert.equal(downdoc(input), expected)
+    })
   })
 
   describe('image macros', () => {
