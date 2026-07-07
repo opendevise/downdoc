@@ -1947,7 +1947,7 @@ describe('downdoc()', () => {
     it('should not promote first row to header if preceded by empty line', () => {
       const input = heredoc`
       |===
-      
+
       | A1
 
       | A2
@@ -3914,6 +3914,188 @@ describe('downdoc()', () => {
       See [docname:xref:::link-text](#docname:xref:::link-text).
 
       <a name="docname:xref:::link-text"></a>[link text] is the part where you specify the text of the link.
+      `
+      assert.equal(downdoc(input), expected)
+    })
+  })
+
+  describe('footnotes', () => {
+    it('should convert anonymous footnote macro', () => {
+      const input = heredoc`
+      = Title
+
+      The hail-and-rainbow protocol can be initiated at five levels.footnote:[The double hail-and-rainbow level makes my toes tingle.]
+      `
+      const expected = heredoc`
+      # Title
+
+      The hail-and-rainbow protocol can be initiated at five levels.[^1]
+
+      [^1]: The double hail-and-rainbow level makes my toes tingle.
+      `
+      assert.equal(downdoc(input), expected)
+    })
+
+    it('should convert multiple footnotes with consecutive numbering', () => {
+      const input = heredoc`
+      = Title
+
+      A bold statement!footnote:[Opinions are my own.]
+
+      Another statement.footnote:[More details here.]
+      `
+      const expected = heredoc`
+      # Title
+
+      A bold statement![^1]
+
+      Another statement.[^2]
+
+      [^1]: Opinions are my own.
+      [^2]: More details here.
+      `
+      assert.equal(downdoc(input), expected)
+    })
+
+    it('should convert named footnote and reuse it', () => {
+      const input = heredoc`
+      = Title
+
+      A bold statement!footnote:disclaimer[Opinions are my own.]
+
+      Another outrageous statement.footnote:disclaimer[]
+      `
+      const expected = heredoc`
+      # Title
+
+      A bold statement![^1]
+
+      Another outrageous statement.[^1]
+
+      [^1]: Opinions are my own.
+      `
+      assert.equal(downdoc(input), expected)
+    })
+
+    it('should apply normal substitutions to footnote text', () => {
+      const input = heredoc`
+      = Title
+
+      A bold statement!footnote:[This is *very* important.]
+      `
+      const expected = heredoc`
+      # Title
+
+      A bold statement![^1]
+
+      [^1]: This is **very** important.
+      `
+      assert.equal(downdoc(input), expected)
+    })
+
+    it('should convert URL macro inside footnote text', () => {
+      const input = heredoc`
+      = Title
+
+      See this.footnote:[Visit https://example.org[the site] for details.]
+      `
+      const expected = heredoc`
+      # Title
+
+      See this.[^1]
+
+      [^1]: Visit [the site](https://example.org) for details.
+      `
+      assert.equal(downdoc(input), expected)
+    })
+
+    it('should unescape escaped footnote macro', () => {
+      const input = heredoc`
+      = Title
+
+      Use \\footnote:[text] to insert a footnote.
+      `
+      const expected = heredoc`
+      # Title
+
+      Use footnote:[text] to insert a footnote.
+      `
+      assert.equal(downdoc(input), expected)
+    })
+
+    it('should not convert footnote macro in verbatim block', () => {
+      const input = heredoc`
+      = Title
+
+      ----
+      footnote:[This should not be converted.]
+      ----
+      `
+      const expected = heredoc`
+      # Title
+
+      \`\`\`
+      footnote:[This should not be converted.]
+      \`\`\`
+      `
+      assert.equal(downdoc(input), expected)
+    })
+
+    it('should place footnote definitions after all body content', () => {
+      const input = heredoc`
+      = Title
+
+      First paragraph.footnote:[First note.]
+
+      == Section
+
+      Second paragraph.footnote:[Second note.]
+      `
+      const expected = heredoc`
+      # Title
+
+      First paragraph.[^1]
+
+      ## Section
+
+      Second paragraph.[^2]
+
+      [^1]: First note.
+      [^2]: Second note.
+      `
+      assert.equal(downdoc(input), expected)
+    })
+
+    it('should convert footnote macro referenced via attribute', () => {
+      const input = heredoc`
+      = Title
+      :link-apply: https://example.org[Online form]footnote:[https://example.org]
+
+      Apply via {link-apply} today.
+      `
+      const expected = heredoc`
+      # Title
+
+      Apply via [Online form](https://example.org)[^1] today.
+
+      [^1]: https://example.org
+      `
+      assert.equal(downdoc(input), expected)
+    })
+
+    it('should reuse named footnote referenced via attribute', () => {
+      const input = heredoc`
+      = Title
+      :fn: seefootnote:note[https://example.org]
+
+      First {fn} and second {fn}.
+      `
+      const expected = heredoc`
+      # Title
+
+      First see[^1] and second see[^1].
+
+      [^1]: https://example.org
       `
       assert.equal(downdoc(input), expected)
     })
